@@ -1,0 +1,54 @@
+.auth-page{
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    grid-auto-rows: minmax(150px, auto);
+    grid-gap: 10px;
+    grid-template-areas:
+            ". welcome-text welcome-text ."
+            ". switch switch ."
+            ". auth-component-container auth-component-container ."
+            ". auth-component-container auth-component-container .";
+
+}
+
+
+.welcome-text{
+    grid-area: welcome-text;
+    justify-self: center;
+    align-self: center;
+}
+
+.switch{
+    margin: 5%;
+    grid-area: switch;
+
+}
+
+.auth-component-container{
+    grid-area: auth-component-container;
+    margin: 5%;
+}
+
+.auth-component{
+
+    display: grid;
+    grid-gap: 5%;
+    grid-auto-rows: minmax(35px,auto);
+}
+
+.submit{
+
+    grid-row: 5/6;
+
+}
+
+@media screen and (min-width: 760px){
+    .auth-page{
+        grid-template-areas:
+                "welcome-text welcome-text . ."
+                ". . switch switch "
+                ". . auth-component-container auth-component-container"
+                ". . auth-component-container auth-component-container";
+
+    }
+}

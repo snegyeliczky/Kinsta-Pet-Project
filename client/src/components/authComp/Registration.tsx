@@ -38,12 +38,12 @@ const Registration:React.FC<Props> = ({login}) => {
     };
 
     return (
-        <div>
+        <div className={"auth-component"}>
             <h3>Registration</h3>
-            <Input placeholder={"Username"} prefix={<UserOutlined />} ref={username}/>
+            <Input  placeholder={"Username"} prefix={<UserOutlined />} ref={username}/>
             <Input placeholder={"E-mail"} prefix={<MailOutlined />} ref={email}/>
             <Input.Password ref={password} placeholder={"PassWord"} iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)} />
-            <Button shape={"round"} icon={<CheckOutlined/>} type={"primary"} onClick={handleRegistration}>Registration</Button>
+            <Button className={"submit"} shape={"round"} icon={<CheckOutlined/>} type={"primary"} onClick={handleRegistration}>Registration</Button>
         </div>
     );
 };

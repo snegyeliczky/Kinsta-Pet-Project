@@ -28,7 +28,7 @@ const Login:React.FC<Props> = ({login}) => {
     };
 
     return (
-        <div className={"authComp"}>
+        <div className={"auth-component"}>
             <h3>Login</h3>
             <Input placeholder={"Username"} prefix={<UserOutlined />}  type={"string"}
                    onChange={event => {setUsername(event.target.value)}}
@@ -37,7 +37,7 @@ const Login:React.FC<Props> = ({login}) => {
                             iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
                             onChange={event => {setPassword(event.target.value)}}
             />
-            <Button shape={"round"} icon={<CheckOutlined/>} type={"primary"} onClick={event => {
+            <Button className={"submit"} shape={"round"} icon={<CheckOutlined/>} type={"primary"} onClick={event => {
                 username&&password?handleLogin(username, password):alert("missing parameter")}
             }>Login</Button>
         </div>
