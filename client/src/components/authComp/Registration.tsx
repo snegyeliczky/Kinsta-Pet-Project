@@ -2,6 +2,7 @@ import React, {useRef} from 'react';
 import {Input,Button} from 'antd';
 import { MailOutlined,UserOutlined, EyeInvisibleOutlined, EyeTwoTone, CheckOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.css';
+import {handleLogin} from "./Login";
 
 const Registration = () => {
 
@@ -9,11 +10,26 @@ const Registration = () => {
     let email = useRef<Input>(null);
     let password = useRef<Input>(null);
 
+    const registration =(newUsername:string,newEmail:string,newPassword:string|number):boolean=>{
+        try {
+            //backEnd registration comes here
+            console.log(newUsername,newPassword,newEmail);
+            return true;
+        }catch (e) {
+            return false;
+        }
+    };
+
     const handleRegistration= ():void => {
         let newUsername = username.current?username.current.state.value:undefined;
         let newEmail = email.current?email.current.state.value:undefined;
         let newPassword = password.current?password.current.state.value:undefined;
-        console.log(newUsername,newEmail,newPassword)
+        newUsername && newEmail && newPassword ?
+            registration(newUsername,newEmail,newPassword) ?
+                handleLogin(newUsername,newPassword) :
+                alert("registration failed")
+            : alert("missing parameter");
+
     };
 
     return (
@@ -22,7 +38,7 @@ const Registration = () => {
             <Input placeholder={"Username"} prefix={<UserOutlined />} ref={username}/>
             <Input placeholder={"E-mail"} prefix={<MailOutlined />} ref={email}/>
             <Input.Password ref={password} placeholder={"PassWord"} iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)} />
-            <Button shape={"round"} icon={<CheckOutlined/>} type={"primary"} onClick={handleRegistration}>Submit</Button>
+            <Button shape={"round"} icon={<CheckOutlined/>} type={"primary"} onClick={handleRegistration}>Registration</Button>
         </div>
     );
 };
