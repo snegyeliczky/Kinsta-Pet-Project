@@ -2,13 +2,18 @@ import React, {useRef} from 'react';
 import {Input,Button} from 'antd';
 import { MailOutlined,UserOutlined, EyeInvisibleOutlined, EyeTwoTone, CheckOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.css';
-import {handleLogin} from "./Login";
 
-const Registration = () => {
+interface Props {
+    login:(username:string,password:string|number)=>void;
+}
+
+
+const Registration:React.FC<Props> = ({login}) => {
 
     let username = useRef<Input>(null);
     let email = useRef<Input>(null);
     let password = useRef<Input>(null);
+
 
     const registration =(newUsername:string,newEmail:string,newPassword:string|number):boolean=>{
         try {
@@ -26,7 +31,7 @@ const Registration = () => {
         let newPassword = password.current?password.current.state.value:undefined;
         newUsername && newEmail && newPassword ?
             registration(newUsername,newEmail,newPassword) ?
-                handleLogin(newUsername,newPassword) :
+            login(newUsername,newPassword) :
                 alert("registration failed")
             : alert("missing parameter");
 

@@ -3,7 +3,7 @@ import React from 'react';
 const MainPage = () => {
     return (
         <div>
-            Hello mainPage
+            Hello {localStorage.getItem("username")}
         </div>
     );
 };
