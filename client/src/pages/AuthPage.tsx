@@ -16,6 +16,7 @@ const AuthPage = () => {
         try {
             //here comes the backend login
             console.log(username,password);
+            localStorage.setItem("username",username);
             appContext.setUserName(username);
             history.push("/")
         }catch (e) {

@@ -8,6 +8,9 @@ const MainPage = () => {
     return (
         <div>
             Hello {appContext.username}
+            <button onClick={event => {
+                localStorage.removeItem("username")
+            }}>rm user</button>
         </div>
     );
 };
