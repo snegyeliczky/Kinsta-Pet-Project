@@ -25,7 +25,7 @@ const AuthPage = () => {
     return (
         <div className={"auth-page"}>
             <h2 className={"welcome-text"}>Welcome</h2>
-            <Switch className={"switch"} checkedChildren="Login" unCheckedChildren="Registration" defaultChecked onChange={e=>{
+            <Switch className={"switch"} checkedChildren="Registration" unCheckedChildren="Login" defaultChecked onChange={e=>{
                 setReg(e)
             }}/>
             <div className={"auth-component-container"}>
