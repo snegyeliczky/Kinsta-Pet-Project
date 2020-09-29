@@ -3,11 +3,13 @@ import './App.css';
 import {BrowserRouter as Router, Route} from "react-router-dom";
 import AuthPage from "./pages/AuthPage";
 import MainPage from "./pages/MainPage";
-import {AuthCheck} from "./components/authComp/loginCheck"
+import AuthCheck from "./components/authComp/loginCheck"
 import {ApplicationProvider} from "./context/ApplicationContext";
 
 
 function App() {
+
+
 
     return (
         <Router>

@@ -10,6 +10,7 @@ const AuthPage = () => {
 
     const [isReg, setReg] = useState<boolean>(true);
     const history= useHistory();
+    console.log("auth page", history)
     const appContext = useContext(ApplicationContext)
 
     const login=(username:string,password:string|number)=> {
