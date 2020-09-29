@@ -7,12 +7,7 @@ const MainPage = () => {
 
     return (
         <div>
-            {appContext?.name}
-            Hello {localStorage.getItem("username")}
-            <input type="text" onChange={event => {
-                appContext.setName(event.target.value)
-            }} />
-            {appContext.getMyAge(27)}
+            Hello {appContext.username}
         </div>
     );
 };
