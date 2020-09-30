@@ -9,13 +9,14 @@ const Footer = () => {
         width: "100%",
         height:"10vh",
         textAlign: "center",
-        borderTop:"1px solid black"
+        borderTop:"1px solid black",
+        backgroundColor:"#282c34",
     };
 
 
     return (
         <div className={"component"} id={"footer"} style={footerStyle}>
-            <h2>Created by: Sándi</h2>
+            <h2 style={{ color:"#fff"}}>Created by: Sándi</h2>
         </div>
     );
 };
