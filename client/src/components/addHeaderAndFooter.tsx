@@ -12,7 +12,7 @@ export function addHeaderAndFooter<T extends thingsToAddComponent>(Component: Co
     return (props: T) => (
         <>
             <NavBar/>
-            <div id={"main-content-container"} style={{paddingTop: "10Vh"}}>
+            <div id={"main-content-container"} style={{paddingTop: "11Vh", paddingBottom:"11vh"}}>
                 <Component {...props} />
             </div>
             <Footer/>
