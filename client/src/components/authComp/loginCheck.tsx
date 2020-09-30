@@ -3,6 +3,23 @@ import { useHistory } from "react-router-dom";
 
 
 
+
+export function AuthCheck<T>(OriginalComponent: ComponentType<T>, isPrivate: boolean, ) {
+    const history=useHistory();
+    const user = localStorage.getItem("username");
+    console.log("history",history)
+
+
+    if (isPrivate && user === null) {
+        history.push("/auth");
+    }
+
+    return(props:T) =>(<OriginalComponent {...props} />)
+}
+
+
+
+/*
 const LoginCheck = (OriginalComponent: ComponentType, isPrivate: boolean) => {
 
     const history = useHistory();
@@ -23,25 +40,6 @@ const LoginCheck = (OriginalComponent: ComponentType, isPrivate: boolean) => {
 };
 
 export default LoginCheck;
-
-/*
-
-export function AuthCheck<T>(OriginalComponent: ComponentType<T>, isPrivate: boolean, history:any) {
-    const user = localStorage.getItem("username");
-    console.log("history",history)
-
-
-    if (isPrivate && user === null) {
-        console.log("LOG IN MAN");
-       history.push("/auth");
-    }
-
-    return(props:T) =>(<OriginalComponent {...props} />)
-}
-
-
-
-
 
 
 export default function<T> (OriginalComponent: ComponentType<T>, isPrivate: boolean) {

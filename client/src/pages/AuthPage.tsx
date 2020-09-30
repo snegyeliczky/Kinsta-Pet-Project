@@ -3,7 +3,7 @@ import Login from "../components/authComp/Login";
 import Registration from "../components/authComp/Registration";
 import { Switch } from 'antd';
 import {useHistory} from "react-router-dom";
-import "../../src/Assets/AuthStyle.css"
+import "../assets/AuthStyle.css"
 import {ApplicationContext} from "../context/ApplicationContext";
 
 const AuthPage = () => {
