@@ -1,20 +1,23 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import Login from "../components/authComp/Login";
 import Registration from "../components/authComp/Registration";
 import { Switch } from 'antd';
 import {useHistory} from "react-router-dom";
-import "../../src/Assets/AuthStyle.css"
+import "../assets/AuthStyle.css"
+import {ApplicationContext} from "../context/ApplicationContext";
 
 const AuthPage = () => {
 
     const [isReg, setReg] = useState<boolean>(true);
     const history= useHistory();
+    const appContext = useContext(ApplicationContext);
 
     const login=(username:string,password:string|number)=> {
         try {
             //here comes the backend login
             console.log(username,password);
             localStorage.setItem("username",username);
+            appContext.setUserName(username);
             history.push("/")
         }catch (e) {
             console.log(e);
@@ -25,7 +28,7 @@ const AuthPage = () => {
     return (
         <div className={"auth-page"}>
             <h2 className={"welcome-text"}>Welcome</h2>
-            <Switch className={"switch"} checkedChildren="Login" unCheckedChildren="Registration" defaultChecked onChange={e=>{
+            <Switch className={"switch"} checkedChildren="Registration" unCheckedChildren="Login" defaultChecked onChange={e=>{
                 setReg(e)
             }}/>
             <div className={"auth-component-container"}>
