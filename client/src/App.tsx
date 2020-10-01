@@ -5,6 +5,7 @@ import AuthPage from "./pages/AuthPage";
 import MainPage from "./pages/MainPage";
 import {ApplicationProvider} from "./context/ApplicationContext";
 import {addHeaderAndFooter} from "./components/addHeaderAndFooter";
+import ProjectPage from "./pages/ProjectPage";
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
             <ApplicationProvider>
                 <Route exact path={"/auth"} component={AuthPage}/>
                 <Route exact path={"/"} component={addHeaderAndFooter(MainPage)}/>
+                <Route exact path={"/project/:id"} component={addHeaderAndFooter(ProjectPage)}/>
             </ApplicationProvider>
         </Router>
 

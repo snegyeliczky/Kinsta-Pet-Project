@@ -12,6 +12,14 @@ const NavBar = () => {
        history.push("/auth")
    };
 
+   const handleHome = ():void =>{
+       history.push("/")
+   };
+
+   const handleNewCompany = ():void =>{
+       history.push("/new-company")
+   };
+
    const menuStyle:Object = {
        textAlign:"center",
        position:"fixed",
@@ -20,8 +28,11 @@ const NavBar = () => {
    };
 
 
+
     return (
         <Menu mode={"horizontal"} style={menuStyle}>
+            <Menu.Item onClick={handleHome}>Home</Menu.Item>
+            <Menu.Item onClick={handleNewCompany}>Creat new company</Menu.Item>
             <Menu.Item onClick={handleLogOut}>Log out</Menu.Item>
         </Menu>
     );

@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import {Company} from "../interfaces/Company";
+import ProjectService from "../services/ProjectService";
+import {useHistory} from "react-router-dom";
 
 interface Props {
     company:Company
@@ -9,22 +11,25 @@ interface Props {
 
 const CompaniComponent:React.FC<Props> = ({company}) => {
 
+    const history= useHistory();
+
     const[displayProject,setDisplayProject]= useState(false);
 
+    function toProjectPage(event: React.MouseEvent<HTMLDivElement>,projectId:number) {
+        event.preventDefault();
+        history.push("/project/"+projectId)
+    }
+
     function getProjects(){
-        if (displayProject)return(
-            <div className={"company-projects"}>
-                <h4>Hello event</h4>
-                <h4>Hello event</h4>
-                <h4>Hello event</h4>
-                <h4>Hello event</h4>
-                <h4>Hello event</h4>
-                <h4>Hello event</h4>
-                <h4>Hello event</h4>
-                <h4>Hello event</h4>
-                <h4>jjjjj event</h4>
-            </div>
-        );
+
+        if (displayProject){
+           return ProjectService.getProjectForCompany(company.id).map(project =>{
+               return <div key={project.id} className={"companyPage-project"} onClick={event => {toProjectPage(event,project.id)}}>
+                   <h3>{project.name}</h3>
+               </div>
+               }
+           )
+        }
         else return null;
 
 
@@ -33,7 +38,7 @@ const CompaniComponent:React.FC<Props> = ({company}) => {
     return (
         <div className={"company-details"} onClick={event => setDisplayProject(!displayProject)}>
             <div className={"company-name"} >
-                <h3>{company.name}</h3>
+                <h2>{company.name}</h2>
             </div>
             {getProjects()}
         </div>
