@@ -8,6 +8,8 @@ const MainPage = () => {
     const appContext =  useContext(ApplicationContext);
     let userId:number = 1;
 
+
+
     useEffect(()=>{
         appContext.getCompanies(userId);
     },[userId]);

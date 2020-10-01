@@ -6,6 +6,7 @@ import MainPage from "./pages/MainPage";
 import {ApplicationProvider} from "./context/ApplicationContext";
 import {addHeaderAndFooter} from "./components/addHeaderAndFooter";
 import ProjectPage from "./pages/ProjectPage";
+import NewCompany from "./pages/NewCompany";
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
                 <Route exact path={"/auth"} component={AuthPage}/>
                 <Route exact path={"/"} component={addHeaderAndFooter(MainPage)}/>
                 <Route exact path={"/project/:id"} component={addHeaderAndFooter(ProjectPage)}/>
+                <Route exact path={"/new-company"} component={addHeaderAndFooter(NewCompany)}/>
             </ApplicationProvider>
         </Router>
 

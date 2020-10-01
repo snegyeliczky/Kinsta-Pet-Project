@@ -20,7 +20,7 @@ companyList.push(comp2);
 
 let comp3: Company = {
     id: 3,
-    name: "JP Morgen",
+    name: "JP Morgen 2",
     employees: [3, 2]
 };
 companyList.push(comp3);
@@ -35,12 +35,21 @@ companyList.push(comp4);
 
 export default {
 
+    addNewCompany:(name:string,employeeId:number):void =>{
+        let newCompany:Company = {
+            id:companyList.length,
+            name:name,
+            employees:[employeeId]
+        };
+        companyList.push(newCompany)
+    },
+
     getMyCompanies: (employeeId: number) => {
         return companyList.filter((company) => {
             let contain: number[] = company.employees.filter(id => {
                 return id === employeeId;
             });
-            return contain.length > 0
+            return contain.length > 0;
 
         })
     }
