@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {Dispatch, SetStateAction, useState} from 'react';
 import {Modal, Button, Input} from 'antd';
 import "../../assets/ModalStyle.css";
 import { PlusOutlined, ProjectOutlined } from '@ant-design/icons';
@@ -6,15 +6,17 @@ import ProjectService from "../../services/ProjectService";
 
 interface Props {
     companyId:number
+    setDisplay:Dispatch<SetStateAction<boolean>>
 }
 
-const NewProjectModal:React.FC<Props>= ({companyId}) => {
+const NewProjectModal:React.FC<Props>= ({companyId,setDisplay}) => {
 
     const [visible, setVisible] = useState(false);
     const[projectName, setProjectName ] = useState("");
 
     const showModal = (event: React.MouseEvent<HTMLElement>) => {
         event.stopPropagation();
+        setDisplay(false);
         setVisible(!visible);
     };
 

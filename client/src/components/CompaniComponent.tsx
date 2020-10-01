@@ -13,8 +13,8 @@ interface Props {
 const CompaniComponent:React.FC<Props> = ({company}) => {
 
     const history= useHistory();
-
     const[displayProject,setDisplayProject]= useState(false);
+
 
     function toProjectPage(event: React.MouseEvent<HTMLDivElement>,projectId:number) {
         event.preventDefault();
@@ -42,7 +42,7 @@ const CompaniComponent:React.FC<Props> = ({company}) => {
                 <h2>{company.name}</h2>
             </div>
             {getProjects()}
-            <NewProjectModal companyId={company.id}/>
+            <NewProjectModal companyId={company.id} setDisplay={setDisplayProject}/>
         </div>
     );
 };
