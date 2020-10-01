@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Company} from "../interfaces/Company";
 import ProjectService from "../services/ProjectService";
 import {useHistory} from "react-router-dom";
+import NewProjectModal from "./Modals/NewProjectModal";
 
 interface Props {
     company:Company
@@ -39,6 +40,7 @@ const CompaniComponent:React.FC<Props> = ({company}) => {
         <div className={"company-details"} onClick={event => setDisplayProject(!displayProject)}>
             <div className={"company-name"} >
                 <h2>{company.name}</h2>
+                <NewProjectModal/>
             </div>
             {getProjects()}
         </div>
