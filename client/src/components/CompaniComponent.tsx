@@ -40,9 +40,9 @@ const CompaniComponent:React.FC<Props> = ({company}) => {
         <div className={"company-details"} onClick={event => setDisplayProject(!displayProject)}>
             <div className={"company-name"} >
                 <h2>{company.name}</h2>
-                <NewProjectModal/>
             </div>
             {getProjects()}
+            <NewProjectModal companyId={company.id}/>
         </div>
     );
 };

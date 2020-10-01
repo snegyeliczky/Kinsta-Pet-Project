@@ -37,7 +37,7 @@ export default {
 
     addNewCompany:(name:string,employeeId:number):void =>{
         let newCompany:Company = {
-            id:companyList.length,
+            id:companyList.length+1,
             name:name,
             employees:[employeeId]
         };

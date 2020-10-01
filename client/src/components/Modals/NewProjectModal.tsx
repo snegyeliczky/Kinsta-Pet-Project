@@ -1,11 +1,17 @@
 import React, {useState} from 'react';
-import {Modal, Button} from 'antd';
+import {Modal, Button, Input} from 'antd';
 import "../../assets/ModalStyle.css";
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, ProjectOutlined } from '@ant-design/icons';
+import ProjectService from "../../services/ProjectService";
 
-const NewProjectModal = () => {
+interface Props {
+    companyId:number
+}
+
+const NewProjectModal:React.FC<Props>= ({companyId}) => {
 
     const [visible, setVisible] = useState(false);
+    const[projectName, setProjectName ] = useState("");
 
     const showModal = (event: React.MouseEvent<HTMLElement>) => {
         event.stopPropagation();
@@ -14,7 +20,11 @@ const NewProjectModal = () => {
 
     const handleSave = (e:React.MouseEvent<HTMLElement>) => {
         e.stopPropagation();
-        setVisible(!visible);
+        if (projectName.length>2){
+            ProjectService.saveNewProject(projectName,companyId);
+            setVisible(!visible);
+        }else alert("Project name must be 3 character long!")
+
     };
 
     const handleCancel = (e:React.MouseEvent<HTMLElement>) => {
@@ -22,9 +32,11 @@ const NewProjectModal = () => {
         setVisible(false);
     };
 
+
+
     return (
         <div onClick={event => {event.stopPropagation()}} className={"Modal"} style={{}}>
-            <Button shape={"round"} icon={<PlusOutlined />} type={"primary"}onClick={event => {
+            <Button shape={"round"} icon={<PlusOutlined />} type={"primary"} onClick={event => {
                 showModal(event)
             }}>
                 Add new Project
@@ -36,9 +48,13 @@ const NewProjectModal = () => {
                 onCancel={e => handleCancel(e)}
 
             >
-                <p>Some contents...</p>
-                <p>Some contents...</p>
-                <p>Some contents...</p>
+                <div className={"newProjectForm"}>
+                    <Input placeholder={"Project name"} prefix={<ProjectOutlined />}  type={"string"}
+                           onChange={event => {setProjectName(event.target.value)}}
+                    />
+
+                </div>
+
             </Modal>
         </div>
     )

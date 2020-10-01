@@ -36,13 +36,9 @@ export default {
 
     getProject:(projectId:number):Project=>{
 
-        console.log(projectId)
       let projectInList = projectList.filter((project)=>{
           return project.id===projectId;
       });
-      console.log(projectList.filter((project)=>{
-          return project.id===projectId;
-      }));
       return projectInList[0];
 
     },
@@ -53,6 +49,15 @@ export default {
             return project.companyId===companyId;
         })
 
+    },
+
+    saveNewProject:(name:string,companyId:number):void=>{
+        let newProject:Project = {
+            id:projectList.length+1,
+            companyId:companyId,
+            name:name,
+        };
+        projectList.push(newProject);
     }
 
 };
