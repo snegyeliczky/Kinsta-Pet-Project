@@ -1,13 +1,15 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Button, Input} from "antd";
 import {ShopOutlined, CheckOutlined} from '@ant-design/icons';
 import CompanyService from "../services/CompanyService";
 import {useHistory} from "react-router-dom";
 import "../assets/CreatNewCompanyStyle.css"
+import {ApplicationContext} from "../context/ApplicationContext";
 
 const NewCompany = () => {
 
-    let userId: number = 1;
+    const appContext =  useContext(ApplicationContext);
+    let userId:number = appContext.getUserId();
     const [newCompName, setNewCompName] = useState<string>("");
     const history = useHistory();
 
