@@ -1,0 +1,42 @@
+#new-company-container{
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    grid-auto-rows: minmax(50px,auto);
+}
+
+#new-company-container h1{
+    grid-column: 2/4;
+    justify-self: center;
+    color: white;
+}
+
+#new-company-form{
+    grid-column: 2/4;
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    grid-gap: 10px;
+    margin-top: 10%;
+}
+
+.company-name-input{
+    grid-column: 2/4;
+
+}
+
+#submit{
+    grid-column: 2/4;
+    justify-self: center;
+}
+
+@media screen and (max-width: 600px) {
+    .company-name-input{
+        grid-column: 1/5;
+
+    }
+
+    #new-company-container h1{
+        grid-column: 1/5;
+        justify-self: center;
+        color: white;
+    }
+}

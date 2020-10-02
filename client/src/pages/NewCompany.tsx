@@ -1,12 +1,15 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Button, Input} from "antd";
 import {ShopOutlined, CheckOutlined} from '@ant-design/icons';
 import CompanyService from "../services/CompanyService";
 import {useHistory} from "react-router-dom";
+import "../assets/CreatNewCompanyStyle.css"
+import {ApplicationContext} from "../context/ApplicationContext";
 
 const NewCompany = () => {
 
-    let userId: number = 1;
+    const appContext =  useContext(ApplicationContext);
+    let userId:number = appContext.getUserId();
     const [newCompName, setNewCompName] = useState<string>("");
     const history = useHistory();
 
@@ -25,12 +28,12 @@ const NewCompany = () => {
         <div id={"new-company-container"}>
             <h1> Create new company </h1>
             <div id={"new-company-form"}>
-                <Input placeholder={"Company Name"} prefix={<ShopOutlined/>} type={"string"}
+                <Input className={"company-name-input"} placeholder={"Company Name"} prefix={<ShopOutlined/>} type={"string"}
                        onChange={event => {
                            setNewCompName(event.target.value)
                        }}
                 />
-                <Button className={"submit"} shape={"round"} icon={<CheckOutlined/>} type={"primary"}
+                <Button id={"submit"} shape={"round"} icon={<CheckOutlined/>} type={"primary"}
                         onClick={event => {
                             handleCreatCompany()
                         }}>Create</Button>

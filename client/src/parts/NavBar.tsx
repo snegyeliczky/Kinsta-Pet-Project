@@ -24,7 +24,9 @@ const NavBar = () => {
        textAlign:"center",
        position:"fixed",
        width:"100%",
-       height:"10vh"
+       height:"10vh",
+       backgroundImage: "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 47%, rgba(0,212,255,1) 100%)",
+       color:"#fff"
    };
 
 

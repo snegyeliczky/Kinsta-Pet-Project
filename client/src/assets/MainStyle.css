@@ -4,7 +4,7 @@
     justify-content: center;
     width: 100%;
     grid-template-columns:10% 80% 10%;
-    background-color: #282c34;
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 47%, rgba(0,212,255,1) 100%);
     height: content-box;
     min-height: 100vh;
 }
@@ -22,21 +22,52 @@
 
 .company-details{
     text-align: center;
-    background-color: #61dafb;
-    min-height:100px;
+    background-color: rgba(48, 197, 219,0.5);
+    height:fit-content;
     width: 100%;
     border-radius: 20px;
-    border: 1px solid black;
-
+    color: #fff;
+    box-shadow: 3px 6px 3px 0px rgba(55, 58, 85,0.7);
+    transition-duration: 5s;
+    transition-property: min-height;
 
 }
 
 .companyPage-project{
-    background-color: lightcoral;
+    background-color: rgba(83, 51, 237,0.9);
     width: 80%;
     min-height: 40px;
     margin: 10px auto;
+    border: 1px solid rgb(44, 212, 217);
     border-radius: 20px;
 
+}
+
+.companyPage-project h3{
+   color: #ffffff;
+}
+
+
+.company-name{
+    border:2px solid #ffffff;
+    border-radius: 20px;
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    grid-auto-rows: minmax(50px,auto);
+    box-shadow: 3px 6px 3px 0px rgba(55, 58, 85,0.7);
+}
+
+.company-name h2{
+    grid-column: 2/4;
+    align-self: center;
+    color: white;
 
 }
+
+.modal{
+    align-self:center;
+}
+
+
+
+

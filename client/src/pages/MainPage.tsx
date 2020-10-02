@@ -6,7 +6,7 @@ import "../../src/assets/MainStyle.css"
 const MainPage = () => {
 
     const appContext =  useContext(ApplicationContext);
-    let userId:number = 1;
+    let userId:number = appContext.getUserId();
 
 
 
