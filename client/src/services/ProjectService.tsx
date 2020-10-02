@@ -51,13 +51,14 @@ export default {
 
     },
 
-    saveNewProject:(name:string,companyId:number):void=>{
+    saveNewProject:(name:string,companyId:number):number=>{
         let newProject:Project = {
             id:projectList.length+1,
             companyId:companyId,
             name:name,
         };
         projectList.push(newProject);
+        return newProject.id;
     }
 
 };

@@ -1,6 +1,7 @@
 import React from 'react';
 import {useParams} from "react-router";
 import ProjectService from "../services/ProjectService";
+import "../assets/ProjectStyle.css"
 
 const ProjectPage = () => {
 
@@ -11,7 +12,7 @@ const ProjectPage = () => {
         let project = ProjectService.getProject(parseInt(id));
         if (project)
         return(
-            <div>
+            <div className={"project-title-container"}>
                 <h2>{project.name}</h2>
                 <h3>projectID: {project.id}</h3>
             </div>
@@ -24,7 +25,7 @@ const ProjectPage = () => {
 
 
     return (
-        <div>
+        <div className={"project-container"}>
             {getProjectData()}
         </div>
     );
