@@ -3,6 +3,7 @@ import {Button, Input} from "antd";
 import {ShopOutlined, CheckOutlined} from '@ant-design/icons';
 import CompanyService from "../services/CompanyService";
 import {useHistory} from "react-router-dom";
+import "../assets/CreatNewCompanyStyle.css"
 
 const NewCompany = () => {
 
@@ -25,12 +26,12 @@ const NewCompany = () => {
         <div id={"new-company-container"}>
             <h1> Create new company </h1>
             <div id={"new-company-form"}>
-                <Input placeholder={"Company Name"} prefix={<ShopOutlined/>} type={"string"}
+                <Input className={"company-name-input"} placeholder={"Company Name"} prefix={<ShopOutlined/>} type={"string"}
                        onChange={event => {
                            setNewCompName(event.target.value)
                        }}
                 />
-                <Button className={"submit"} shape={"round"} icon={<CheckOutlined/>} type={"primary"}
+                <Button id={"submit"} shape={"round"} icon={<CheckOutlined/>} type={"primary"}
                         onClick={event => {
                             handleCreatCompany()
                         }}>Create</Button>
