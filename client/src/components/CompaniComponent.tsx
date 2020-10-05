@@ -17,6 +17,7 @@ const CompaniComponent: React.FC<Props> = ({company}) => {
 
     const history = useHistory();
     const [displayProject, setDisplayProject] = useState(false);
+    const [projects,setProjects] = useState(ProjectService.getProjectForCompany(company.id));
 
 
     function toProjectPage(event: React.MouseEvent<HTMLDivElement>, projectId: number) {
@@ -28,7 +29,7 @@ const CompaniComponent: React.FC<Props> = ({company}) => {
 
         if (displayProject) {
             return(
-             ProjectService.getProjectForCompany(company.id).map(project => {
+             projects.map(project => {
                     return (
 
                             <div key={project.id} className={"companyPage-project"} onClick={event => {
@@ -51,7 +52,7 @@ const CompaniComponent: React.FC<Props> = ({company}) => {
             <div className={"company-details"} onClick={event => setDisplayProject(!displayProject)}>
                 <div className={"company-name"}>
                     <h2>{company.name}</h2>
-                    <NewProjectModal companyId={company.id} setDisplay={setDisplayProject}/>
+                    <NewProjectModal companyId={company.id} setDisplay={setDisplayProject} setProjects={setProjects}/>
                 </div>
                 <CSSTransition
                 in={displayProject}

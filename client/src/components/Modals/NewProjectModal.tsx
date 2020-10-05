@@ -4,13 +4,15 @@ import "../../assets/ModalStyle.css";
 import { PlusOutlined, ProjectOutlined } from '@ant-design/icons';
 import ProjectService from "../../services/ProjectService";
 import {useHistory} from "react-router-dom";
+import {Project} from "../../interfaces/Project";
 
 interface Props {
     companyId:number
     setDisplay:Dispatch<SetStateAction<boolean>>
+    setProjects:Dispatch<SetStateAction<Project[]>>
 }
 
-const NewProjectModal:React.FC<Props>= ({companyId,setDisplay}) => {
+const NewProjectModal:React.FC<Props>= ({companyId,setDisplay, setProjects}) => {
 
     const [visible, setVisible] = useState(false);
     const[projectName, setProjectName ] = useState("");
@@ -18,16 +20,22 @@ const NewProjectModal:React.FC<Props>= ({companyId,setDisplay}) => {
 
     const showModal = (event: React.MouseEvent<HTMLElement>) => {
         event.stopPropagation();
-        setDisplay(false);
         setVisible(!visible);
     };
 
     const handleSave = (e:React.MouseEvent<HTMLElement>) => {
         e.stopPropagation();
         if (projectName.length>2){
-            let projectId = ProjectService.saveNewProject(projectName,companyId);
+            let projects = ProjectService.saveNewProject(projectName,companyId);
+            setProjects(projects);
+            let newProjectId = projects.reduce((re, project)=>{
+                if (project.name===projectName){
+                    re=project.id
+                }
+                return re;
+            },0);
             setVisible(!visible);
-            history.push("/project/"+projectId);
+            history.push("/project/"+newProjectId);
         }else alert("Project name must be 3 character long!")
 
     };

@@ -51,14 +51,16 @@ export default {
 
     },
 
-    saveNewProject:(name:string,companyId:number):number=>{
+    saveNewProject:(name:string,companyId:number):Project[]=>{
         let newProject:Project = {
             id:projectList.length+1,
             companyId:companyId,
             name:name,
         };
         projectList.push(newProject);
-        return newProject.id;
+        return projectList.filter((project)=>{
+            return project.companyId===companyId;
+        }) ;
     }
 
 };
