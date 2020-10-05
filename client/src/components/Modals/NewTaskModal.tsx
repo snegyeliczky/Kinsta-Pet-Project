@@ -1,16 +1,17 @@
 import React, {Dispatch, SetStateAction, useState} from 'react';
-import {Modal, Button, Input} from 'antd';
+import {Button, Input, Modal} from 'antd';
 import "../../assets/ModalStyle.css";
-import { PlusOutlined, ProjectOutlined } from '@ant-design/icons';
+import {PlusOutlined, ProjectOutlined} from '@ant-design/icons';
 import {useHistory} from "react-router-dom";
-import TextArea from "antd/es/input/TextArea";
+import {Task} from "../../interfaces/Task";
+import TaskService from "../../services/TaskService";
 
 interface Props {
-    projectId:number
-
+    projectId:number,
+    setTasks:Dispatch<SetStateAction<Task[]>>
 }
 
-const NewTaskModal:React.FC<Props>= ({projectId}) => {
+const NewTaskModal:React.FC<Props>= ({projectId,setTasks}) => {
 
     const [visible, setVisible] = useState(false);
     const[UserStory, setUserStory ] = useState("");
@@ -25,9 +26,24 @@ const NewTaskModal:React.FC<Props>= ({projectId}) => {
         setVisible(!visible);
     };
 
+    const createTask = ():Task =>{
+        return {
+            id: 0,
+            projectId: projectId,
+            userStory: UserStory,
+            businessValue: BusinessValue,
+            ownerId: OwnerId,
+            estimation: Estimation,
+            status: false
+        };
+    };
+
     const handleSave = (e:React.MouseEvent<HTMLElement>) => {
         e.stopPropagation();
         if (UserStory.length>2){
+            let newTask = createTask();
+            let tasks = TaskService.saveNewTask(newTask);
+            setTasks(tasks);
             setVisible(!visible);
         }else alert("Project name must be 3 character long!")
 
@@ -48,7 +64,7 @@ const NewTaskModal:React.FC<Props>= ({projectId}) => {
                 Add new Task
             </Button>
             <Modal
-                title="Create new project"
+                title="Create new Task"
                 visible={visible}
                 onOk={e => {handleSave(e)}}
                 onCancel={e => handleCancel(e)}

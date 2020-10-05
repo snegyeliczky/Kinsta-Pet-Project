@@ -23,6 +23,7 @@ const NavBar = () => {
    const menuStyle:Object = {
        textAlign:"center",
        position:"fixed",
+       zIndex: 100,
        width:"100%",
        height:"10vh",
        backgroundImage: "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 47%, rgba(0,212,255,1) 100%)",

@@ -52,5 +52,14 @@ export default {
        return taskList.filter(task =>{
             return task.projectId===projectID;
         })
+    },
+
+    saveNewTask:(newTask:Task):Task[] =>{
+        newTask.id=taskList.length+1;
+        console.log(newTask);
+        taskList.push(newTask);
+        return taskList.filter(task =>{
+            return task.projectId===newTask.projectId;
+        })
     }
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useParams} from "react-router";
 import ProjectService from "../services/ProjectService";
 import "../assets/ProjectStyle.css"
@@ -9,7 +9,7 @@ import NewTaskModal from "../components/Modals/NewTaskModal";
 const ProjectPage = () => {
 
     const {id} = useParams();
-
+    const[tasks,setTasks] = useState(TaskService.getTasksByProjectId(parseInt(id)));
 
     const getProjectData =()=>{
         let project = ProjectService.getProject(parseInt(id));
@@ -26,9 +26,7 @@ const ProjectPage = () => {
     };
 
     const getTasks = () =>{
-        let tasksByProjectId = TaskService.getTasksByProjectId(parseInt(id));
-        console.log(tasksByProjectId);
-       return  tasksByProjectId.map(task=>{
+       return  tasks.map(task=>{
             return(
                 <TaskComponent key={task.id} task={task}/>
             )
@@ -44,7 +42,7 @@ const ProjectPage = () => {
         </div>
 
             <div className={"task-container"}>
-                <NewTaskModal projectId={parseInt(id)}/>
+                <NewTaskModal projectId={parseInt(id)} setTasks={setTasks}/>
                 <div id={"task-names"} className={"task-component"}>
                     <div className={"task-id task-part"}>Task ID</div>
                     <div className={"task-userStory task-part"}>User Story</div>
