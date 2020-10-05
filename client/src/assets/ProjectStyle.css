@@ -25,3 +25,34 @@
     color: white;
 }
 
+.task-container{
+    width: 90%;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.task-component{
+    display: grid;
+    grid-template-columns: repeat(6,1fr);
+    grid-auto-rows: minmax(100px,auto);
+}
+
+.task-userStory{
+    grid-column: 2/4;
+}
+
+.task-part{
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid white;
+    text-align: center;
+    padding: 8px;
+}
+
+.task-estimation{
+    color: black;
+    font-weight: bold;
+}
+

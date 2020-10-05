@@ -26,7 +26,7 @@ taskList.push(task2);
 
 let task3:Task ={
     id:taskList.length+1,
-    projectId:1,
+    projectId:2,
     userStory:"As a user I want to transfer money to my friends",
     businessValue:500,
     estimation:8,
@@ -37,7 +37,7 @@ taskList.push(task3);
 
 let task4:Task ={
     id:taskList.length+1,
-    projectId:2,
+    projectId:1,
     userStory:"As a user I want to transfer money to my friends",
     businessValue:500,
     estimation:8,
@@ -48,4 +48,9 @@ taskList.push(task4);
 
 export default {
 
+    getTasksByProjectId:(projectID:number):Task[]=>{
+       return taskList.filter(task =>{
+            return task.projectId===projectID;
+        })
+    }
 }
