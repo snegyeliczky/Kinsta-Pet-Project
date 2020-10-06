@@ -5,7 +5,7 @@ import "../assets/ProjectStyle.css"
 import TaskService from "../services/TaskService";
 import TaskComponent from "../components/TaskComponent";
 import NewTaskModal from "../components/Modals/NewTaskModal";
-import {H1} from "../assets/styledComponents/styledComponents";
+
 
 const ProjectPage = () => {
 
