@@ -2,7 +2,6 @@ import React, {Dispatch, SetStateAction, useState} from 'react';
 import {Button, Input, Modal} from 'antd';
 import "../../assets/ModalStyle.css";
 import {PlusOutlined, ProjectOutlined} from '@ant-design/icons';
-import {useHistory} from "react-router-dom";
 import {Task} from "../../interfaces/Task";
 import TaskService from "../../services/TaskService";
 
@@ -19,7 +18,6 @@ const NewTaskModal:React.FC<Props>= ({projectId,setTasks}) => {
     const[OwnerId, setOwnerId ] = useState<number|null>(null);
     const[Estimation, setEstimation] = useState(0);
 
-    const history= useHistory();
 
     const showModal = (event: React.MouseEvent<HTMLElement>) => {
         event.stopPropagation();

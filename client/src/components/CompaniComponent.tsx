@@ -3,8 +3,6 @@ import {Company} from "../interfaces/Company";
 import ProjectService from "../services/ProjectService";
 import {useHistory} from "react-router-dom";
 import NewProjectModal from "./Modals/NewProjectModal";
-import { Menu, Dropdown } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
 import {CSSTransition} from "react-transition-group";
 
 

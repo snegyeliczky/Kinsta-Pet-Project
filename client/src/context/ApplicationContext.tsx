@@ -28,7 +28,6 @@ export const ApplicationProvider = (props:any) => {
 
     const fetchCompanies = (employeeId:number):Company[]=>{
         let companies = CompanyService.getMyCompanies(employeeId);
-        console.log(companies);
         return companies;
     };
 
