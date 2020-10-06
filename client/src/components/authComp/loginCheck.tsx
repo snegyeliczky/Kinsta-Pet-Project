@@ -7,7 +7,7 @@ import { useHistory } from "react-router-dom";
 export function AuthCheck<T>(OriginalComponent: ComponentType<T>, isPrivate: boolean, ) {
     const history=useHistory();
     const user = localStorage.getItem("username");
-    console.log("history",history)
+    console.log("history",history);
 
 
     if (isPrivate && user === null) {

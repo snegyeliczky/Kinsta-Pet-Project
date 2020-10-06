@@ -3,6 +3,7 @@ import {ApplicationContext} from "../context/ApplicationContext";
 import CompaniComponent from "../components/CompaniComponent";
 import "../../src/assets/MainStyle.css"
 import "../assets/ProjectAnimation.css"
+import {H1} from "../assets/styledComponents/styledComponents";
 
 const MainPage = () => {
 

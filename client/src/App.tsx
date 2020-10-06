@@ -7,6 +7,7 @@ import {ApplicationProvider} from "./context/ApplicationContext";
 import {addHeaderAndFooter} from "./components/addHeaderAndFooter";
 import ProjectPage from "./pages/ProjectPage";
 import NewCompany from "./pages/NewCompany";
+import {AuthCheck} from "./components/authComp/loginCheck";
 
 
 function App() {
