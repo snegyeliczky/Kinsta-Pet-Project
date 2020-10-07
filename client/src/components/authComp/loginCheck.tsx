@@ -1,22 +1,23 @@
 import React, {ComponentType} from 'react';
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 
 
+export function AuthCheck<T>(OriginalComponent: ComponentType<T>, isPrivate: boolean, history:any) {
+
+    return (props: T) => {
 
 
-export function AuthCheck<T>(OriginalComponent: ComponentType<T>, isPrivate: boolean, ) {
-    const history=useHistory();
-    const user = localStorage.getItem("username");
-    console.log("history",history);
+        const user = localStorage.getItem("username");
+        console.log("history", history);
 
 
-    if (isPrivate && user === null) {
-        history.push("/auth");
+        if (isPrivate && user === null) {
+            history.push("/auth");
+        }
+
+        return (<OriginalComponent {...props} />)
     }
-
-    return(props:T) =>(<OriginalComponent {...props} />)
 }
-
 
 
 /*

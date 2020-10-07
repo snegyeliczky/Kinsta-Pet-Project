@@ -14,7 +14,7 @@ interface applicationContextProps{
     getUserId: ()=>number;
 }
 
-export const ApplicationContext = createContext({} as applicationContextProps);
+export const ApplicationContext = createContext({username:""} as applicationContextProps);
 
 
 export const ApplicationProvider = (props:any) => {

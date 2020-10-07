@@ -23,7 +23,12 @@ export const CustomButton = styled("button")<CustomButtonProps>(
     props=>({
         color:props.primary?"white":"red",
         borderRadius:props.primary?"20px":"0",
-        backgroundColor:props.primary?"#7629ce":"29ce3c"
+        backgroundColor:props.primary?"#7629ce":"29ce3c",
+        ":hover":{
+            color:"red",
+        }
     })
+
+
 );
 

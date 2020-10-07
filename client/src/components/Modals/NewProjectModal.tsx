@@ -8,7 +8,7 @@ import {Project} from "../../interfaces/Project";
 
 interface Props {
     companyId: number
-    setDisplay: Dispatch<SetStateAction<boolean>>
+    setDisplay?: Dispatch<SetStateAction<boolean>>
     setProjects: Dispatch<SetStateAction<Project[]>>
 }
 
