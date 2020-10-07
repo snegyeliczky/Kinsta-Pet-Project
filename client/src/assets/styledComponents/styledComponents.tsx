@@ -28,7 +28,19 @@ export const CustomButton = styled("button")<CustomButtonProps>(
             color:"red",
         }
     })
-
-
 );
 
+export const  CompanyPageProject = styled("div")(
+    {
+        backgroundColor: "rgba(83, 51, 237, 0.9)",
+        width: "80%",
+        minHeight: "40px",
+        margin: "10px auto",
+        border: "1px solid rgb(44, 212, 217)",
+        borderRadius: "20px",
+        boxShadow: "7px -6px 5px 1px rgba(55, 58, 85, 0.7)",
+       "> h3":{
+            color: "white"
+        }
+    },
+);

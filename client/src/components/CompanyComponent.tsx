@@ -3,6 +3,7 @@ import {Company} from "../interfaces/Company";
 import ProjectService from "../services/ProjectService";
 import {useHistory} from "react-router-dom";
 import NewProjectModal from "./Modals/NewProjectModal";
+import {CompanyPageProject} from "../assets/styledComponents/styledComponents";
 
 
 interface Props {
@@ -10,7 +11,7 @@ interface Props {
 }
 
 
-const CompaniComponent: React.FC<Props> = ({company}) => {
+const CompanyComponent: React.FC<Props> = ({company}) => {
 
     const history = useHistory();
     const [projects, setProjects] = useState(ProjectService.getProjectForCompany(company.id));
@@ -25,12 +26,12 @@ const CompaniComponent: React.FC<Props> = ({company}) => {
         return (
             projects.map(project => {
                     return (
-                        <div key={project.id} className={"companyPage-project"} onClick={event => {
+                        <CompanyPageProject key={project.id} onClick={event => {
                             toProjectPage(event, project.id)
                         }}>
                             <h3>{project.name}</h3>
 
-                        </div>
+                        </CompanyPageProject>
                     )
                 }
             )
@@ -47,4 +48,4 @@ const CompaniComponent: React.FC<Props> = ({company}) => {
     );
 };
 
-export default CompaniComponent;
+export default CompanyComponent;

@@ -41,21 +41,6 @@
 }
 
 
-.companyPage-project {
-    background-color: rgba(83, 51, 237, 0.9);
-    width: 80%;
-    min-height: 40px;
-    margin: 10px auto;
-    border: 1px solid rgb(44, 212, 217);
-    border-radius: 20px;
-    box-shadow: 7px -6px 5px 1px rgba(55, 58, 85, 0.7);
-}
-
-
-.companyPage-project h3 {
-    color: #ffffff;
-}
-
 
 
 

@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {ApplicationContext} from "../context/ApplicationContext";
-import CompaniComponent from "../components/CompaniComponent";
+import CompanyComponent from "../components/CompanyComponent";
 import "../../src/assets/MainStyle.css"
 import "../assets/ProjectAnimation.css"
 import {Collapse} from 'antd';
@@ -30,7 +30,7 @@ const MainPage = () => {
                 appContext.companies.map(company => {
                     return (
                         <Panel key={company.id} header={company.name} >
-                            <CompaniComponent company={company}/>
+                            <CompanyComponent company={company}/>
                         </Panel>
                     )
                 })
