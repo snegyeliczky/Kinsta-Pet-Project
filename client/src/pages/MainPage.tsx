@@ -1,31 +1,42 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useState} from 'react';
 import {ApplicationContext} from "../context/ApplicationContext";
-import CompaniComponent from "../components/CompaniComponent";
+import CompanyComponent from "../components/CompanyComponent";
 import "../../src/assets/MainStyle.css"
-import "../assets/ProjectAnimation.css"
+import {Collapse} from 'antd';
+import CompanyService from "../services/CompanyService";
+import CompanyHeader from "../components/CompanyHeader";
+
 
 const MainPage = () => {
 
-    const appContext =  useContext(ApplicationContext);
-    let userId:number = appContext.getUserId();
+    const appContext = useContext(ApplicationContext);
+    let userId: number = appContext.getUserId();
+    const [open,setOpen] = useState<string[]|string>();
+    const companies = CompanyService.getMyCompanies(userId);
 
+    function callback(key: string | string[]) {
+        setOpen(key)
+    }
 
-
-    useEffect(()=>{
-        appContext.getCompanies(userId);
-    },[userId]);
+    const {Panel} = Collapse;
 
 
     return (
-        <div id={"company-container"}>
+        <div className={"company-container"}>
+        <Collapse defaultActiveKey={open} onChange={callback} >
             {
-                appContext.companies.map(company=>{
-                    return <CompaniComponent key={company.id} company={company}/>
+                companies.map(company => {
+                    return (
+                        <Panel key={company.id} header={<CompanyHeader key={company.id} company={company}/>} showArrow={false}>
+                            <CompanyComponent company={company}/>
+                        </Panel>
+                    )
                 })
             }
-
+        </Collapse>
         </div>
     );
+
 };
 
 export default MainPage;

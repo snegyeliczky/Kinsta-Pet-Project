@@ -1,14 +1,14 @@
 import React, {Dispatch, SetStateAction, useState} from 'react';
 import {Modal, Button, Input} from 'antd';
-import "../../assets/ModalStyle.css";
 import {PlusOutlined, ProjectOutlined} from '@ant-design/icons';
 import ProjectService from "../../services/ProjectService";
 import {useHistory} from "react-router-dom";
 import {Project} from "../../interfaces/Project";
+import {ModalContainer} from "../../assets/styledComponents/styledComponents";
 
 interface Props {
     companyId: number
-    setDisplay: Dispatch<SetStateAction<boolean>>
+    setDisplay?: Dispatch<SetStateAction<boolean>>
     setProjects: Dispatch<SetStateAction<Project[]>>
 }
 
@@ -54,9 +54,9 @@ const NewProjectModal: React.FC<Props> = ({companyId, setDisplay, setProjects}) 
 
 
     return (
-        <div onClick={event => {
+        <ModalContainer onClick={event => {
             event.stopPropagation()
-        }} className={"modal"} style={{}}>
+        }} style={{}}>
             <Button shape={"round"} icon={<PlusOutlined/>} type={"primary"} onClick={event => {
                 showModal(event)
             }}>
@@ -79,7 +79,7 @@ const NewProjectModal: React.FC<Props> = ({companyId, setDisplay, setProjects}) 
                 </div>
 
             </Modal>
-        </div>
+        </ModalContainer>
     )
 };
 
