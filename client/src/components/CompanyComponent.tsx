@@ -29,7 +29,7 @@ const CompanyComponent: React.FC<Props> = ({company}) => {
                         <CompanyPageProject key={project.id} onClick={event => {
                             toProjectPage(event, project.id)
                         }}>
-                            <h3>{project.name}</h3>
+                            <div>{project.name}</div>
 
                         </CompanyPageProject>
                     )

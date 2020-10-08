@@ -1,13 +1,16 @@
 import styled from '@emotion/styled'
 
+
 type H1Props = {
     color: string
     size: number
-}
+};
+
 
 type CustomButtonProps = {
     primary?:boolean
-}
+};
+
 
 export const H1 = styled('h1')<H1Props>(
     {
@@ -18,6 +21,7 @@ export const H1 = styled('h1')<H1Props>(
         color:props.color
     })
 );
+
 
 export const CustomButton = styled("button")<CustomButtonProps>(
     props=>({
@@ -30,27 +34,6 @@ export const CustomButton = styled("button")<CustomButtonProps>(
     })
 );
 
-export const  CompanyPageProject = styled("div")(
-    {
-        backgroundColor: "rgba(83, 51, 237, 0.9)",
-        width: "80%",
-        minHeight: "40px",
-        margin: "10px auto",
-        border: "1px solid rgb(44, 212, 217)",
-        borderRadius: "20px",
-        boxShadow: "7px -6px 5px 1px rgba(55, 58, 85, 0.7)",
-        cursor:"pointer",
-        transition:"all .3s ease-in-out",
-        ":hover":{
-            backgroundColor: "#3e8e41",
-            transform:"scale(1.03)"
-        },
-       "> h3":{
-            color: "white",
-           alignSelf:"center"
-        }
-    },
-);
 
 export const NewCompanyContainer = styled("div")(
     {
@@ -81,10 +64,72 @@ export const NewCompanyContainer = styled("div")(
 
 );
 
+
+export const  CompanyPageProject = styled("div")(
+    {
+        backgroundColor: "rgba(83, 51, 237, 0.9)",
+        width: "80%",
+        minHeight: "40px",
+        margin: "10px auto",
+        border: "1px solid rgb(44, 212, 217)",
+        borderRadius: "20px",
+        boxShadow: "7px -6px 5px 1px rgba(55, 58, 85, 0.7)",
+        cursor:"pointer",
+        transition:"all .3s ease-in-out",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        ":hover":{
+            backgroundColor: "#3e8e41",
+            transform:"scale(1.03)"
+        },
+       "> div":{
+            color: "white"
+        }
+    },
+);
+
+
 export const ModalContainer =styled("div")(
     {
         width: "fit-content",
         margin: "0 auto"
     }
+);
+
+
+type StyledCompanyHeaderProps = {
+    rotate:boolean
+};
+
+export const StyledCompanyHeader = styled("div")<StyledCompanyHeaderProps>(
+    {
+        color: "white",
+        fontWeight: "bold",
+        display: "grid",
+        gridTemplateColumns: "repeat(4,1fr)",
+        alignItems: "center",
+        backgroundColor: "rgba(48, 197, 219, 0.5)",
+        width: "90%",
+        margin:"0 auto",
+        minHeight:"40px",
+        borderRadius: "20px",
+        boxShadow:" 3px 6px 3px 0px rgba(55, 58, 85, 0.7)",
+        "> .arrow":{
+            transition:"all .3s ease-in-out",
+            justifySelf:"center"
+
+        },
+        "> div":{
+            gridColumn:"2/4",
+            justifySelf:"center"
+        }
+    },
+    props => ({
+        "> .arrow":{
+            transform:props.rotate?"rotate(90deg)":""
+        }
+    })
+
 );
 

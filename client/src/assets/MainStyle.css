@@ -1,40 +1,13 @@
 
-.company-container {
-    margin: 10px auto;
-    padding-top: 5px;
-    width: 90%;
-    display: grid;
-    grid-gap: 20px;
-    grid-template-columns: repeat(1, 1fr);
-
-    text-align: center;
-    background-color: transparent;
+.ant-collapse{
+    background: transparent;
     border: none;
 }
-
-
-.ant-collapse > .ant-collapse-item:last-child > .ant-collapse-header {
-    border-radius: 20px;
-}
-
-
-.ant-collapse > .ant-collapse-item > .ant-collapse-header {
-    color: white;
-    font-weight: bold;
-    text-align: center;
-    background-color: rgba(48, 197, 219, 0.5);
-    height: fit-content;
-    width: 100%;
-    border-radius: 20px;
-    box-shadow: 3px 6px 3px 0px rgba(55, 58, 85, 0.7);
-}
-
 
 .ant-collapse-content {
     background-color: transparent;
     border: none;
 }
-
 
 .ant-collapse > .ant-collapse-item {
     border-bottom: none;

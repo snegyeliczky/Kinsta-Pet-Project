@@ -3,44 +3,53 @@ import {useParams} from "react-router";
 import ProjectService from "../services/ProjectService";
 import "../assets/ProjectStyle.css"
 import TaskService from "../services/TaskService";
-import TaskComponent from "../components/TaskComponent";
 import NewTaskModal from "../components/Modals/NewTaskModal";
+import {Collapse} from "antd";
+import CollapsePanel from "antd/es/collapse/CollapsePanel";
+import TaskComponent from "../components/TaskComponent";
 
 
 const ProjectPage = () => {
 
-    const {id} = useParams();
-    const[tasks,setTasks] = useState(TaskService.getTasksByProjectId(parseInt(id)));
 
-    const getProjectData =()=>{
+    const {id} = useParams();
+    const [tasks, setTasks] = useState(TaskService.getTasksByProjectId(parseInt(id)));
+
+
+    const getProjectData = () => {
         let project = ProjectService.getProject(parseInt(id));
         if (project)
-        return(
-            <div className={"project-title-container"}>
-                <h2>{project.name}</h2>
-                <h3>projectID: {project.id}</h3>
-            </div>
-        );
-        else return(
+            return (
+                <div className={"project-title-container"}>
+                    <h2>{project.name}</h2>
+                    <h3>projectID: {project.id}</h3>
+                </div>
+            );
+        else return (
             <h2>No project found wit this id </h2>
         )
     };
 
-    const getTasks = () =>{
-       return  tasks.map(task=>{
-            return(
-                <TaskComponent key={task.id} task={task}/>
-            )
-        })
-    };
 
+    const getTasks = () => {
+        return (<Collapse>{tasks.map(task => {
+            return (
+                <CollapsePanel key={task.id} header={ <TaskComponent task={task}/>}>
+                    <div>Issue</div>
+                    <div>Issue</div>
+                    <div>Issue</div>
+                </CollapsePanel>
+            )
+        })}
+        </Collapse>)
+    };
 
 
     return (
         <div>
-        <div className={"project-container"}>
-            {getProjectData()}
-        </div>
+            <div className={"project-container"}>
+                {getProjectData()}
+            </div>
 
             <div className={"task-container"}>
                 <NewTaskModal projectId={parseInt(id)} setTasks={setTasks}/>
@@ -53,7 +62,7 @@ const ProjectPage = () => {
                 </div>
                 {getTasks()}
             </div>
-       </div>
+        </div>
     );
 };
 

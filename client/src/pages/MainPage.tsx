@@ -2,9 +2,9 @@ import React, {useContext, useState} from 'react';
 import {ApplicationContext} from "../context/ApplicationContext";
 import CompanyComponent from "../components/CompanyComponent";
 import "../../src/assets/MainStyle.css"
-import "../assets/ProjectAnimation.css"
 import {Collapse} from 'antd';
 import CompanyService from "../services/CompanyService";
+import CompanyHeader from "../components/CompanyHeader";
 
 
 const MainPage = () => {
@@ -22,17 +22,19 @@ const MainPage = () => {
 
 
     return (
-        <Collapse defaultActiveKey={open} onChange={callback} className={"company-container"}>
+        <div className={"company-container"}>
+        <Collapse defaultActiveKey={open} onChange={callback} >
             {
                 companies.map(company => {
                     return (
-                        <Panel key={company.id} header={company.name} >
+                        <Panel key={company.id} header={<CompanyHeader key={company.id} company={company}/>} showArrow={false}>
                             <CompanyComponent company={company}/>
                         </Panel>
                     )
                 })
             }
         </Collapse>
+        </div>
     );
 
 };
