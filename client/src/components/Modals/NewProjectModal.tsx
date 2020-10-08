@@ -1,6 +1,5 @@
 import React, {Dispatch, SetStateAction, useState} from 'react';
 import {Modal, Button, Input} from 'antd';
-import "../../assets/ModalStyle.css";
 import {PlusOutlined, ProjectOutlined} from '@ant-design/icons';
 import ProjectService from "../../services/ProjectService";
 import {useHistory} from "react-router-dom";

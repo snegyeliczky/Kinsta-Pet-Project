@@ -43,7 +43,7 @@ export const  CompanyPageProject = styled("div")(
         transition:"all .3s ease-in-out",
         ":hover":{
             backgroundColor: "#3e8e41",
-            transform:"scale(1.05)"
+            transform:"scale(1.03)"
         },
        "> h3":{
             color: "white",

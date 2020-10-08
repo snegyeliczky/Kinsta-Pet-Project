@@ -1,6 +1,5 @@
 import React, {Dispatch, SetStateAction, useState} from 'react';
 import {Button, Input, Modal} from 'antd';
-import "../../assets/ModalStyle.css";
 import {PlusOutlined, ProjectOutlined} from '@ant-design/icons';
 import {Task} from "../../interfaces/Task";
 import TaskService from "../../services/TaskService";
