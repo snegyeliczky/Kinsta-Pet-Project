@@ -1,10 +1,11 @@
 import React, {Dispatch, SetStateAction, useState} from 'react';
-import {Input, Modal} from 'antd';
+import {Button, Input, Modal} from 'antd';
 import "../../assets/ModalStyle.css";
 import {PlusOutlined, ProjectOutlined} from '@ant-design/icons';
 import {Task} from "../../interfaces/Task";
 import TaskService from "../../services/TaskService";
-import {CustomButton} from "../../assets/styledComponents/styledComponents";
+import {ModalContainer} from "../../assets/styledComponents/styledComponents";
+
 
 interface Props {
     projectId:number,
@@ -63,12 +64,12 @@ const NewTaskModal:React.FC<Props>= ({projectId,setTasks}) => {
 
 
     return (
-        <div onClick={event => {event.stopPropagation()}} className={"modal"} style={{}}>
-            <CustomButton primary onClick={event => {
+        <ModalContainer onClick={event => {event.stopPropagation()}} style={{}}>
+            <Button shape={"round"} type={"primary"} onClick={event => {
                 showModal(event)
             }}>
                 <PlusOutlined /> Add new task
-            </CustomButton>
+            </Button>
             <Modal
                 title="Create new Task"
                 visible={visible}
@@ -92,7 +93,7 @@ const NewTaskModal:React.FC<Props>= ({projectId,setTasks}) => {
                 </div>
 
             </Modal>
-        </div>
+        </ModalContainer>
     )
 };
 

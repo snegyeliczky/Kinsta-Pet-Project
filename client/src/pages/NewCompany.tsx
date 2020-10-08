@@ -5,6 +5,7 @@ import CompanyService from "../services/CompanyService";
 import {useHistory} from "react-router-dom";
 import "../assets/CreatNewCompanyStyle.css"
 import {ApplicationContext} from "../context/ApplicationContext";
+import {NewCompanyContainer}from "../assets/styledComponents/styledComponents"
 
 const NewCompany = () => {
 
@@ -25,7 +26,7 @@ const NewCompany = () => {
 
 
     return (
-        <div id={"new-company-container"}>
+        <NewCompanyContainer>
             <h1> Create new company </h1>
             <div id={"new-company-form"}>
                 <Input className={"company-name-input"} placeholder={"Company Name"} prefix={<ShopOutlined/>} type={"string"}
@@ -38,7 +39,7 @@ const NewCompany = () => {
                             handleCreatCompany()
                         }}>Create</Button>
             </div>
-        </div>
+        </NewCompanyContainer>
     );
 };
 

@@ -39,8 +39,52 @@ export const  CompanyPageProject = styled("div")(
         border: "1px solid rgb(44, 212, 217)",
         borderRadius: "20px",
         boxShadow: "7px -6px 5px 1px rgba(55, 58, 85, 0.7)",
+        cursor:"pointer",
+        transition:"all .3s ease-in-out",
+        ":hover":{
+            backgroundColor: "#3e8e41",
+            transform:"scale(1.05)"
+        },
        "> h3":{
-            color: "white"
+            color: "white",
+           alignSelf:"center"
         }
     },
 );
+
+export const NewCompanyContainer = styled("div")(
+    {
+        display: "grid",
+        gridTemplateColumns: "repeat(4,1fr)",
+        gridAutoRows: "minmax(50px,auto)",
+        "> h1":{
+            gridColumn: "2/4",
+            justifySelf: "center",
+            color: "white"
+        },
+        "> #new-company-form":{
+            gridColumn: "2/4",
+            display: "grid",
+            gridTemplateColumns: "repeat(4,1fr)",
+            gridGap: "10px",
+            marginTop: "10%"
+        },
+        "> #new-company-form > .company-name-input":{
+            gridColumn: "2/4",
+
+        },
+        "> #new-company-form > #submit":{
+            gridColumn:" 2/4",
+            justifySelf: "center"
+        }
+    }
+
+);
+
+export const ModalContainer =styled("div")(
+    {
+        width: "fit-content",
+        margin: "0 auto"
+    }
+);
+
