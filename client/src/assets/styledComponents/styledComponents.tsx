@@ -132,25 +132,24 @@ export const StyledCompanyHeader = styled("div")<StyledCompanyHeaderProps>(
 );
 
 
-export const TaskStyleComponent = styled("div")(
+export const UserStoryStyleComponent = styled("div")(
     {
         display: "grid",
         gridTemplateColumns: "repeat(6,1fr)",
         gridAutoRows: "minmax(100px,auto)",
         borderBottom: "1px solid white",
-        "> .task-part": {
+        "> .UserStory-part": {
             color: "white",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            borderBottom: "1px solid white",
             textAlign: "center",
             padding: "8px"
         },
-       "> .task-userStory":{
+        "> .userStory-userStory": {
             gridColumn: "2/4",
         },
-        "> .task-estimation":{
+        "> .userStory-estimation": {
             color: "black",
             fontWeight: "bold"
         }
@@ -167,17 +166,44 @@ export const ProjectTitleContainer = styled("div")(
         display: "grid",
         gridTemplateColumns: "repeat(3,1fr)",
         gridAutoRows: "minmax(10px,auto)",
-        "> h2":{
+        "> h2": {
             gridColumn: "1/3",
             color: "white"
         },
-        "> h3":{
+        "> h3": {
             gridRow: "2/3",
             gridColumn: "3/4",
             justifySelf: "end",
             alignSelf: "center",
             color: "white"
         }
+    }
+);
+
+export const TaskStyledComponent = styled("div")(
+    {
+        display: "grid",
+        gridGap: "10px",
+        width:"85%",
+        margin:"0 auto",
+        gridTemplateColumns: "10% 30% 50% 10%",
+        gridAutoRows: "minmax(100px,auto)",
+        borderBottom: "1px solid green",
+        color: "white",
+        "> div": {
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+            padding: "8px"
+        },
+        "@media screen and (max-width: 600px)" :{
+            gridTemplateColumns: "repeat(1,1fr)",
+            gridAutoRows:"minmax(10px,auto)",
+            gridGap: "0px",
+        }
+
+
     }
 );
 

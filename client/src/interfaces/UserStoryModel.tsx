@@ -1,4 +1,4 @@
-export interface Task {
+export interface UserStoryModel {
     id:number,
     projectId:number,
     userStory:string,
