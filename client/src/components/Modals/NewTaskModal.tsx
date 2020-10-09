@@ -1,99 +1,91 @@
 import React, {Dispatch, SetStateAction, useState} from 'react';
-import {Button, Input, Modal} from 'antd';
-import {PlusOutlined, ProjectOutlined} from '@ant-design/icons';
-import {Task} from "../../interfaces/Task";
-import TaskService from "../../services/TaskService";
+import {Button, Input, Modal} from "antd";
 import {ModalContainer} from "../../assets/styledComponents/styledComponents";
+import {PlusOutlined, ProjectOutlined} from '@ant-design/icons';
+import {TaskModel} from "../../interfaces/TaskModel";
+import TaskService from "../../services/TaskService";
 
-
-interface Props {
-    projectId:number,
-    setTasks:Dispatch<SetStateAction<Task[]>>
+type Props = {
+    UserStoryId:number
+    setTasks:Dispatch<SetStateAction<TaskModel[]>>
 }
 
-const NewTaskModal:React.FC<Props>= ({projectId,setTasks}) => {
+const NewTaskModal:React.FC<Props> = ({UserStoryId,setTasks}) => {
 
     const [visible, setVisible] = useState(false);
-    const[UserStory, setUserStory ] = useState("");
-    const[BusinessValue, setBusinessValue ] = useState(0);
+    const[taskTitle, setTaskTitle ] = useState("");
+    const[taskDescription, setTaskDescription ] = useState("");
     const[OwnerId, setOwnerId ] = useState<number|null>(null);
-    const[Estimation, setEstimation] = useState(0);
+    const[Priority, setPriority] = useState(0);
 
 
-    const showModal = (event: React.MouseEvent<HTMLElement>) => {
-        event.stopPropagation();
-        setVisible(!visible);
-    };
+    function showModal(event: React.MouseEvent<HTMLElement>) {
+        setVisible(true)
+    }
 
-    const createTask = ():Task =>{
-        return {
-            id: 0,
-            projectId: projectId,
-            userStory: UserStory,
-            businessValue: BusinessValue,
-            ownerId: OwnerId,
-            estimation: Estimation,
-            status: false
-        };
-    };
+    function creatNewTask():TaskModel {
+            return {
+                id: "",
+                userStoryId: UserStoryId,
+                title: taskTitle,
+                description: taskDescription,
+                ownerId: OwnerId,
+                priority: Priority
+            }
+    }
 
-    const handleSave = (e:React.MouseEvent<HTMLElement>) => {
-        e.stopPropagation();
-        if (UserStory.length>2){
-            let newTask = createTask();
-            let tasks = TaskService.saveNewTask(newTask);
-            setTasks(tasks);
-            setVisible(!visible);
-        }else alert("Project name must be 3 character long!")
 
-    };
 
-    const handleCancel = (e:React.MouseEvent<HTMLElement>) => {
-        e.stopPropagation();
-        setVisible(false);
-    };
+    function handleCancel(e: React.MouseEvent<HTMLElement>) {
+        setVisible(false)
+    }
 
-    /*
-     <Button shape={"round"} icon={<PlusOutlined />} type={"primary"} onClick={event => {
-                showModal(event)
-            }}>
-                Add new task
-            </Button>
-     */
-
+    function handleSave(e: React.MouseEvent<HTMLElement>) {
+        let newTask = creatNewTask();
+        let tasks = TaskService.saveNewTask(newTask);
+        setTasks(tasks)
+    }
 
     return (
-        <ModalContainer onClick={event => {event.stopPropagation()}} style={{}}>
-            <Button shape={"round"} type={"primary"} onClick={event => {
-                showModal(event)
-            }}>
-                <PlusOutlined /> Add new task
-            </Button>
-            <Modal
-                title="Create new Task"
-                visible={visible}
-                onOk={e => {handleSave(e)}}
-                onCancel={e => handleCancel(e)}
+        <div>
+            <ModalContainer onClick={event => {
+                event.stopPropagation()
+            }} style={{}}>
+                <Button shape={"round"} icon={<PlusOutlined/>} type={"primary"} onClick={event => {
+                    showModal(event)
+                }}>
+                    Add new Task
+                </Button>
+                <Modal
+                    title="Create new project"
+                    visible={visible}
+                    onCancel={e=>{handleCancel(e)}}
+                    onOk={e => {handleSave(e)}}
+                >
+                    <div className={"newProjectForm"}>
+                        <Input placeholder={"Task title"} prefix={<ProjectOutlined/>} type={"string"}
+                               onChange={event => {setTaskTitle(event.target.value)
+                               }}
+                        />
+                        <Input.TextArea placeholder={"Task Description"}
+                               onChange={event => {setTaskDescription(event.target.value)
+                               }}
+                        />
+                        <Input placeholder={"Task owner"} prefix={<ProjectOutlined/>} type={"number"}
+                               onChange={event => {setOwnerId(event.target.valueAsNumber)
+                               }}
+                        />
+                        <Input placeholder={"Task Priority"} prefix={<ProjectOutlined/>} type={"number"}
+                               onChange={event => {setPriority(event.target.valueAsNumber)
+                               }}
+                        />
+                    </div>
 
-            >
-                <div className={"newProjectForm"}>
-                    <Input.TextArea placeholder={"User Story"}
-                           onChange={event => {setUserStory(event.target.value)}}
-                    />
-                    <Input placeholder={"Business value"} prefix={<ProjectOutlined />}  type={"number"}
-                           onChange={event => {setBusinessValue(event.target.valueAsNumber)}}
-                    />
-                    <Input placeholder={"Owner"} prefix={<ProjectOutlined />}  type={"number"}
-                           onChange={event => {setOwnerId(event.target.valueAsNumber)}}
-                    />
-                    <Input placeholder={"Estimation"} prefix={<ProjectOutlined />}  type={"number"}
-                           onChange={event => {setEstimation(event.target.valueAsNumber)}}
-                    />
-                </div>
+                </Modal>
+            </ModalContainer>
 
-            </Modal>
-        </ModalContainer>
-    )
+        </div>
+    );
 };
 
 export default NewTaskModal;

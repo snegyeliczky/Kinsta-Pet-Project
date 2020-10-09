@@ -1,20 +1,19 @@
 import React from 'react';
-import {Task} from "../interfaces/Task";
+import {TaskModel} from "../interfaces/TaskModel";
+import {TaskStyledComponent} from "../assets/styledComponents/styledComponents";
 
-
-interface Props {
-    task:Task
+type Props ={
+    Task:TaskModel
 }
 
-const TaskComponent:React.FC<Props> = ({task}) => {
+const TaskComponent:React.FC<Props> = ({Task}) => {
     return (
-        <div key={task.id} className={"task-component"}>
-            <div className={"task-id task-part"}>{task.id}</div>
-            <div className={"task-userStory task-part"} >{task.userStory}</div>
-            <div className={"task-businessValue task-part"}>{task.businessValue}</div>
-            <div className={"task-ownerId task-part"}>{task.ownerId}</div>
-            <div className={"task-estimation task-part"}>{task.estimation}h</div>
-        </div>
+        <TaskStyledComponent className={"TaskComponent"}>
+            <div className={"task-id"}>{Task.id.substring(0,5)}</div>
+            <div className={"task-title"}>{Task.title}</div>
+            <div className={"task-description"}>{Task.description}</div>
+            <div>{Task.ownerId}</div>
+        </TaskStyledComponent>
     );
 };
 

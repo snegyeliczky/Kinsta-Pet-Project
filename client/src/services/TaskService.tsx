@@ -1,64 +1,70 @@
-import {Task} from "../interfaces/Task";
+import {v4 as uuid} from "uuid";
+import {TaskModel} from "../interfaces/TaskModel";
 
-let taskList:Task[] = [];
+const TaskList:TaskModel[] = [];
 
-let task1:Task ={
-    id:taskList.length+1,
-    projectId:1,
-    userStory:"As a user I want to creat new Account",
-    businessValue:100,
-    estimation:2,
-    ownerId:1,
-    status:false
+let Task1:TaskModel={
+    id:uuid(),
+    userStoryId:1,
+    title:"registration page",
+    description:"creat a page where the user can create account",
+    priority:1,
+    ownerId:1
 };
-taskList.push(task1);
+TaskList.push(Task1);
 
-let task2:Task ={
-    id:taskList.length+1,
-    projectId:1,
-    userStory:"As a user I want to see my balance on the page",
-    businessValue:200,
-    estimation:12,
-    ownerId:null,
-    status:false
+let Task2:TaskModel={
+    id:uuid(),
+    userStoryId:1,
+    title:"Login page",
+    description:"creat a page where the user can Login",
+    priority:2,
+    ownerId:1
 };
-taskList.push(task2);
+TaskList.push(Task2);
 
-let task3:Task ={
-    id:taskList.length+1,
-    projectId:2,
-    userStory:"As a user I want to transfer money to my friends",
-    businessValue:500,
-    estimation:8,
-    ownerId:1,
-    status:false
+let Task3:TaskModel={
+    id:uuid(),
+    userStoryId:1,
+    title:"Create backend for Accounts",
+    description:"creat DB where the data stored ",
+    priority:3,
 };
-taskList.push(task3);
+TaskList.push(Task3);
 
-let task4:Task ={
-    id:taskList.length+1,
-    projectId:1,
-    userStory:"As a user I want to transfer money to my friends",
-    businessValue:500,
-    estimation:8,
-    ownerId:1,
-    status:false
+let Task4:TaskModel={
+    id:uuid(),
+    userStoryId:1,
+    title:"Create service to get data from db",
+    description:"",
+    priority:1,
+    ownerId:1
 };
-taskList.push(task4);
+TaskList.push(Task4);
+
+let Task5:TaskModel={
+    id:uuid(),
+    userStoryId:2,
+    title:"Create service to get Account balance",
+    description:"Create service to get Account balance from Db",
+    priority:4,
+    ownerId:1
+};
+TaskList.push(Task5);
 
 export default {
 
-    getTasksByProjectId:(projectID:number):Task[]=>{
-       return taskList.filter(task =>{
-            return task.projectId===projectID;
+    getTasksByUserStory: (UserStoryId:number):TaskModel[] =>{
+        return TaskList.filter(task =>{
+            return task.userStoryId === UserStoryId;
         })
     },
 
-    saveNewTask:(newTask:Task):Task[] =>{
-        newTask.id=taskList.length+1;
-        taskList.push(newTask);
-        return taskList.filter(task =>{
-            return task.projectId===newTask.projectId;
+    saveNewTask:(newTask:TaskModel):TaskModel[] =>{
+        newTask.id=uuid();
+        TaskList.push(newTask);
+        return TaskList.filter(task=>{
+            return task.userStoryId===newTask.userStoryId;
         })
-    }
+    },
 }

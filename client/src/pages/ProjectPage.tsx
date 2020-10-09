@@ -2,28 +2,30 @@ import React, {useState} from 'react';
 import {useParams} from "react-router";
 import ProjectService from "../services/ProjectService";
 import "../assets/ProjectStyle.css"
-import TaskService from "../services/TaskService";
-import NewTaskModal from "../components/Modals/NewTaskModal";
+import NewUserStoryModal from "../components/Modals/NewUserStoryModal";
 import {Collapse} from "antd";
 import CollapsePanel from "antd/es/collapse/CollapsePanel";
-import TaskComponent from "../components/TaskComponent";
-
+import {ProjectTitleContainer, UserStoryStyleComponent} from "../assets/styledComponents/styledComponents";
+import UserStory from "../components/UserStory";
+import UserStoryService from "../services/UserStoryService";
+import TaskService from "../services/TaskService";
+import TaskTable from "../components/TaskTable";
 
 const ProjectPage = () => {
 
 
     const {id} = useParams();
-    const [tasks, setTasks] = useState(TaskService.getTasksByProjectId(parseInt(id)));
+    const [userStories, setUserStories] = useState(UserStoryService.getUserStoresByProjectId(parseInt(id)));
 
 
     const getProjectData = () => {
         let project = ProjectService.getProject(parseInt(id));
         if (project)
             return (
-                <div className={"project-title-container"}>
+                <ProjectTitleContainer className={"project-title-container"}>
                     <h2>{project.name}</h2>
                     <h3>projectID: {project.id}</h3>
-                </div>
+                </ProjectTitleContainer>
             );
         else return (
             <h2>No project found wit this id </h2>
@@ -31,13 +33,12 @@ const ProjectPage = () => {
     };
 
 
-    const getTasks = () => {
-        return (<Collapse>{tasks.map(task => {
+    const getUserStores = () => {
+        return (<Collapse>{userStories.map(userStory => {
             return (
-                <CollapsePanel key={task.id} header={ <TaskComponent task={task}/>}>
-                    <div>Issue</div>
-                    <div>Issue</div>
-                    <div>Issue</div>
+                <CollapsePanel key={userStory.id} header={ <UserStory userStory={userStory}/>}>
+                    {console.log(TaskService.getTasksByUserStory(userStory.id))}
+                    <TaskTable userStory={userStory}/>
                 </CollapsePanel>
             )
         })}
@@ -51,16 +52,16 @@ const ProjectPage = () => {
                 {getProjectData()}
             </div>
 
-            <div className={"task-container"}>
-                <NewTaskModal projectId={parseInt(id)} setTasks={setTasks}/>
-                <div id={"task-names"} className={"task-component"}>
-                    <div className={"task-id task-part"}>Task ID</div>
-                    <div className={"task-userStory task-part"}>User Story</div>
-                    <div className={"task-businessValue task-part"}>Business value</div>
-                    <div className={"task-ownerId task-part"}>Owner id</div>
-                    <div className={"task-estimation task-part"}>Estimation time</div>
-                </div>
-                {getTasks()}
+            <div className={"userStory-container"}>
+                <NewUserStoryModal projectId={parseInt(id)} setTasks={setUserStories}/>
+                <UserStoryStyleComponent id={"userStory-names"} className={"userStory-component"}>
+                    <div className={"userStory-id UserStory-part"}>Story ID</div>
+                    <div className={"userStory-userStory UserStory-part"}>User Story</div>
+                    <div className={"userStory-businessValue UserStory-part"}>Business value</div>
+                    <div className={"userStory-ownerId UserStory-part"}>Owner id</div>
+                    <div className={"userStory-estimation UserStory-part"}>Estimation time</div>
+                </UserStoryStyleComponent>
+                {getUserStores()}
             </div>
         </div>
     );
