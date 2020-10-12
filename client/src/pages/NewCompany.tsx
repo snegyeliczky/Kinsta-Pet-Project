@@ -17,7 +17,7 @@ const NewCompany = () => {
     const handleCreatCompany = (): void => {
         if (newCompName.length > 2) {
             CompanyService.addNewCompany(newCompName, userId);
-            history.push("/")
+            history.push("/app")
         } else {
             alert("Company name must be minimum 3 character!")
         }

@@ -19,7 +19,7 @@ const CompanyComponent: React.FC<Props> = ({company}) => {
 
     function toProjectPage(event: React.MouseEvent<HTMLDivElement>, projectId: number) {
         event.preventDefault();
-        history.push("/project/" + projectId)
+        history.push("/app/project/" + projectId)
     }
 
     function getProjects() {

@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch, useRouteMatch} from "react-router-dom";
 import AuthPage from "./pages/AuthPage";
 import MainPage from "./pages/MainPage";
 import {ApplicationProvider} from "./context/ApplicationContext";
@@ -9,10 +9,10 @@ import NewCompany from "./pages/NewCompany";
 
 import NavBar from "./parts/NavBar";
 import Footer from "./parts/Footer";
-import DashBoard from "./DashBoard";
 
+const DashBoard = () => {
 
-function App() {
+    let {url, path} = useRouteMatch();
 
     const style = {
         justifyContent: "center",
@@ -25,17 +25,17 @@ function App() {
         paddingBottom: "11vh"
     };
 
-
     return (
-        <Router>
-            <ApplicationProvider>
-                <Route exact path={"/auth"} component={AuthPage}/>
-                <Route path={"/app"} component={DashBoard}/>
-
-            </ApplicationProvider>
-        </Router>
-
+        <>
+            <NavBar/>
+            <div id={"main-content-container"} style={style}>
+                <Route exact path={`/app`} component={MainPage}/>
+                <Route  path={`/app/project/:id`} component={ProjectPage}/>
+                <Route  path={`/app/new-company`} component={NewCompany}/>
+            </div>
+            <Footer/>
+        </>
     );
-}
+};
 
-export default App;
+export default DashBoard;

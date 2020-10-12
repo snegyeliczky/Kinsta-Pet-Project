@@ -36,7 +36,7 @@ const NewProjectModal: React.FC<Props> = ({companyId, setDisplay, setProjects}) 
                 return re;
             }, 0);
             setVisible(!visible);
-            if (go) history.push("/project/" + newProjectId);
+            if (go) history.push("/app/project/" + newProjectId);
         } else alert("Project name must be 3 character long!")
 
     };

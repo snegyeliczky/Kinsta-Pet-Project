@@ -19,7 +19,7 @@ const AuthPage = () => {
             localStorage.setItem("username",username);
             localStorage.setItem("userId","1");
             appContext.setUserName(username);
-            history.push("/")
+            history.push("/app")
         }catch (e) {
             console.log(e);
             alert(e.message)
