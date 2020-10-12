@@ -1,18 +1,14 @@
 import React from 'react';
 import './App.css';
-import {BrowserRouter as Router, Route, Switch, useRouteMatch} from "react-router-dom";
-import AuthPage from "./pages/AuthPage";
+import { Route } from "react-router-dom";
 import MainPage from "./pages/MainPage";
-import {ApplicationProvider} from "./context/ApplicationContext";
 import ProjectPage from "./pages/ProjectPage";
 import NewCompany from "./pages/NewCompany";
-
 import NavBar from "./parts/NavBar";
 import Footer from "./parts/Footer";
 
-const DashBoard = () => {
 
-    let {url, path} = useRouteMatch();
+const DashBoard = () => {
 
     const style = {
         justifyContent: "center",
