@@ -13,11 +13,11 @@ const NavBar = () => {
    };
 
    const handleHome = ():void =>{
-       history.push("/")
+       history.push("/app")
    };
 
    const handleNewCompany = ():void =>{
-       history.push("/new-company")
+       history.push("/app/new-company")
    };
 
    const menuStyle:Object = {

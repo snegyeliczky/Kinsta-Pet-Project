@@ -37,13 +37,14 @@ const NewTaskModal:React.FC<Props> = ({UserStoryId,setTasks}) => {
 
 
     function handleCancel(e: React.MouseEvent<HTMLElement>) {
-        setVisible(false)
+        setVisible(false);
     }
 
     function handleSave(e: React.MouseEvent<HTMLElement>) {
         let newTask = creatNewTask();
         let tasks = TaskService.saveNewTask(newTask);
-        setTasks(tasks)
+        setTasks(tasks);
+        setVisible(false);
     }
 
     return (
