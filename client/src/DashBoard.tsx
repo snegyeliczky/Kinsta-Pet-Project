@@ -1,11 +1,12 @@
 import React from 'react';
 import './App.css';
-import { Route } from "react-router-dom";
+import {Route, useHistory} from "react-router-dom";
 import MainPage from "./pages/MainPage";
 import ProjectPage from "./pages/ProjectPage";
 import NewCompany from "./pages/NewCompany";
 import NavBar from "./parts/NavBar";
 import Footer from "./parts/Footer";
+import requireAuthentication from "./components/authComp/AuthenticatedComponent";
 
 
 const DashBoard = () => {
@@ -21,13 +22,15 @@ const DashBoard = () => {
         paddingBottom: "11vh"
     };
 
+    const history=useHistory();
+
     return (
         <>
             <NavBar/>
             <div id={"main-content-container"} style={style}>
-                <Route exact path={`/app`} component={MainPage}/>
-                <Route  path={`/app/project/:id`} component={ProjectPage}/>
-                <Route  path={`/app/new-company`} component={NewCompany}/>
+                <Route exact path={`/app`} component={requireAuthentication(MainPage,history)}/>
+                <Route path={`/app/project/:id`} component={requireAuthentication(ProjectPage,history)}/>
+                <Route path={`/app/new-company`} component={requireAuthentication(NewCompany,history)}/>
             </div>
             <Footer/>
         </>
