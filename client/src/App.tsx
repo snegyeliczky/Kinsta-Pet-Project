@@ -13,7 +13,6 @@ function App() {
             <ApplicationProvider>
                 <Route exact path={"/auth"} component={AuthPage}/>
                 <Route path={"/app"} component={DashBoard}/>
-
             </ApplicationProvider>
         </Router>
 
