@@ -138,6 +138,8 @@ export const UserStoryStyleComponent = styled("div")(
         gridTemplateColumns: "repeat(6,1fr)",
         gridAutoRows: "minmax(100px,auto)",
         borderBottom: "1px solid white",
+        fontSize: "15px",
+        fontWeight: "bold",
         "> .UserStory-part": {
             color: "white",
             display: "flex",
@@ -148,11 +150,22 @@ export const UserStoryStyleComponent = styled("div")(
         },
         "> .userStory-userStory": {
             gridColumn: "2/4",
+
         },
         "> .userStory-estimation": {
             color: "black",
             fontWeight: "bold"
+        },
+        "> .userStory-businessValue-title": {
+            cursor: "pointer",
+            transition: "all .2s ease-in-out",
+        },
+        "> .userStory-businessValue-title:hover": {
+            color: "green",
+            fontSize: "15px",
+            fontWeight: "bold"
         }
+
 
     }
 );
@@ -184,10 +197,10 @@ export const TaskStyledComponent = styled("div")(
     {
         display: "grid",
         gridGap: "10px",
-        width:"85%",
-        margin:"0 auto",
+        width: "85%",
+        margin: "0 auto",
         gridTemplateColumns: "10% 20% 50% 10% 10%",
-        gridAutoRows: "minmax(100px,auto)",
+        gridAutoRows: "minmax(50px,auto)",
         borderBottom: "1px solid green",
         color: "white",
         "> div": {
@@ -197,13 +210,25 @@ export const TaskStyledComponent = styled("div")(
             textAlign: "center",
             padding: "8px"
         },
-        "@media screen and (max-width: 600px)" :{
+        "@media screen and (max-width: 600px)": {
             gridTemplateColumns: "repeat(1,1fr)",
-            gridAutoRows:"minmax(10px,auto)",
+            gridAutoRows: "minmax(10px,auto)",
             gridGap: "0px",
         }
 
 
-    }
+    },
 );
 
+const TaskHeaderStyledComponent = styled("div")(
+    {
+        border: "2px solid green",
+        marginTop: "15px",
+        width:"87%",
+        backgroundColor: "rgba(138, 43, 226,0.4)",
+        borderRadius: "20px"
+    }
+
+);
+
+export const TaskHeaderTitleStyledComponent=TaskHeaderStyledComponent.withComponent(TaskStyledComponent);

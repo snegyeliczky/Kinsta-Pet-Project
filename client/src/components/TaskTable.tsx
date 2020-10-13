@@ -2,18 +2,18 @@ import React, {useState} from 'react';
 import {UserStoryModel} from "../interfaces/UserStoryModel";
 import TaskService from "../services/TaskService";
 import TaskComponent from "./TaskComponent";
-import {TaskStyledComponent} from "../assets/styledComponents/styledComponents";
+import {TaskHeaderTitleStyledComponent, TaskStyledComponent} from "../assets/styledComponents/styledComponents";
 import NewTaskModal from "./Modals/NewTaskModal";
 
 type props = {
-    userStory:UserStoryModel
+    userStory: UserStoryModel
 }
 
-const TaskTable:React.FC<props> = ({userStory}) => {
+const TaskTable: React.FC<props> = ({userStory}) => {
 
-    const [tasks,setTasks] = useState(TaskService.getTasksByUserStory(userStory.id));
+    const [tasks, setTasks] = useState(TaskService.getTasksByUserStory(userStory.id));
 
-    const removeTask=(taskId:string)=>{
+    const removeTask = (taskId: string) => {
         let refreshedTasks = TaskService.removeTask(taskId);
         setTasks(refreshedTasks);
     };
@@ -21,15 +21,15 @@ const TaskTable:React.FC<props> = ({userStory}) => {
     return (
         <div>
             <NewTaskModal UserStoryId={userStory.id} setTasks={setTasks}/>
-            <TaskStyledComponent className={"TaskComponent"}>
-                <div className={"task-id"}>Task Id</div>
-                <div className={"task-title"}>Title</div>
-                <div className={"task-description"}>Description</div>
-                <div>Owner</div>
-            </TaskStyledComponent>
+            <TaskHeaderTitleStyledComponent className={"TaskComponent task-header"}>
+                    <div className={"task-id"}>Task Id</div>
+                    <div className={"task-title"}>Title</div>
+                    <div className={"task-description"}>Description</div>
+                    <div>Owner</div>
+            </TaskHeaderTitleStyledComponent>
             {
-                tasks.map(task=>{
-                    return <TaskComponent Task={task} removeTask={removeTask} />
+                tasks.map(task => {
+                    return <TaskComponent Task={task} removeTask={removeTask}/>
                 })
             }
         </div>
