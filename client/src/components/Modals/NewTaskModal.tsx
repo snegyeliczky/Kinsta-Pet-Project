@@ -30,7 +30,8 @@ const NewTaskModal:React.FC<Props> = ({UserStoryId,setTasks}) => {
                 title: taskTitle,
                 description: taskDescription,
                 ownerId: OwnerId,
-                priority: Priority
+                priority: Priority,
+                ready:false
             }
     }
 

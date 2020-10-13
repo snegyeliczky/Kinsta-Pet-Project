@@ -135,7 +135,7 @@ export const StyledCompanyHeader = styled("div")<StyledCompanyHeaderProps>(
 export const UserStoryStyleComponent = styled("div")(
     {
         display: "grid",
-        gridTemplateColumns: "repeat(6,1fr)",
+        gridTemplateColumns: "repeat(7,1fr)",
         gridAutoRows: "minmax(100px,auto)",
         borderBottom: "1px solid white",
         fontSize: "15px",
@@ -193,13 +193,17 @@ export const ProjectTitleContainer = styled("div")(
     }
 );
 
-export const TaskStyledComponent = styled("div")(
+type TaskProps={
+    ready?:boolean,
+};
+
+export const TaskStyledComponent = styled("div")<TaskProps>(
     {
         display: "grid",
         gridGap: "10px",
         width: "85%",
         margin: "0 auto",
-        gridTemplateColumns: "10% 20% 50% 10% 10%",
+        gridTemplateColumns: "10% 20% 45% 5% 5% 15%",
         gridAutoRows: "minmax(50px,auto)",
         borderBottom: "1px solid green",
         color: "white",
@@ -218,6 +222,9 @@ export const TaskStyledComponent = styled("div")(
 
 
     },
+    props=>({
+        backgroundColor: props.ready?"green":""
+    })
 );
 
 const TaskHeaderStyledComponent = styled("div")(

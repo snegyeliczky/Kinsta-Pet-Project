@@ -4,5 +4,6 @@ export type TaskModel = {
     title: string,
     description: string,
     priority: number,
-    ownerId?: number|null
+    ownerId?: number|null,
+    ready:boolean
 }

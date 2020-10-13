@@ -9,7 +9,8 @@ let Task1:TaskModel={
     title:"registration page",
     description:"creat a page where the user can create account",
     priority:1,
-    ownerId:1
+    ownerId:1,
+    ready:true,
 };
 TaskList.push(Task1);
 
@@ -19,7 +20,8 @@ let Task2:TaskModel={
     title:"Login page",
     description:"creat a page where the user can Login",
     priority:2,
-    ownerId:1
+    ownerId:1,
+    ready:false,
 };
 TaskList.push(Task2);
 
@@ -29,6 +31,7 @@ let Task3:TaskModel={
     title:"Create backend for Accounts",
     description:"creat DB where the data stored ",
     priority:3,
+    ready:false,
 };
 TaskList.push(Task3);
 
@@ -38,7 +41,8 @@ let Task4:TaskModel={
     title:"Create service to get data from db",
     description:"",
     priority:1,
-    ownerId:1
+    ownerId:1,
+    ready:false,
 };
 TaskList.push(Task4);
 
@@ -48,11 +52,24 @@ let Task5:TaskModel={
     title:"Create service to get Account balance",
     description:"Create service to get Account balance from Db",
     priority:4,
-    ownerId:1
+    ownerId:1,
+    ready:false,
 };
 TaskList.push(Task5);
 
 export default {
+
+    setTaskReady:(TaskId:string):boolean =>{
+        let status!:boolean;
+        TaskList.map(task =>{
+            if (task.id===TaskId){
+                task.ready =!task.ready;
+                status=task.ready;
+            }
+            return task
+        });
+        return status;
+    },
 
     getTasksByUserStory: (UserStoryId:number):TaskModel[] =>{
         return TaskList.filter(task =>{
