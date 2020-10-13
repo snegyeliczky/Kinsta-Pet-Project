@@ -1,7 +1,7 @@
 import {v4 as uuid} from "uuid";
 import {TaskModel} from "../interfaces/TaskModel";
 
-const TaskList:TaskModel[] = [];
+let TaskList:TaskModel[] = [];
 
 let Task1:TaskModel={
     id:uuid(),
@@ -67,4 +67,17 @@ export default {
             return task.userStoryId===newTask.userStoryId;
         })
     },
+
+    removeTask:(taskId:string):TaskModel[] =>{
+        let UserStoryId:number;
+        TaskList = TaskList.filter(task=>{
+            if (task.id===taskId){
+                UserStoryId=task.userStoryId;
+            }
+            return task.id!==taskId
+        });
+        return TaskList.filter(task=>{
+            return task.userStoryId===UserStoryId
+        });
+    }
 }

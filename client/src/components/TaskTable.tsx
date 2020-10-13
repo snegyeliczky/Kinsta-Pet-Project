@@ -13,6 +13,11 @@ const TaskTable:React.FC<props> = ({userStory}) => {
 
     const [tasks,setTasks] = useState(TaskService.getTasksByUserStory(userStory.id));
 
+    const removeTask=(taskId:string)=>{
+        let refreshedTasks = TaskService.removeTask(taskId);
+        setTasks(refreshedTasks);
+    };
+
     return (
         <div>
             <NewTaskModal UserStoryId={userStory.id} setTasks={setTasks}/>
@@ -24,7 +29,7 @@ const TaskTable:React.FC<props> = ({userStory}) => {
             </TaskStyledComponent>
             {
                 tasks.map(task=>{
-                    return <TaskComponent Task={task}/>
+                    return <TaskComponent Task={task} removeTask={removeTask} />
                 })
             }
         </div>
