@@ -15,7 +15,7 @@ const TaskTable: React.FC<props> = ({userStory}) => {
 
     const removeTask = (taskId: string) => {
         let refreshedTasks = TaskService.removeTask(taskId);
-        setTasks(refreshedTasks);
+        setTasks([...refreshedTasks]);
     };
 
     return (
@@ -29,6 +29,7 @@ const TaskTable: React.FC<props> = ({userStory}) => {
             </TaskHeaderTitleStyledComponent>
             {
                 tasks.map(task => {
+                    console.log(task);
                     return <TaskComponent Task={task} removeTask={removeTask}/>
                 })
             }
