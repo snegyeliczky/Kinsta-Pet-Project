@@ -61,5 +61,27 @@ export default {
         return UserStoryList.filter(task =>{
             return task.projectId===newTask.projectId;
         })
-    }
+    },
+
+    updateUserStory:(EditedUserStory:UserStoryModel) =>{
+        UserStoryList.map(userStory=>{
+            if (userStory.id===EditedUserStory.id){
+                userStory=EditedUserStory
+            }
+            return userStory;
+        })
+    },
+
+    removeUserStory:(userStoryId:number)=>{
+        let projectId:number;
+        UserStoryList = UserStoryList.filter(story =>{
+            if (story.id===userStoryId){
+                projectId=story.projectId
+            }
+            return story.id!==userStoryId;
+        });
+        return UserStoryList.filter(story =>{
+            return story.projectId === projectId
+        });
+    },
 }

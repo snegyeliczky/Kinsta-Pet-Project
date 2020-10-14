@@ -135,7 +135,7 @@ export const StyledCompanyHeader = styled("div")<StyledCompanyHeaderProps>(
 export const UserStoryStyleComponent = styled("div")(
     {
         display: "grid",
-        gridTemplateColumns: "repeat(7,1fr)",
+        gridTemplateColumns: "repeat(8,1fr)",
         gridAutoRows: "minmax(100px,auto)",
         borderBottom: "1px solid white",
         fontSize: "15px",
@@ -143,14 +143,19 @@ export const UserStoryStyleComponent = styled("div")(
         "> .UserStory-part": {
             color: "white",
             display: "flex",
-            justifyContent: "center",
             alignItems: "center",
             textAlign: "center",
             padding: "8px"
         },
+        "> .UserStory-part .userStory-edit":{
+            marginRight:"15px"
+        },
         "> .userStory-userStory": {
-            gridColumn: "2/4",
+            gridColumn: "2/5",
 
+        },
+        "> .userStory-title":{
+            justifySelf:"center"
         },
         "> .userStory-estimation": {
             color: "black",
@@ -164,9 +169,18 @@ export const UserStoryStyleComponent = styled("div")(
             color: "green",
             fontSize: "15px",
             fontWeight: "bold"
+        },
+        "@media screen and (max-width: 600px)": {
+            gridTemplateColumns: "repeat(2,1fr)",
+            gridAutoRows: "minmax(10px,auto)",
+            gridGap: "0px",
+            "> .userStory-userStory": {
+                gridColumn: "auto"
+
+            }, "> .userStory-estimation": {
+                color: "white",
+            }
         }
-
-
     }
 );
 
@@ -193,8 +207,8 @@ export const ProjectTitleContainer = styled("div")(
     }
 );
 
-type TaskProps={
-    ready?:boolean,
+type TaskProps = {
+    ready?: boolean,
 };
 
 export const TaskStyledComponent = styled("div")<TaskProps>(
@@ -222,8 +236,8 @@ export const TaskStyledComponent = styled("div")<TaskProps>(
 
 
     },
-    props=>({
-        backgroundColor: props.ready?"green":""
+    props => ({
+        backgroundColor: props.ready ? "green" : ""
     })
 );
 
@@ -231,11 +245,10 @@ const TaskHeaderStyledComponent = styled("div")(
     {
         border: "2px solid green",
         marginTop: "15px",
-        width:"87%",
+        width: "87%",
         backgroundColor: "rgba(138, 43, 226,0.4)",
         borderRadius: "20px"
     }
-
 );
 
-export const TaskHeaderTitleStyledComponent=TaskHeaderStyledComponent.withComponent(TaskStyledComponent);
+export const TaskHeaderTitleStyledComponent = TaskHeaderStyledComponent.withComponent(TaskStyledComponent);

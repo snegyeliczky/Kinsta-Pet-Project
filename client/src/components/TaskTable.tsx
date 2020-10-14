@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {UserStoryModel} from "../interfaces/UserStoryModel";
 import TaskService from "../services/TaskService";
 import TaskComponent from "./TaskComponent";
-import {TaskHeaderTitleStyledComponent, TaskStyledComponent} from "../assets/styledComponents/styledComponents";
+import {TaskHeaderTitleStyledComponent} from "../assets/styledComponents/styledComponents";
 import NewTaskModal from "./Modals/NewTaskModal";
 
 type props = {

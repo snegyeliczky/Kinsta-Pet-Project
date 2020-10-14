@@ -31,11 +31,16 @@ const ProjectPage = () => {
         )
     };
 
+    const removeUSerStoryById =(storyId:number) =>{
+        let userStories = UserStoryService.removeUserStory(storyId);
+        setUserStories(userStories);
+    };
+
 
     const getUserStores = () => {
         return (<Collapse>{userStories.map(userStory => {
             return (
-                <CollapsePanel key={userStory.id} header={ <UserStory userStory={userStory}/>}>
+                <CollapsePanel key={userStory.id} header={ <UserStory UserStory={userStory} removeUserStory={removeUSerStoryById}/>}>
                     <TaskTable userStory={userStory}/>
                 </CollapsePanel>
             )
@@ -65,7 +70,7 @@ const ProjectPage = () => {
                 <NewUserStoryModal projectId={parseInt(id)} setTasks={setUserStories}/>
                 <UserStoryStyleComponent id={"userStory-names"} className={"userStory-component"}>
                     <div className={"userStory-id UserStory-part"}>Story ID</div>
-                    <div className={"userStory-userStory UserStory-part"}>User Story</div>
+                    <div className={"userStory-userStory UserStory-part userStory-title"}>User Story</div>
                     <div className={"userStory-businessValue-title UserStory-part"} onClick={
                         sortByUserBusinessValueStory
                     }>Business value</div>
