@@ -6,12 +6,14 @@ import {ProjectOutlined} from '@ant-design/icons';
 
 type Props = {
     editUserStoryEstimation:Function,
-    estimatedUsers:{[key:number]:number}
+    EstimatedUsers:{[key:number]:number}
 };
 
-const EstimationModal:React.FC<Props> = ({editUserStoryEstimation,estimatedUsers}) => {
+const EstimationModal:React.FC<Props> = ({editUserStoryEstimation,EstimatedUsers}) => {
 
     const [visible, setVisible] = useState(false);
+    const[showEstimationValues,setShowEstimationValues] = useState<boolean>(false);
+    const [estimatedUsers,setEstimatedUsers] = useState(EstimatedUsers);
 
 
     function getUserId() {
@@ -27,8 +29,8 @@ const EstimationModal:React.FC<Props> = ({editUserStoryEstimation,estimatedUsers
         setVisible(true)
     }
 
-    function handleSave(e: React.MouseEvent<HTMLElement>) {
-        setVisible(false)
+    function handleOk(e: React.MouseEvent<HTMLElement>) {
+        setShowEstimationValues(!showEstimationValues);
     }
 
     function handleCancel(e: React.MouseEvent<HTMLElement>) {
@@ -36,8 +38,9 @@ const EstimationModal:React.FC<Props> = ({editUserStoryEstimation,estimatedUsers
     }
 
     function setEstimation(valueAsNumber: number) {
-
+        if (valueAsNumber>0){
             editUserStoryEstimation(valueAsNumber);
+        }
     }
 
     return (
@@ -50,7 +53,7 @@ const EstimationModal:React.FC<Props> = ({editUserStoryEstimation,estimatedUsers
             <Modal
                 title="Estimate to see other estimations and average!"
                 visible={visible}
-                onOk={e => {handleSave(e)}}
+                onOk={e => {handleOk(e)}}
                 onCancel={e => handleCancel(e)}
 
             >
