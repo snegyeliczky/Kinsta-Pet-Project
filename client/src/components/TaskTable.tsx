@@ -29,7 +29,6 @@ const TaskTable: React.FC<props> = ({userStory}) => {
             </TaskHeaderTitleStyledComponent>
             {
                 tasks.map(task => {
-                    console.log(task);
                     return <TaskComponent Task={task} removeTask={removeTask} setTasks={setTasks}/>
                 })
             }

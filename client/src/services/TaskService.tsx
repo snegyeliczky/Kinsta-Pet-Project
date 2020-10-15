@@ -87,6 +87,18 @@ export default {
         })
     },
 
+    updateTask:(updatedTask:TaskModel):TaskModel[] =>{
+        TaskList.map(task =>{
+            if (task.id===updatedTask.id){
+                task=updatedTask;
+            }
+            return task;
+        });
+        return TaskList.filter(task=>{
+            return task.userStoryId===updatedTask.userStoryId
+        })
+    },
+
     removeTask:(taskId:string):TaskModel[] =>{
         let UserStoryId:number;
         TaskList = TaskList.filter(task=>{

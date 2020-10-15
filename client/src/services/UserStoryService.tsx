@@ -69,7 +69,7 @@ export default {
                 userStory=EditedUserStory
             }
             return userStory;
-        })
+        });
     },
 
     removeUserStory:(userStoryId:number)=>{
