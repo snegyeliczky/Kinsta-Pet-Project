@@ -6,14 +6,14 @@ import {ProjectOutlined} from '@ant-design/icons';
 
 type Props = {
     editUserStoryEstimation:Function,
-    EstimatedUsers:{[key:number]:number}
+    estimatedUsers:{[key:number]:number}
 };
 
-const EstimationModal:React.FC<Props> = ({editUserStoryEstimation,EstimatedUsers}) => {
+const EstimationModal:React.FC<Props> = ({editUserStoryEstimation,estimatedUsers}) => {
 
     const [visible, setVisible] = useState(false);
     const[showEstimationValues,setShowEstimationValues] = useState<boolean>(false);
-    const [estimatedUsers,setEstimatedUsers] = useState(EstimatedUsers);
+
 
 
     function getUserId() {
