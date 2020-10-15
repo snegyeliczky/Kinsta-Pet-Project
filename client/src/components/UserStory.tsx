@@ -27,10 +27,8 @@ const UserStory: React.FC<Props> = ({UserStory, removeUserStory}) => {
     }
 
     function checkEstimation():boolean {
-        if(userStory.estimatedUsers[getUserID()]!==undefined){
-            return true
-        }
-        return false
+        return userStory.estimatedUsers[getUserID()] !== undefined;
+
     }
 
     function getEstimatedAverage() {

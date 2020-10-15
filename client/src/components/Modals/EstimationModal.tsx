@@ -1,15 +1,27 @@
 import React, {useState} from 'react';
 import {Button, Input, Modal} from "antd";
-import {ModalContainer} from "../../assets/styledComponents/styledComponents";
+import {EstimationUsersStyledComponent, ModalContainer} from "../../assets/styledComponents/styledComponents";
 import {ProjectOutlined} from '@ant-design/icons';
+
 
 type Props = {
     editUserStoryEstimation:Function,
+    estimatedUsers:{[key:number]:number}
 };
 
-const EstimationModal:React.FC<Props> = ({editUserStoryEstimation}) => {
+const EstimationModal:React.FC<Props> = ({editUserStoryEstimation,estimatedUsers}) => {
 
     const [visible, setVisible] = useState(false);
+
+
+    function getUserId() {
+        return parseInt(localStorage.getItem("userId")!);
+    }
+
+    function isEstimated(){
+        return estimatedUsers[getUserId()] !== undefined;
+
+    }
 
     function showModal(event: React.MouseEvent<HTMLElement>) {
         setVisible(true)
@@ -24,6 +36,7 @@ const EstimationModal:React.FC<Props> = ({editUserStoryEstimation}) => {
     }
 
     function setEstimation(valueAsNumber: number) {
+
             editUserStoryEstimation(valueAsNumber);
     }
 
@@ -46,6 +59,20 @@ const EstimationModal:React.FC<Props> = ({editUserStoryEstimation}) => {
                            onChange={event => {setEstimation(event.target.valueAsNumber)}}
                     />
                 </div>
+                {isEstimated()?
+                    <EstimationUsersStyledComponent>
+                        <div className={"estimation-user"}>User</div>
+                        <div className={"estimation-estimation"}>Estimation</div>
+                        {
+                            Object.entries(estimatedUsers).map((k)=>{
+                                return <>
+                                    <div className={"estimation-user"}>{k[0]}</div>
+                                    <div className={"estimation-estimation"}>{k[1]}-SP</div>
+                                </>
+                            })
+                        }
+                    </EstimationUsersStyledComponent>
+                    :""}
 
             </Modal>
         </ModalContainer>

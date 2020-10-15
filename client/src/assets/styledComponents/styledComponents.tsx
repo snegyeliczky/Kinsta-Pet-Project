@@ -253,3 +253,13 @@ const TaskHeaderStyledComponent = styled("div")(
 );
 
 export const TaskHeaderTitleStyledComponent = TaskHeaderStyledComponent.withComponent(TaskStyledComponent);
+
+
+export const EstimationUsersStyledComponent = styled("div")(
+    {
+        display: "grid",
+        gridGap: "10px",
+        gridTemplateColumns:"repeat(2,1fr)",
+        justifyItems: "center",
+    }
+)

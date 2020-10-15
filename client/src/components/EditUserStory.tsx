@@ -81,7 +81,7 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
                        }}/>
             </div>
             <div className={"userStory-estimation UserStory-part"}>
-                <EstimationModal editUserStoryEstimation={EditUserStoryEstimation}/>
+                <EstimationModal editUserStoryEstimation={EditUserStoryEstimation} estimatedUsers={userStory.estimatedUsers}/>
             </div>
             <div className={"UserStory-part"}>
 
