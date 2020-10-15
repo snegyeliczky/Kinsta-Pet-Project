@@ -30,7 +30,7 @@ const TaskTable: React.FC<props> = ({userStory}) => {
             {
                 tasks.map(task => {
                     console.log(task);
-                    return <TaskComponent Task={task} removeTask={removeTask}/>
+                    return <TaskComponent Task={task} removeTask={removeTask} setTasks={setTasks}/>
                 })
             }
         </div>

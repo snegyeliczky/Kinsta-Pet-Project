@@ -59,16 +59,18 @@ TaskList.push(Task5);
 
 export default {
 
-    setTaskReady:(TaskId:string):boolean =>{
-        let status!:boolean;
+    setTaskReady:(TaskId:string):TaskModel[] =>{
+        let userStoryId!:number;
         TaskList.map(task =>{
             if (task.id===TaskId){
                 task.ready =!task.ready;
-                status=task.ready;
+                userStoryId=task.userStoryId;
             }
             return task
         });
-        return status;
+        return TaskList.filter(task=>{
+            return task.userStoryId===userStoryId;
+        });
     },
 
     getTasksByUserStory: (UserStoryId:number):TaskModel[] =>{

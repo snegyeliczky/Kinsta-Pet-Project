@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {Dispatch, SetStateAction, useState} from 'react';
 import {TaskModel} from "../interfaces/TaskModel";
 import {TaskStyledComponent} from "../assets/styledComponents/styledComponents";
 import AlertModal from "./Modals/AlertModal";
@@ -10,14 +10,16 @@ import EditTask from "./EditTask";
 type Props ={
     Task:TaskModel,
     removeTask:Function,
+    setTasks:Dispatch<SetStateAction<TaskModel[]>>
 }
 
-const TaskComponent:React.FC<Props> = ({Task,removeTask}) => {
+const TaskComponent:React.FC<Props> = ({Task,removeTask,setTasks}) => {
 
     const[edit, setEdit] = useState(false);
 
     const handleCheck =()=>{
-        let isReady = TaskService.setTaskReady(Task.id);
+        let refreshedTasks = TaskService.setTaskReady(Task.id);
+        setTasks(refreshedTasks);
 
     };
 
