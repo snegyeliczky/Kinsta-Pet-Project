@@ -75,7 +75,7 @@ const ProjectPage = () => {
                         sortByUserBusinessValueStory
                     }>Business value</div>
                     <div className={"userStory-ownerId UserStory-part"}>Owner id</div>
-                    <div className={"userStory-estimation UserStory-part"}>Estimation time</div>
+                    <div className={"userStory-estimation UserStory-part"}>Estimation Avg. (Story Point)</div>
                 </UserStoryStyleComponent>
                 {getUserStores()}
             </div>

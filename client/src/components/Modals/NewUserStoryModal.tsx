@@ -33,7 +33,8 @@ const NewUserStoryModal:React.FC<Props>= ({projectId,setTasks}) => {
             businessValue: BusinessValue,
             ownerId: OwnerId,
             estimation: Estimation,
-            status: false
+            status: false,
+            estimatedUsers:{}
         };
     };
 

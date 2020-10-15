@@ -21,12 +21,6 @@ const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready, setT
 
     const [updatedTask, updateTask] = useState(Task);
 
-    const handleStopEdit = () => {
-        let updatedUserStoryTasks = TaskService.updateTask(updatedTask);
-        setTasks(updatedUserStoryTasks);
-        setEdit(false);
-    };
-
     const removeTaskAndCloseEditing = () => {
         setEdit(false);
         removeTask(Task.id);
@@ -54,6 +48,12 @@ const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready, setT
             setEdit(false);
         }
     }
+
+    const handleStopEdit = () => {
+        let updatedUserStoryTasks = TaskService.updateTask(updatedTask);
+        setTasks(updatedUserStoryTasks);
+        setEdit(false);
+    };
 
 
     return (

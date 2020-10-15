@@ -159,7 +159,7 @@ export const UserStoryStyleComponent = styled("div")(
         },
         "> .userStory-estimation": {
             color: "black",
-            fontWeight: "bold"
+            justifyContent: "center"
         },
         "> .userStory-businessValue-title": {
             cursor: "pointer",
@@ -174,6 +174,7 @@ export const UserStoryStyleComponent = styled("div")(
             gridTemplateColumns: "repeat(2,1fr)",
             gridAutoRows: "minmax(10px,auto)",
             gridGap: "0px",
+            justifyItems:"center",
             "> .userStory-userStory": {
                 gridColumn: "auto"
 

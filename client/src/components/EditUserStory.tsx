@@ -5,6 +5,7 @@ import {SettingOutlined, DeleteOutlined} from '@ant-design/icons';
 import {Input} from "antd";
 import UserStoryService from "../services/UserStoryService";
 import AlertModal from "./Modals/AlertModal";
+import EstimationModal from "./Modals/EstimationModal";
 
 type Props = {
     userStory: UserStoryModel
@@ -15,6 +16,7 @@ type Props = {
 }
 
 const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory, removeUserStory}) => {
+
 
 
     const EditUserStory = (story: string) => {
@@ -32,8 +34,13 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
         setUserStory(userStory);
     };
 
-    const EditUserStoryTime = (time: number) => {
-        userStory.estimation = time;
+    function getUserId() {
+        return parseInt(localStorage.getItem("userId")!);
+    }
+
+    const EditUserStoryEstimation = (point: number) => {
+        let userId = getUserId();
+        userStory.estimatedUsers[userId]=point;
         setUserStory(userStory);
     };
 
@@ -74,8 +81,7 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
                        }}/>
             </div>
             <div className={"userStory-estimation UserStory-part"}>
-                <Input type={"number"} defaultValue={userStory.estimation}
-                       onChange={e => EditUserStoryTime(e.target.valueAsNumber)}/>H
+                <EstimationModal editUserStoryEstimation={EditUserStoryEstimation}/>
             </div>
             <div className={"UserStory-part"}>
 
@@ -89,3 +95,8 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
 };
 
 export default EditUserStory;
+
+/*
+<Input type={"number"} defaultValue={userStory.estimatedUsers[getUserId()]}
+                       onChange={e => EditUserStoryPoint(e.target.valueAsNumber)}/>SP
+ */

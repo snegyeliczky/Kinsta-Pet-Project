@@ -9,7 +9,9 @@ let task1:UserStoryModel ={
     businessValue:100,
     estimation:2,
     ownerId:1,
-    status:false
+    status:false,
+    estimatedUsers:{1:2,2:3}
+
 };
 UserStoryList.push(task1);
 
@@ -20,7 +22,8 @@ let task2:UserStoryModel ={
     businessValue:200,
     estimation:12,
     ownerId:null,
-    status:false
+    status:false,
+    estimatedUsers:{1:3,2:5}
 };
 UserStoryList.push(task2);
 
@@ -31,7 +34,8 @@ let task3:UserStoryModel ={
     businessValue:500,
     estimation:8,
     ownerId:1,
-    status:false
+    status:false,
+    estimatedUsers:{5:2,2:3}
 };
 UserStoryList.push(task3);
 
@@ -42,7 +46,8 @@ let task4:UserStoryModel ={
     businessValue:500,
     estimation:8,
     ownerId:1,
-    status:false
+    status:false,
+    estimatedUsers:{4:5,2:3}
 };
 UserStoryList.push(task4);
 

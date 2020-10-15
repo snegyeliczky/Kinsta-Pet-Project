@@ -22,6 +22,28 @@ const UserStory: React.FC<Props> = ({UserStory, removeUserStory}) => {
 
     }
 
+    function getUserID() {
+        return parseInt(localStorage.getItem("userId")!)
+    }
+
+    function checkEstimation():boolean {
+        if(userStory.estimatedUsers[getUserID()]!==undefined){
+            return true
+        }
+        return false
+    }
+
+    function getEstimatedAverage() {
+        let estimatedUsers = userStory.estimatedUsers;
+        let reduce = Object.values(estimatedUsers).reduce((re, e)=> {
+            re.sum+=e;
+            re.length+=1;
+            return re
+        },{sum:0,length:0} );
+        return (reduce.sum/reduce.length).toFixed(1)
+    }
+
+
     return (
         <>
         {
@@ -32,7 +54,8 @@ const UserStory: React.FC<Props> = ({UserStory, removeUserStory}) => {
                     <div className={"userStory-userStory UserStory-part"}>{userStory.userStory}</div>
                     <div className={"userStory-businessValue UserStory-part"}>{userStory.businessValue}</div>
                     <div className={"userStory-ownerId UserStory-part"}>{userStory.ownerId}</div>
-                    <div className={"userStory-estimation UserStory-part"}>{userStory.estimation}H</div>
+                    <div className={"userStory-estimation UserStory-part"}>
+                        {checkEstimation()?getEstimatedAverage()+"-SP":"not estimated yet"}</div>
                     <div className={"UserStory-part"} onClick={e => handleChangeToEdit(e)}><SettingOutlined
                         spin={edit}/></div>
                 </UserStoryStyleComponent>
