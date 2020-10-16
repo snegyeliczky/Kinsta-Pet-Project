@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {UserStoryModel} from "../interfaces/UserStoryModel";
 import {UserStoryStyleComponent} from "../assets/styledComponents/styledComponents";
 import {SettingOutlined} from '@ant-design/icons';
 import EditUserStory from "./EditUserStory";
+import {ApplicationContext} from "../context/ApplicationContext";
 
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
 
 const UserStory: React.FC<Props> = ({UserStory, removeUserStory}) => {
 
+    const appContext = useContext(ApplicationContext);
     const [edit, setEdit] = useState(false);
     const [userStory,setUserStory] =useState(UserStory);
 
@@ -22,12 +24,8 @@ const UserStory: React.FC<Props> = ({UserStory, removeUserStory}) => {
 
     }
 
-    function getUserID() {
-        return parseInt(localStorage.getItem("userId")!)
-    }
-
     function checkEstimation():boolean {
-        return userStory.estimatedUsers[getUserID()] !== undefined;
+        return userStory.estimatedUsers[appContext.getUserId()] !== undefined;
 
     }
 

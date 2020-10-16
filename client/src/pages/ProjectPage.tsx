@@ -15,7 +15,16 @@ const ProjectPage = () => {
 
     const {id} = useParams();
     const [userStories, setUserStories] = useState(UserStoryService.getUserStoresByProjectId(parseInt(id)));
+    const [sortDir,setSortDir] = useState(true);
 
+    const sortByUserBusinessValueStory = () =>{
+        let userStoryModels = userStories.sort((a, b)=>{
+            if(sortDir)return (a.businessValue>b.businessValue)? -1:1;
+            return (a.businessValue>b.businessValue)? 1:-1
+        });
+        setSortDir(!sortDir);
+        setUserStories([...userStoryModels])
+    };
 
     const getProjectData = () => {
         let project = ProjectService.getProject(parseInt(id));
@@ -36,7 +45,6 @@ const ProjectPage = () => {
         setUserStories(userStories);
     };
 
-
     const getUserStores = () => {
         return (<Collapse>{userStories.map(userStory => {
             return (
@@ -46,17 +54,6 @@ const ProjectPage = () => {
             )
         })}
         </Collapse>)
-    };
-
-    const [sortDir,setSortDir] = useState(true);
-
-    const sortByUserBusinessValueStory = () =>{
-        let userStoryModels = userStories.sort((a, b)=>{
-            if(sortDir)return (a.businessValue>b.businessValue)? -1:1;
-            return (a.businessValue>b.businessValue)? 1:-1
-        });
-        setSortDir(!sortDir);
-        setUserStories([...userStoryModels])
     };
 
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import './App.css';
 import {Route, useHistory} from "react-router-dom";
 import MainPage from "./pages/MainPage";
@@ -7,6 +7,7 @@ import NewCompany from "./pages/NewCompany";
 import NavBar from "./parts/NavBar";
 import Footer from "./parts/Footer";
 import requireAuthentication from "./components/authComp/AuthenticatedComponent";
+import {ApplicationContext} from "./context/ApplicationContext";
 
 
 const DashBoard = () => {
@@ -23,14 +24,15 @@ const DashBoard = () => {
     };
 
     const history=useHistory();
+    const appContext = useContext(ApplicationContext);
 
     return (
         <>
             <NavBar/>
             <div id={"main-content-container"} style={style}>
-                <Route exact path={`/app`} component={requireAuthentication(MainPage,history)}/>
-                <Route path={`/app/project/:id`} component={requireAuthentication(ProjectPage,history)}/>
-                <Route path={`/app/new-company`} component={requireAuthentication(NewCompany,history)}/>
+                <Route exact path={`/app`} component={requireAuthentication(MainPage,history,appContext)}/>
+                <Route exact path={`/app/project/:id`} component={requireAuthentication(ProjectPage,history,appContext)}/>
+                <Route exact path={`/app/new-company`} component={requireAuthentication(NewCompany,history,appContext)}/>
             </div>
             <Footer/>
         </>

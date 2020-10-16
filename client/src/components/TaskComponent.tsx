@@ -32,6 +32,7 @@ const TaskComponent:React.FC<Props> = ({Task,removeTask,setTasks}) => {
                     <div className={"task-id"}>{Task.id.substring(0,5)}</div>
                     <div className={"task-title"}>{Task.title}</div>
                     <div className={"task-description"}>{Task.description}</div>
+                    <div>{Task.time}</div>
                     <div>{Task.ownerId}</div>
                     <div><Checkbox onChange={e => handleCheck()} checked={Task.ready}/></div>
                     <div><SettingOutlined spin={edit} onClick={()=>setEdit(true)} className={"userStory-edit"}/></div>

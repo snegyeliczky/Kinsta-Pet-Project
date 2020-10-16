@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction} from 'react';
+import React, {Dispatch, SetStateAction, useContext} from 'react';
 import { UserStoryStyleComponent} from "../assets/styledComponents/styledComponents";
 import {UserStoryModel} from "../interfaces/UserStoryModel";
 import {SettingOutlined, DeleteOutlined} from '@ant-design/icons';
@@ -6,6 +6,7 @@ import {Input} from "antd";
 import UserStoryService from "../services/UserStoryService";
 import AlertModal from "./Modals/AlertModal";
 import EstimationModal from "./Modals/EstimationModal";
+import {ApplicationContext} from "../context/ApplicationContext";
 
 type Props = {
     userStory: UserStoryModel
@@ -18,6 +19,7 @@ type Props = {
 const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory, removeUserStory}) => {
 
 
+    const appContext = useContext(ApplicationContext);
 
     const EditUserStory = (story: string) => {
         userStory.userStory = story;
@@ -34,12 +36,10 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
         setUserStory(userStory);
     };
 
-    function getUserId() {
-        return parseInt(localStorage.getItem("userId")!);
-    }
+
 
     const EditUserStoryEstimation = (point: number) => {
-        let userId = getUserId();
+        let userId = appContext.getUserId();
         userStory.estimatedUsers[userId]=point;
         setUserStory(userStory);
     };

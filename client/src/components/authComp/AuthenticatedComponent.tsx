@@ -1,12 +1,13 @@
 import React from "react";
 
-export function requireAuthentication(Component:React.FC,history:any) {
+
+export function requireAuthentication(Component:React.FC,history:any,appContext:any) {
 
     return class AuthenticatedComponent extends React.Component {
 
 
         isAuthenticated() {
-            return localStorage.getItem("username")?true:false;
+            return !!appContext.getUserId();
         }
 
         render() {

@@ -16,11 +16,15 @@ const NewTaskModal:React.FC<Props> = ({UserStoryId,setTasks}) => {
     const[taskTitle, setTaskTitle ] = useState("");
     const[taskDescription, setTaskDescription ] = useState("");
     const[OwnerId, setOwnerId ] = useState<number|null>(null);
-    const[Priority, setPriority] = useState(0);
+    const[time, setTime] = useState<string>();
 
 
     function showModal(event: React.MouseEvent<HTMLElement>) {
         setVisible(true)
+    }
+
+    function setTaskTime (timeString: string): void{
+            console.log(timeString)
     }
 
     function creatNewTask():TaskModel {
@@ -30,7 +34,7 @@ const NewTaskModal:React.FC<Props> = ({UserStoryId,setTasks}) => {
                 title: taskTitle,
                 description: taskDescription,
                 ownerId: OwnerId,
-                priority: Priority,
+                time: time,
                 ready:false
             }
     }
@@ -77,10 +81,7 @@ const NewTaskModal:React.FC<Props> = ({UserStoryId,setTasks}) => {
                                onChange={event => {setOwnerId(event.target.valueAsNumber)
                                }}
                         />
-                        <Input placeholder={"Task Priority"} prefix={<ProjectOutlined/>} type={"number"}
-                               onChange={event => {setPriority(event.target.valueAsNumber)
-                               }}
-                        />
+                        <Input type={"time"} onChange={event => {setTime(event.target.value)}}/>
                     </div>
 
                 </Modal>

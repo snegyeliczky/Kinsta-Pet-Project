@@ -11,6 +11,7 @@ const MainPage = () => {
 
     const appContext = useContext(ApplicationContext);
     let userId: number = appContext.getUserId();
+
     const [open,setOpen] = useState<string[]|string>();
     const companies = CompanyService.getMyCompanies(userId);
 

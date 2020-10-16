@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Button, Input, Modal} from "antd";
 import {EstimationUsersStyledComponent, ModalContainer} from "../../assets/styledComponents/styledComponents";
 import {ProjectOutlined} from '@ant-design/icons';
+import {ApplicationContext} from "../../context/ApplicationContext";
 
 
 type Props = {
@@ -11,17 +12,19 @@ type Props = {
 
 const EstimationModal:React.FC<Props> = ({editUserStoryEstimation,estimatedUsers}) => {
 
+    const appContext = useContext(ApplicationContext);
     const [visible, setVisible] = useState(false);
     const[showEstimationValues,setShowEstimationValues] = useState<boolean>(false);
 
+    const estimationModalFooter = (<div>
+        <Button onClick={e => handleCancel(e)}> Close </Button>
+        <Button type={"primary"} onClick={e => {handleOk(e)}} > Save </Button>
+    </div>);
 
 
-    function getUserId() {
-        return parseInt(localStorage.getItem("userId")!);
-    }
 
     function isEstimated(){
-        return estimatedUsers[getUserId()] !== undefined;
+        return estimatedUsers[appContext.getUserId()] !== undefined;
 
     }
 
@@ -51,10 +54,9 @@ const EstimationModal:React.FC<Props> = ({editUserStoryEstimation,estimatedUsers
                 Estimation
             </Button>
             <Modal
-                title="Estimate to see other estimations and average!"
+                title={isEstimated()?"Estimations:":"Estimate to see other estimations and average!"}
                 visible={visible}
-                onOk={e => {handleOk(e)}}
-                onCancel={e => handleCancel(e)}
+                footer={estimationModalFooter}
 
             >
                 <div className={"newEstimation"}>

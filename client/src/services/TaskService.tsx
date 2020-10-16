@@ -8,7 +8,7 @@ let Task1:TaskModel={
     userStoryId:1,
     title:"registration page",
     description:"creat a page where the user can create account",
-    priority:1,
+    time:"01:10",
     ownerId:1,
     ready:true,
 };
@@ -19,7 +19,6 @@ let Task2:TaskModel={
     userStoryId:1,
     title:"Login page",
     description:"creat a page where the user can Login",
-    priority:2,
     ownerId:1,
     ready:false,
 };
@@ -30,7 +29,7 @@ let Task3:TaskModel={
     userStoryId:1,
     title:"Create backend for Accounts",
     description:"creat DB where the data stored ",
-    priority:3,
+    time:"03:30",
     ready:false,
 };
 TaskList.push(Task3);
@@ -40,7 +39,7 @@ let Task4:TaskModel={
     userStoryId:1,
     title:"Create service to get data from db",
     description:"",
-    priority:1,
+    time:"01:50",
     ownerId:1,
     ready:false,
 };
@@ -51,7 +50,7 @@ let Task5:TaskModel={
     userStoryId:2,
     title:"Create service to get Account balance",
     description:"Create service to get Account balance from Db",
-    priority:4,
+    time:"04:00",
     ownerId:1,
     ready:false,
 };

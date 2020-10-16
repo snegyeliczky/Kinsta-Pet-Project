@@ -218,7 +218,7 @@ export const TaskStyledComponent = styled("div")<TaskProps>(
         gridGap: "10px",
         width: "85%",
         margin: "0 auto",
-        gridTemplateColumns: "10% 20% 40% 12% 5% 3%",
+        gridTemplateColumns: "8vw 15vw 20vw 7vw 5vw 5vw 5vw",
         gridAutoRows: "minmax(70px,auto)",
         borderBottom: "1px solid green",
         color: "white",

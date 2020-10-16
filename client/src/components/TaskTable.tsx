@@ -22,10 +22,11 @@ const TaskTable: React.FC<props> = ({userStory}) => {
         <div>
             <NewTaskModal UserStoryId={userStory.id} setTasks={setTasks}/>
             <TaskHeaderTitleStyledComponent className={"TaskComponent task-header"}>
-                    <div className={"task-id"}>Task Id</div>
-                    <div className={"task-title"}>Title</div>
-                    <div className={"task-description"}>Description</div>
-                    <div>Owner</div>
+                <div className={"task-id"}>Task Id</div>
+                <div className={"task-title"}>Title</div>
+                <div className={"task-description"}>Description</div>
+                <div>Time</div>
+                <div>Owner</div>
             </TaskHeaderTitleStyledComponent>
             {
                 tasks.map(task => {
