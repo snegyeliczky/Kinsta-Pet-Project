@@ -1,10 +1,11 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React, {Dispatch, SetStateAction, useContext, useState} from 'react';
 import {TaskStyledComponent} from "../assets/styledComponents/styledComponents";
 import {Input} from "antd";
 import AlertModal from "./Modals/AlertModal";
 import {TaskModel} from "../interfaces/TaskModel";
 import {DeleteOutlined, SettingOutlined} from '@ant-design/icons';
 import TaskService from "../services/TaskService";
+import {ApplicationContext} from "../context/ApplicationContext";
 
 type props = {
     Task: TaskModel,
@@ -19,6 +20,7 @@ type props = {
 
 const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready, setTasks}) => {
 
+    const appContext = useContext(ApplicationContext);
     const [updatedTask, updateTask] = useState(Task);
 
     const removeTaskAndCloseEditing = () => {
@@ -41,6 +43,11 @@ const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready, setT
         updateTask(updatedTask);
     }
 
+    function updateTime(time: string) {
+        updatedTask.time = time;
+        updateTask(updatedTask);
+    }
+
     function handleEnter(event: React.KeyboardEvent<HTMLDivElement>) {
         if (event.key === 'Enter') {
             let updatedUserStoryTasks = TaskService.updateTask(updatedTask);
@@ -55,6 +62,19 @@ const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready, setT
         setEdit(false);
     };
 
+    const editTime = () => {
+        if (appContext.getUserId() === updatedTask.ownerId) {
+            return (
+                <Input
+                    type={"time"} defaultValue={Task.time ? Task.time : "set time"}
+                    onChange={(e) => updateTime(e.target.value)}/>
+
+            )
+        } else return (
+            updatedTask.time
+        )
+    };
+
 
     return (
         <TaskStyledComponent className={"TaskComponent"} ready={ready} onKeyDown={event => handleEnter(event)}>
@@ -63,6 +83,7 @@ const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready, setT
                 defaultValue={Task.title} onChange={(e) => updateTitle(e.target.value)}/></div>
             <div className={"task-description"}><Input.TextArea
                 defaultValue={Task.description} onChange={(e) => updateDescription(e.target.value)}/></div>
+            <div>{editTime()}</div>
             <div><Input
                 type={"number"} defaultValue={Task.ownerId ? Task.ownerId : ""}
                 onChange={(e) => updateOwner(e.target.valueAsNumber)}/></div>
