@@ -8,7 +8,6 @@ import CollapsePanel from "antd/es/collapse/CollapsePanel";
 import {ProjectTitleContainer, UserStoryStyleComponent} from "../assets/styledComponents/styledComponents";
 import UserStory from "../components/UserStory";
 import UserStoryService from "../services/UserStoryService";
-import TaskService from "../services/TaskService";
 import TaskTable from "../components/TaskTable";
 
 const ProjectPage = () => {
@@ -16,7 +15,16 @@ const ProjectPage = () => {
 
     const {id} = useParams();
     const [userStories, setUserStories] = useState(UserStoryService.getUserStoresByProjectId(parseInt(id)));
+    const [sortDir,setSortDir] = useState(true);
 
+    const sortByUserBusinessValueStory = () =>{
+        let userStoryModels = userStories.sort((a, b)=>{
+            if(sortDir)return (a.businessValue>b.businessValue)? -1:1;
+            return (a.businessValue>b.businessValue)? 1:-1
+        });
+        setSortDir(!sortDir);
+        setUserStories([...userStoryModels])
+    };
 
     const getProjectData = () => {
         let project = ProjectService.getProject(parseInt(id));
@@ -32,12 +40,15 @@ const ProjectPage = () => {
         )
     };
 
+    const removeUSerStoryById =(storyId:number) =>{
+        let userStories = UserStoryService.removeUserStory(storyId);
+        setUserStories(userStories);
+    };
 
     const getUserStores = () => {
         return (<Collapse>{userStories.map(userStory => {
             return (
-                <CollapsePanel key={userStory.id} header={ <UserStory userStory={userStory}/>}>
-                    {console.log(TaskService.getTasksByUserStory(userStory.id))}
+                <CollapsePanel key={userStory.id} header={ <UserStory UserStory={userStory} removeUserStory={removeUSerStoryById}/>}>
                     <TaskTable userStory={userStory}/>
                 </CollapsePanel>
             )
@@ -56,10 +67,12 @@ const ProjectPage = () => {
                 <NewUserStoryModal projectId={parseInt(id)} setTasks={setUserStories}/>
                 <UserStoryStyleComponent id={"userStory-names"} className={"userStory-component"}>
                     <div className={"userStory-id UserStory-part"}>Story ID</div>
-                    <div className={"userStory-userStory UserStory-part"}>User Story</div>
-                    <div className={"userStory-businessValue UserStory-part"}>Business value</div>
+                    <div className={"userStory-userStory UserStory-part userStory-title"}>User Story</div>
+                    <div className={"userStory-businessValue-title UserStory-part"} onClick={
+                        sortByUserBusinessValueStory
+                    }>Business value</div>
                     <div className={"userStory-ownerId UserStory-part"}>Owner id</div>
-                    <div className={"userStory-estimation UserStory-part"}>Estimation time</div>
+                    <div className={"userStory-estimation UserStory-part"}>Estimation Avg. (Story Point)</div>
                 </UserStoryStyleComponent>
                 {getUserStores()}
             </div>

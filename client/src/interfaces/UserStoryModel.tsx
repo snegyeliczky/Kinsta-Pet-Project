@@ -6,4 +6,5 @@ export interface UserStoryModel {
     estimation:number,
     ownerId:number|null,
     status:boolean
+    estimatedUsers:{[key:number]:number}
 }

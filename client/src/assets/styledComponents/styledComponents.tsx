@@ -135,25 +135,53 @@ export const StyledCompanyHeader = styled("div")<StyledCompanyHeaderProps>(
 export const UserStoryStyleComponent = styled("div")(
     {
         display: "grid",
-        gridTemplateColumns: "repeat(6,1fr)",
+        gridTemplateColumns: "repeat(8,1fr)",
         gridAutoRows: "minmax(100px,auto)",
         borderBottom: "1px solid white",
+        fontSize: "15px",
+        fontWeight: "bold",
         "> .UserStory-part": {
             color: "white",
             display: "flex",
-            justifyContent: "center",
             alignItems: "center",
             textAlign: "center",
             padding: "8px"
         },
+        "> .UserStory-part .userStory-edit":{
+            marginRight:"15px"
+        },
         "> .userStory-userStory": {
-            gridColumn: "2/4",
+            gridColumn: "2/5",
+
+        },
+        "> .userStory-title":{
+            justifySelf:"center"
         },
         "> .userStory-estimation": {
             color: "black",
+            justifyContent: "center"
+        },
+        "> .userStory-businessValue-title": {
+            cursor: "pointer",
+            transition: "all .2s ease-in-out",
+        },
+        "> .userStory-businessValue-title:hover": {
+            color: "green",
+            fontSize: "15px",
             fontWeight: "bold"
-        }
+        },
+        "@media screen and (max-width: 600px)": {
+            gridTemplateColumns: "repeat(2,1fr)",
+            gridAutoRows: "minmax(10px,auto)",
+            gridGap: "0px",
+            justifyItems:"center",
+            "> .userStory-userStory": {
+                gridColumn: "auto"
 
+            }, "> .userStory-estimation": {
+                color: "white",
+            }
+        }
     }
 );
 
@@ -180,14 +208,18 @@ export const ProjectTitleContainer = styled("div")(
     }
 );
 
-export const TaskStyledComponent = styled("div")(
+type TaskProps = {
+    ready?: boolean,
+};
+
+export const TaskStyledComponent = styled("div")<TaskProps>(
     {
         display: "grid",
         gridGap: "10px",
-        width:"85%",
-        margin:"0 auto",
-        gridTemplateColumns: "10% 30% 50% 10%",
-        gridAutoRows: "minmax(100px,auto)",
+        width: "85%",
+        margin: "0 auto",
+        gridTemplateColumns: "8vw 15vw 20vw 7vw 5vw 5vw 5vw",
+        gridAutoRows: "minmax(70px,auto)",
         borderBottom: "1px solid green",
         color: "white",
         "> div": {
@@ -197,13 +229,37 @@ export const TaskStyledComponent = styled("div")(
             textAlign: "center",
             padding: "8px"
         },
-        "@media screen and (max-width: 600px)" :{
+        "@media screen and (max-width: 600px)": {
             gridTemplateColumns: "repeat(1,1fr)",
-            gridAutoRows:"minmax(10px,auto)",
+            gridAutoRows: "minmax(10px,auto)",
             gridGap: "0px",
         }
 
 
+    },
+    props => ({
+        backgroundColor: props.ready ? "green" : ""
+    })
+);
+
+const TaskHeaderStyledComponent = styled("div")(
+    {
+        border: "2px solid green",
+        marginTop: "15px",
+        width: "87%",
+        backgroundColor: "rgba(138, 43, 226,0.4)",
+        borderRadius: "20px"
     }
 );
 
+export const TaskHeaderTitleStyledComponent = TaskHeaderStyledComponent.withComponent(TaskStyledComponent);
+
+
+export const EstimationUsersStyledComponent = styled("div")(
+    {
+        display: "grid",
+        gridGap: "10px",
+        gridTemplateColumns:"repeat(2,1fr)",
+        justifyItems: "center",
+    }
+)

@@ -3,6 +3,7 @@ export type TaskModel = {
     userStoryId: number,
     title: string,
     description: string,
-    priority: number,
-    ownerId?: number|null
+    time?: string|null,
+    ownerId?: number|null,
+    ready:boolean
 }
