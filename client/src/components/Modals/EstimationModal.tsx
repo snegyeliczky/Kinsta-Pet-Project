@@ -8,9 +8,10 @@ import {ApplicationContext} from "../../context/ApplicationContext";
 type Props = {
     editUserStoryEstimation:Function,
     estimatedUsers:{[key:string]:number}
+    getUserName:Function
 };
 
-const EstimationModal:React.FC<Props> = ({editUserStoryEstimation,estimatedUsers}) => {
+const EstimationModal:React.FC<Props> = ({editUserStoryEstimation,estimatedUsers,getUserName}) => {
 
     const appContext = useContext(ApplicationContext);
     const [visible, setVisible] = useState(false);
@@ -56,6 +57,7 @@ const EstimationModal:React.FC<Props> = ({editUserStoryEstimation,estimatedUsers
                 title={isEstimated()?"Estimations:":"Estimate to see other estimations and average!"}
                 visible={visible}
                 footer={estimationModalFooter}
+                onCancel={handleCancel}
 
             >
                 <div className={"newEstimation"}>
@@ -70,7 +72,7 @@ const EstimationModal:React.FC<Props> = ({editUserStoryEstimation,estimatedUsers
                         {
                             Object.entries(estimatedUsers).map((k)=>{
                                 return <>
-                                    <div className={"estimation-user"}>{k[0]}</div>
+                                    <div className={"estimation-user"}>{getUserName(k[0])}</div>
                                     <div className={"estimation-estimation"}>{k[1]}-SP</div>
                                 </>
                             })

@@ -11,13 +11,13 @@ import {UserModel} from "../interfaces/UserModel";
 import UserDropdown from "./UserDropdown";
 
 type Props = {
-    userStory: UserStoryModel
-    edit: boolean
-    setEdit: Dispatch<SetStateAction<boolean>>
-    setUserStory: Dispatch<SetStateAction<UserStoryModel>>
-    removeUserStory: Function
-    participants:UserModel[]
-    getUserName:Function,
+    userStory: UserStoryModel,
+    edit: boolean,
+    setEdit: Dispatch<SetStateAction<boolean>>,
+    setUserStory: Dispatch<SetStateAction<UserStoryModel>>,
+    removeUserStory: Function,
+    participants:UserModel[],
+    getUserName:Function
 }
 
 const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory, removeUserStory,participants, getUserName}) => {
@@ -79,10 +79,11 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
                        }}/>
             </div>
             <div className={"userStory-ownerId UserStory-part"}>
-               <UserDropdown userData={participants} onChange={EditUserStoryOwner} base={getUserName()}/>
+               <UserDropdown userData={participants} onChange={EditUserStoryOwner} base={getUserName(userStory.ownerId)}/>
             </div>
             <div className={"userStory-estimation UserStory-part"}>
-                <EstimationModal editUserStoryEstimation={EditUserStoryEstimation} estimatedUsers={userStory.estimatedUsers}/>
+                <EstimationModal editUserStoryEstimation={EditUserStoryEstimation}
+                                 estimatedUsers={userStory.estimatedUsers} getUserName={getUserName}/>
             </div>
             <div className={"UserStory-part"}>
 

@@ -32,8 +32,8 @@ const UserStory: React.FC<Props> = ({UserStory, removeUserStory,getUser,particip
 
     }
 
-    function getUserName():string {
-        let user = getUser(userStory.ownerId);
+    function getUserName(userId:string|null):string {
+        let user = getUser(userId);
         return user? user.firstName : " no owner ";
     }
 
@@ -58,7 +58,7 @@ const UserStory: React.FC<Props> = ({UserStory, removeUserStory,getUser,particip
                     <div className={"userStory-id UserStory-part"}>{userStory.id}</div>
                     <div className={"userStory-userStory UserStory-part"}>{userStory.userStory}</div>
                     <div className={"userStory-businessValue UserStory-part"}>{userStory.businessValue}</div>
-                    <div className={"userStory-ownerId UserStory-part"}>{getUserName()}</div>
+                    <div className={"userStory-ownerId UserStory-part"}>{getUserName(userStory.ownerId)}</div>
                     <div className={"userStory-estimation UserStory-part"}>
                         {checkEstimation()?getEstimatedAverage()+"-SP":"Please Estimate"}</div>
                     <div className={"UserStory-part"} onClick={e => handleChangeToEdit(e)}><SettingOutlined
