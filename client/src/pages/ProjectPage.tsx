@@ -9,6 +9,8 @@ import {ProjectTitleContainer, UserStoryStyleComponent} from "../assets/styledCo
 import UserStory from "../components/UserStory";
 import UserStoryService from "../services/UserStoryService";
 import TaskTable from "../components/TaskTable";
+import {UserModel} from "../interfaces/UserModel";
+import UserService from "../services/UserService";
 
 const ProjectPage = () => {
 
@@ -16,6 +18,7 @@ const ProjectPage = () => {
     const {id} = useParams();
     const [userStories, setUserStories] = useState(UserStoryService.getUserStoresByProjectId(parseInt(id)));
     const [sortDir,setSortDir] = useState(true);
+    const UserList:{[key:string]:UserModel} = {};
 
     const sortByUserBusinessValueStory = () =>{
         let userStoryModels = userStories.sort((a, b)=>{
@@ -28,6 +31,7 @@ const ProjectPage = () => {
 
     const getProjectData = () => {
         let project = ProjectService.getProject(parseInt(id));
+
         if (project)
             return (
                 <ProjectTitleContainer className={"project-title-container"}>
@@ -45,11 +49,16 @@ const ProjectPage = () => {
         setUserStories(userStories);
     };
 
+    const getUser = (userId:string):UserModel|undefined =>{
+        return userId? UserList[userId] = (UserList[userId] || UserService.getUserById(userId))
+            :undefined;
+    };
+
     const getUserStores = () => {
         return (<Collapse>{userStories.map(userStory => {
             return (
-                <CollapsePanel key={userStory.id} header={ <UserStory UserStory={userStory} removeUserStory={removeUSerStoryById}/>}>
-                    <TaskTable userStory={userStory}/>
+                <CollapsePanel key={userStory.id} header={ <UserStory UserStory={userStory} removeUserStory={removeUSerStoryById} getUser={getUser}/>}>
+                    <TaskTable userStory={userStory} getUser={getUser}/>
                 </CollapsePanel>
             )
         })}

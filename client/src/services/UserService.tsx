@@ -1,5 +1,4 @@
 import {UserModel} from "../interfaces/UserModel";
-import {v4 as uuid} from "uuid";
 
 
 const UserList:UserModel[] = [];
@@ -33,7 +32,7 @@ UserList.push(user3);
 
 export default {
 
-    getUserById:(id:"string"):UserModel=>{
+    getUserById:(id:string):UserModel=>{
         return UserList.filter(u=>{
             return u.id===id;
         })[0]

@@ -10,9 +10,10 @@ type Props ={
     Task:TaskModel,
     removeTask:Function,
     setTasks:Dispatch<SetStateAction<TaskModel[]>>
+    getUser:Function
 }
 
-const TaskComponent:React.FC<Props> = ({Task,removeTask,setTasks}) => {
+const TaskComponent:React.FC<Props> = ({Task,removeTask,setTasks, getUser}) => {
 
     const[edit, setEdit] = useState(false);
 
@@ -22,6 +23,11 @@ const TaskComponent:React.FC<Props> = ({Task,removeTask,setTasks}) => {
         setTasks(refreshedTasks);
 
     };
+
+    function showOwner() {
+        let user = getUser(Task.ownerId);
+        return user?user.firstName:"no owner";
+    }
 
     return (
         <>
@@ -33,7 +39,7 @@ const TaskComponent:React.FC<Props> = ({Task,removeTask,setTasks}) => {
                     <div className={"task-title"}>{Task.title}</div>
                     <div className={"task-description"}>{Task.description}</div>
                     <div>{Task.time}</div>
-                    <div>{Task.ownerId}</div>
+                    <div>{showOwner()}</div>
                     <div><Checkbox onChange={e => handleCheck()} checked={Task.ready}/></div>
                     <div><SettingOutlined spin={edit} onClick={()=>setEdit(true)} className={"userStory-edit"}/></div>
                 </TaskStyledComponent>

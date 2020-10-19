@@ -8,10 +8,11 @@ import {ApplicationContext} from "../context/ApplicationContext";
 
 interface Props {
     UserStory: UserStoryModel,
-    removeUserStory:Function
+    removeUserStory:Function,
+    getUser:Function
 }
 
-const UserStory: React.FC<Props> = ({UserStory, removeUserStory}) => {
+const UserStory: React.FC<Props> = ({UserStory, removeUserStory,getUser}) => {
 
     const appContext = useContext(ApplicationContext);
     const [edit, setEdit] = useState(false);
@@ -27,6 +28,11 @@ const UserStory: React.FC<Props> = ({UserStory, removeUserStory}) => {
     function checkEstimation():boolean {
         return userStory.estimatedUsers[appContext.getUserId()] !== undefined;
 
+    }
+
+    function getUserName():string {
+        let user = getUser(userStory.ownerId);
+        return user? user.firstName : " no owner ";
     }
 
     function getEstimatedAverage() {
@@ -49,7 +55,7 @@ const UserStory: React.FC<Props> = ({UserStory, removeUserStory}) => {
                     <div className={"userStory-id UserStory-part"}>{userStory.id}</div>
                     <div className={"userStory-userStory UserStory-part"}>{userStory.userStory}</div>
                     <div className={"userStory-businessValue UserStory-part"}>{userStory.businessValue}</div>
-                    <div className={"userStory-ownerId UserStory-part"}>{userStory.ownerId}</div>
+                    <div className={"userStory-ownerId UserStory-part"}>{getUserName()}</div>
                     <div className={"userStory-estimation UserStory-part"}>
                         {checkEstimation()?getEstimatedAverage()+"-SP":"Please Estimate"}</div>
                     <div className={"UserStory-part"} onClick={e => handleChangeToEdit(e)}><SettingOutlined
