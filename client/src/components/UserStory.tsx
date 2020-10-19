@@ -4,15 +4,17 @@ import {UserStoryStyleComponent} from "../assets/styledComponents/styledComponen
 import {SettingOutlined} from '@ant-design/icons';
 import EditUserStory from "./EditUserStory";
 import {ApplicationContext} from "../context/ApplicationContext";
+import {UserModel} from "../interfaces/UserModel";
 
 
 interface Props {
     UserStory: UserStoryModel,
     removeUserStory:Function,
-    getUser:Function
+    getUser:Function,
+    participants:UserModel[]
 }
 
-const UserStory: React.FC<Props> = ({UserStory, removeUserStory,getUser}) => {
+const UserStory: React.FC<Props> = ({UserStory, removeUserStory,getUser,participants}) => {
 
     const appContext = useContext(ApplicationContext);
     const [edit, setEdit] = useState(false);
@@ -50,7 +52,8 @@ const UserStory: React.FC<Props> = ({UserStory, removeUserStory,getUser}) => {
         <>
         {
             edit? <EditUserStory userStory={userStory} edit={edit} setEdit={setEdit}
-                                 setUserStory={setUserStory} removeUserStory={removeUserStory}/>
+                                 setUserStory={setUserStory} removeUserStory={removeUserStory}
+                                 participants={participants} getUserName={getUserName}/>
                 : <UserStoryStyleComponent key={userStory.id} className={"userStory-component"}>
                     <div className={"userStory-id UserStory-part"}>{userStory.id}</div>
                     <div className={"userStory-userStory UserStory-part"}>{userStory.userStory}</div>

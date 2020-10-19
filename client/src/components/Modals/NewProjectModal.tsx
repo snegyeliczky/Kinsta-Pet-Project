@@ -1,10 +1,11 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React, {Dispatch, SetStateAction, useContext, useState} from 'react';
 import {Modal, Button, Input} from 'antd';
 import {PlusOutlined, ProjectOutlined} from '@ant-design/icons';
 import ProjectService from "../../services/ProjectService";
 import {useHistory} from "react-router-dom";
 import {Project} from "../../interfaces/Project";
 import {ModalContainer} from "../../assets/styledComponents/styledComponents";
+import {ApplicationContext} from "../../context/ApplicationContext";
 
 interface Props {
     companyId: number
@@ -17,6 +18,7 @@ const NewProjectModal: React.FC<Props> = ({companyId, setDisplay, setProjects}) 
     const [visible, setVisible] = useState(false);
     const [projectName, setProjectName] = useState("");
     const history = useHistory();
+    const appContext = useContext(ApplicationContext);
 
     const showModal = (event: React.MouseEvent<HTMLElement>) => {
         event.stopPropagation();
@@ -27,7 +29,7 @@ const NewProjectModal: React.FC<Props> = ({companyId, setDisplay, setProjects}) 
     const handleSave = (e: React.MouseEvent<HTMLElement>, go:boolean) => {
         e.stopPropagation();
         if (projectName.length > 2) {
-            let projects = ProjectService.saveNewProject(projectName, companyId);
+            let projects = ProjectService.saveNewProject(projectName, companyId,appContext.getUserId());
             setProjects(projects);
             let newProjectId = projects.reduce((re, project) => {
                 if (project.name === projectName) {

@@ -17,47 +17,60 @@ const ProjectPage = () => {
 
     const {id} = useParams();
     const [userStories, setUserStories] = useState(UserStoryService.getUserStoresByProjectId(parseInt(id)));
-    const [sortDir,setSortDir] = useState(true);
-    const UserList:{[key:string]:UserModel} = {};
+    const [sortDir, setSortDir] = useState(true);
+    const UserList: { [key: string]: UserModel } = {};
 
-    const sortByUserBusinessValueStory = () =>{
-        let userStoryModels = userStories.sort((a, b)=>{
-            if(sortDir)return (a.businessValue>b.businessValue)? -1:1;
-            return (a.businessValue>b.businessValue)? 1:-1
+
+    const sortByUserBusinessValueStory = () => {
+        let userStoryModels = userStories.sort((a, b) => {
+            if (sortDir) return (a.businessValue > b.businessValue) ? -1 : 1;
+            return (a.businessValue > b.businessValue) ? 1 : -1
         });
         setSortDir(!sortDir);
         setUserStories([...userStoryModels])
     };
 
+
+    function loadParticipantUsersById() {
+        let project = ProjectService.getProject(parseInt(id));
+        let participantList: UserModel[] = [];
+        project.participants.forEach(id => {
+            participantList.push(UserService.getUserById(id))
+        });
+        return participantList
+    }
+
+
     const getProjectData = () => {
         let project = ProjectService.getProject(parseInt(id));
-
-        if (project)
+        if (project) {
             return (
                 <ProjectTitleContainer className={"project-title-container"}>
                     <h2>{project.name}</h2>
                     <h3>projectID: {project.id}</h3>
                 </ProjectTitleContainer>
             );
-        else return (
+        } else return (
             <h2>No project found wit this id </h2>
         )
     };
 
-    const removeUSerStoryById =(storyId:number) =>{
+    const removeUSerStoryById = (storyId: number) => {
         let userStories = UserStoryService.removeUserStory(storyId);
         setUserStories(userStories);
     };
 
-    const getUser = (userId:string):UserModel|undefined =>{
-        return userId? UserList[userId] = (UserList[userId] || UserService.getUserById(userId))
-            :undefined;
+    const getUser = (userId: string): UserModel | undefined => {
+        return userId ? UserList[userId] = (UserList[userId] || UserService.getUserById(userId))
+            : undefined;
     };
 
     const getUserStores = () => {
         return (<Collapse>{userStories.map(userStory => {
             return (
-                <CollapsePanel key={userStory.id} header={ <UserStory UserStory={userStory} removeUserStory={removeUSerStoryById} getUser={getUser}/>}>
+                <CollapsePanel key={userStory.id}
+                               header={<UserStory UserStory={userStory} removeUserStory={removeUSerStoryById}
+                                                  getUser={getUser} participants={loadParticipantUsersById()}/>}>
                     <TaskTable userStory={userStory} getUser={getUser}/>
                 </CollapsePanel>
             )
@@ -79,7 +92,8 @@ const ProjectPage = () => {
                     <div className={"userStory-userStory UserStory-part userStory-title"}>User Story</div>
                     <div className={"userStory-businessValue-title UserStory-part"} onClick={
                         sortByUserBusinessValueStory
-                    }>Business value</div>
+                    }>Business value
+                    </div>
                     <div className={"userStory-ownerId UserStory-part"}>Owner id</div>
                     <div className={"userStory-estimation UserStory-part"}>Estimation Avg. (Story Point)</div>
                 </UserStoryStyleComponent>

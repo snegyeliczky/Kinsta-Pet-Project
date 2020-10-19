@@ -22,6 +22,7 @@ let project3 = {
     id:3,
     companyId:2,
     name:"New cash machine frontend",
+    participants:["d448b8bb-3df5-4683-9507-3648e6d98b67"]
 };
 projectList.push(project3);
 
@@ -29,6 +30,7 @@ let project4 = {
     id:4,
     companyId:1,
     name:"Hr management system",
+    participants:["d448b8bb-3df5-4683-9507-3648e6d98b67"]
 };
 projectList.push(project4);
 
@@ -53,11 +55,12 @@ export default {
 
     },
 
-    saveNewProject:(name:string,companyId:number):Project[]=>{
+    saveNewProject:(name:string,companyId:number,creatorId:string):Project[]=>{
         let newProject:Project = {
             id:projectList.length+1,
             companyId:companyId,
             name:name,
+            participants:[creatorId]
         };
         projectList.push(newProject);
         return projectList.filter((project)=>{

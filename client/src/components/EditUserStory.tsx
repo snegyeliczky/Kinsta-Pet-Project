@@ -7,6 +7,8 @@ import UserStoryService from "../services/UserStoryService";
 import AlertModal from "./Modals/AlertModal";
 import EstimationModal from "./Modals/EstimationModal";
 import {ApplicationContext} from "../context/ApplicationContext";
+import {UserModel} from "../interfaces/UserModel";
+import UserDropdown from "./UserDropdown";
 
 type Props = {
     userStory: UserStoryModel
@@ -14,9 +16,11 @@ type Props = {
     setEdit: Dispatch<SetStateAction<boolean>>
     setUserStory: Dispatch<SetStateAction<UserStoryModel>>
     removeUserStory: Function
+    participants:UserModel[]
+    getUserName:Function,
 }
 
-const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory, removeUserStory}) => {
+const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory, removeUserStory,participants, getUserName}) => {
 
 
     const appContext = useContext(ApplicationContext);
@@ -75,10 +79,7 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
                        }}/>
             </div>
             <div className={"userStory-ownerId UserStory-part"}>
-                <Input type={"number"} defaultValue={userStory.ownerId ? userStory.ownerId : ''}
-                       onChange={e => {
-                           EditUserStoryOwner(e.target.value)
-                       }}/>
+               <UserDropdown userData={participants} onChange={EditUserStoryOwner} base={getUserName()}/>
             </div>
             <div className={"userStory-estimation UserStory-part"}>
                 <EstimationModal editUserStoryEstimation={EditUserStoryEstimation} estimatedUsers={userStory.estimatedUsers}/>
