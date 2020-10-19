@@ -4,6 +4,6 @@ export type TaskModel = {
     title: string,
     description: string,
     time?: string|null,
-    ownerId?: number|null,
+    ownerId?: string|null,
     ready:boolean
 }

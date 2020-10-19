@@ -16,7 +16,7 @@ const NewUserStoryModal:React.FC<Props>= ({projectId,setTasks}) => {
     const [visible, setVisible] = useState(false);
     const[UserStory, setUserStory ] = useState("");
     const[BusinessValue, setBusinessValue ] = useState(0);
-    const[OwnerId, setOwnerId ] = useState<number|null>(null);
+    const[OwnerId, setOwnerId ] = useState<string|null>(null);
     const[Estimation, setEstimation] = useState(0);
 
 
@@ -84,8 +84,8 @@ const NewUserStoryModal:React.FC<Props>= ({projectId,setTasks}) => {
                     <Input placeholder={"Business value"} prefix={<ProjectOutlined />}  type={"number"}
                            onChange={event => {setBusinessValue(event.target.valueAsNumber)}}
                     />
-                    <Input placeholder={"Owner"} prefix={<ProjectOutlined />}  type={"number"}
-                           onChange={event => {setOwnerId(event.target.valueAsNumber)}}
+                    <Input placeholder={"Owner"} prefix={<ProjectOutlined />}  type={"text"}
+                           onChange={event => {setOwnerId(event.target.value)}}
                     />
                     <Input placeholder={"Estimation"} prefix={<ProjectOutlined />}  type={"number"}
                            onChange={event => {setEstimation(event.target.valueAsNumber)}}

@@ -5,7 +5,7 @@ import {useHistory} from "react-router-dom";
 interface applicationContextProps{
     username:string,
     setUserName:Dispatch<SetStateAction<string>>,
-    getUserId: ()=>number;
+    getUserId: ()=>string;
 }
 
 
@@ -18,11 +18,11 @@ export const ApplicationProvider = (props:any) => {
     const [username,setUserName] = useState<string>("");
 
 
-    const getUserId=():number=>{
+    const getUserId=():string=>{
         let userId = localStorage.getItem("userId");
-        if (userId) return parseInt(userId);
+        if (userId) return userId;
         history.push("/auth");
-        return 0;
+        return "";
     };
 
 

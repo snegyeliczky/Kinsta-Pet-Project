@@ -10,7 +10,7 @@ import {NewCompanyContainer}from "../assets/styledComponents/styledComponents"
 const NewCompany = () => {
 
     const appContext =  useContext(ApplicationContext);
-    let userId:number = appContext.getUserId();
+    let userId:string = appContext.getUserId();
     const [newCompName, setNewCompName] = useState<string>("");
     const history = useHistory();
 

@@ -15,7 +15,7 @@ const NewTaskModal: React.FC<Props> = ({UserStoryId, setTasks}) => {
     const [visible, setVisible] = useState(false);
     const [taskTitle, setTaskTitle] = useState("");
     const [taskDescription, setTaskDescription] = useState("");
-    const [OwnerId, setOwnerId] = useState<number | null>(null);
+    const [OwnerId, setOwnerId] = useState<string | null>(null);
     const [time, setTime] = useState<string>();
 
     function showModal(event: React.MouseEvent<HTMLElement>) {
@@ -77,9 +77,9 @@ const NewTaskModal: React.FC<Props> = ({UserStoryId, setTasks}) => {
                                             setTaskDescription(event.target.value)
                                         }}
                         />
-                        <Input placeholder={"Task owner"} prefix={<ProjectOutlined/>} type={"number"}
+                        <Input placeholder={"Task owner"} prefix={<ProjectOutlined/>} type={"text"}
                                onChange={event => {
-                                   setOwnerId(event.target.valueAsNumber)
+                                   setOwnerId(event.target.value)
                                }}
                         />
                         <Input type={"time"} onChange={event => {

@@ -31,7 +31,7 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
         setUserStory(userStory);
     };
 
-    const EditUserStoryOwner = (owner: number) => {
+    const EditUserStoryOwner = (owner: string) => {
         userStory.ownerId = owner;
         setUserStory(userStory);
     };
@@ -77,7 +77,7 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
             <div className={"userStory-ownerId UserStory-part"}>
                 <Input type={"number"} defaultValue={userStory.ownerId ? userStory.ownerId : ''}
                        onChange={e => {
-                           EditUserStoryOwner(e.target.valueAsNumber)
+                           EditUserStoryOwner(e.target.value)
                        }}/>
             </div>
             <div className={"userStory-estimation UserStory-part"}>

@@ -6,6 +6,7 @@ let project1 = {
     id:1,
     companyId:1,
     name:"New Bank Accont system",
+    participants:["d448b8bb-3df5-4683-9507-3648e6d98b67","6f0050a8-f799-49ad-b71d-9372744ce063","b581a269-5e24-4079-82a6-16a5854a9bdc"]
 };
 projectList.push(project1);
 
@@ -13,6 +14,7 @@ let project2 = {
     id:2,
     companyId:1,
     name:"Bank analise system ",
+    participants:["b581a269-5e24-4079-82a6-16a5854a9bdc","d448b8bb-3df5-4683-9507-3648e6d98b67"]
 };
 projectList.push(project2);
 

@@ -7,7 +7,7 @@ import {ApplicationContext} from "../../context/ApplicationContext";
 
 type Props = {
     editUserStoryEstimation:Function,
-    estimatedUsers:{[key:number]:number}
+    estimatedUsers:{[key:string]:number}
 };
 
 const EstimationModal:React.FC<Props> = ({editUserStoryEstimation,estimatedUsers}) => {
@@ -25,7 +25,6 @@ const EstimationModal:React.FC<Props> = ({editUserStoryEstimation,estimatedUsers
 
     function isEstimated(){
         return estimatedUsers[appContext.getUserId()] !== undefined;
-
     }
 
     function showModal(event: React.MouseEvent<HTMLElement>) {

@@ -38,8 +38,8 @@ const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready, setT
         updateTask(updatedTask);
     }
 
-    function updateOwner(valueAsNumber: number) {
-        updatedTask.ownerId = valueAsNumber;
+    function updateOwner(userId: string) {
+        updatedTask.ownerId = userId;
         updateTask(updatedTask);
     }
 
@@ -86,7 +86,7 @@ const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready, setT
             <div>{editTime()}</div>
             <div><Input
                 type={"number"} defaultValue={Task.ownerId ? Task.ownerId : ""}
-                onChange={(e) => updateOwner(e.target.valueAsNumber)}/></div>
+                onChange={(e) => updateOwner(e.target.value)}/></div>
             <AlertModal text={"Are you sure to delete this task ?"} buttonText={<DeleteOutlined/>}
                         OkFunction={() => removeTaskAndCloseEditing()}/>
             <div><SettingOutlined spin={edit} onClick={handleStopEdit} className={"userStory-edit"}/></div>
