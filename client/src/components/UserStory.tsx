@@ -48,7 +48,7 @@ const UserStory: React.FC<Props> = ({UserStory, removeUserStory}) => {
         {
             edit? <EditUserStory userStory={userStory} edit={edit} setEdit={setEdit}
                                  setUserStory={setUserStory} removeUserStory={removeUserStory}/>
-                : <UserStoryStyleComponent key={userStory.id} className={"userStory-component"}>
+                : <UserStoryStyleComponent key={userStory.id} className={"userStory-component"} hover={true}>
                     <div className={"userStory-id UserStory-part"}>{userStory.id}</div>
                     <div className={"userStory-userStory UserStory-part"}>{userStory.userStory}</div>
                     <div className={"userStory-businessValue UserStory-part"}>{userStory.businessValue}</div>
