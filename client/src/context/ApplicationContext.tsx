@@ -35,8 +35,7 @@ export const ApplicationProvider = (props:any) => {
 
     const getLoggedInUserName = ():string =>{
         return getLoggedInUser().firstName;
-    }
-
+    };
 
     const sampleAppContext: applicationContextProps ={
         username:username,

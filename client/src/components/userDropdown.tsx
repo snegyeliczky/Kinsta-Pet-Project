@@ -22,7 +22,7 @@ const UserDropdown:React.FC<props> = ({userData,onChange,base}) => {
 
     const menu = (
         <Menu >
-            <Menu.Item key={"0"} onClick={(e)=>onClick('',"no owner")}> no owner</Menu.Item>
+            <Menu.Item key={"0"} onClick={(e)=>onClick('',"no owner")}> ---</Menu.Item>
             {userData.map( user =>{
                 return <Menu.Item key={user.id} onClick={(e)=>onClick(user.id,user.firstName)}> {user.firstName}</Menu.Item>
                 })

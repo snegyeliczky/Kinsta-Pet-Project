@@ -41,7 +41,7 @@ export const ProjectProvider = (props:any) => {
     };
 
     const getUserName = (userId:string|undefined|null):string =>{
-        if(!userId) return "no Owner";
+        if(!userId) return "---";
         let user = getUser(userId);
         return user? user.firstName:"user not found"
     };
