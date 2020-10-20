@@ -86,7 +86,7 @@ const ProjectPage = () => {
             </div>
 
             <div className={"userStory-container"}>
-                <NewUserStoryModal projectId={parseInt(id)} setTasks={setUserStories}/>
+                <NewUserStoryModal projectId={parseInt(id)} setTasks={setUserStories} participants={loadParticipantUsersById()}/>
                 <UserStoryStyleComponent id={"userStory-names"} className={"userStory-component"}>
                     <div className={"userStory-id UserStory-part"}>Story ID</div>
                     <div className={"userStory-userStory UserStory-part userStory-title"}>User Story</div>

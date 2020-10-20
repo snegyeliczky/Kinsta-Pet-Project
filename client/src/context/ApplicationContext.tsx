@@ -1,11 +1,15 @@
 import React, {createContext, Dispatch, SetStateAction, useState} from 'react';
 import {useHistory} from "react-router-dom";
+import {UserModel} from "../interfaces/UserModel";
+import UserService from "../services/UserService";
 
 
 interface applicationContextProps{
     username:string,
     setUserName:Dispatch<SetStateAction<string>>,
     getUserId: ()=>string;
+    getLoggedInUser: ()=>UserModel;
+    getLoggedInUserName: ()=>string;
 }
 
 
@@ -25,11 +29,21 @@ export const ApplicationProvider = (props:any) => {
         return "";
     };
 
+    const getLoggedInUser = ():UserModel =>{
+        return UserService.getUserById(getUserId())
+    };
+
+    const getLoggedInUserName = ():string =>{
+        return getLoggedInUser().firstName;
+    }
+
 
     const sampleAppContext: applicationContextProps ={
         username:username,
         setUserName:setUserName,
-        getUserId:getUserId
+        getUserId:getUserId,
+        getLoggedInUser:getLoggedInUser,
+        getLoggedInUserName:getLoggedInUserName
     };
 
 
