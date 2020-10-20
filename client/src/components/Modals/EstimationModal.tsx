@@ -3,17 +3,18 @@ import {Button, Input, Modal} from "antd";
 import {EstimationUsersStyledComponent, ModalContainer} from "../../assets/styledComponents/styledComponents";
 import {ProjectOutlined} from '@ant-design/icons';
 import {ApplicationContext} from "../../context/ApplicationContext";
+import ProjectContext from "../../context/ProjectContext";
 
 
 type Props = {
     editUserStoryEstimation:Function,
     estimatedUsers:{[key:string]:number}
-    getUserName:Function
 };
 
-const EstimationModal:React.FC<Props> = ({editUserStoryEstimation,estimatedUsers,getUserName}) => {
+const EstimationModal:React.FC<Props> = ({editUserStoryEstimation,estimatedUsers}) => {
 
     const appContext = useContext(ApplicationContext);
+    const projectContext = useContext(ProjectContext);
     const [visible, setVisible] = useState(false);
     const[showEstimationValues,setShowEstimationValues] = useState<boolean>(false);
 
@@ -72,7 +73,7 @@ const EstimationModal:React.FC<Props> = ({editUserStoryEstimation,estimatedUsers
                         {
                             Object.entries(estimatedUsers).map((k)=>{
                                 return <>
-                                    <div className={"estimation-user"}>{getUserName(k[0])}</div>
+                                    <div className={"estimation-user"}>{projectContext.getUserName(k[0])}</div>
                                     <div className={"estimation-estimation"}>{k[1]}-SP</div>
                                 </>
                             })

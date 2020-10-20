@@ -7,10 +7,9 @@ import NewTaskModal from "./Modals/NewTaskModal";
 
 type props = {
     userStory: UserStoryModel,
-    getUser:Function
 }
 
-const TaskTable: React.FC<props> = ({userStory,getUser}) => {
+const TaskTable: React.FC<props> = ({userStory}) => {
 
     const [tasks, setTasks] = useState(TaskService.getTasksByUserStory(userStory.id));
 
@@ -31,7 +30,7 @@ const TaskTable: React.FC<props> = ({userStory,getUser}) => {
             </TaskHeaderTitleStyledComponent>
             {
                 tasks.map(task => {
-                    return <TaskComponent Task={task} removeTask={removeTask} setTasks={setTasks} getUser={getUser}/>
+                    return <TaskComponent key={task.id} Task={task} removeTask={removeTask} setTasks={setTasks}/>
                 })
             }
         </div>

@@ -5,7 +5,7 @@ import {UserStoryModel} from "../../interfaces/UserStoryModel";
 import TaskService from "../../services/UserStoryService";
 import {ModalContainer} from "../../assets/styledComponents/styledComponents";
 import {UserModel} from "../../interfaces/UserModel";
-import UserDropdown from "../UserDropdown";
+import UserDropdown from "../userDropdown";
 import {ApplicationContext} from "../../context/ApplicationContext";
 
 

@@ -7,8 +7,8 @@ import UserStoryService from "../services/UserStoryService";
 import AlertModal from "./Modals/AlertModal";
 import EstimationModal from "./Modals/EstimationModal";
 import {ApplicationContext} from "../context/ApplicationContext";
-import {UserModel} from "../interfaces/UserModel";
-import UserDropdown from "./UserDropdown";
+import UserDropdown from "./userDropdown";
+import ProjectContext from "../context/ProjectContext";
 
 type Props = {
     userStory: UserStoryModel,
@@ -16,14 +16,13 @@ type Props = {
     setEdit: Dispatch<SetStateAction<boolean>>,
     setUserStory: Dispatch<SetStateAction<UserStoryModel>>,
     removeUserStory: Function,
-    participants:UserModel[],
-    getUserName:Function
 }
 
-const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory, removeUserStory,participants, getUserName}) => {
+const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory, removeUserStory}) => {
 
 
     const appContext = useContext(ApplicationContext);
+    const projectContext = useContext(ProjectContext);
 
     const EditUserStory = (story: string) => {
         userStory.userStory = story;
@@ -79,11 +78,11 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
                        }}/>
             </div>
             <div className={"userStory-ownerId UserStory-part"}>
-               <UserDropdown userData={participants} onChange={EditUserStoryOwner} base={getUserName(userStory.ownerId)}/>
+               <UserDropdown userData={projectContext.participants} onChange={EditUserStoryOwner} base={projectContext.getUserName(userStory.ownerId)}/>
             </div>
             <div className={"userStory-estimation UserStory-part"}>
                 <EstimationModal editUserStoryEstimation={EditUserStoryEstimation}
-                                 estimatedUsers={userStory.estimatedUsers} getUserName={getUserName}/>
+                                 estimatedUsers={userStory.estimatedUsers} />
             </div>
             <div className={"UserStory-part"}>
 
@@ -97,8 +96,3 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
 };
 
 export default EditUserStory;
-
-/*
-<Input type={"number"} defaultValue={userStory.estimatedUsers[getUserId()]}
-                       onChange={e => EditUserStoryPoint(e.target.valueAsNumber)}/>SP
- */
