@@ -7,19 +7,23 @@ import UserStoryService from "../services/UserStoryService";
 import AlertModal from "./Modals/AlertModal";
 import EstimationModal from "./Modals/EstimationModal";
 import {ApplicationContext} from "../context/ApplicationContext";
+import UserDropdown from "./userDropdown";
+import ProjectContext from "../context/ProjectContext";
 
 type Props = {
-    userStory: UserStoryModel
-    edit: boolean
-    setEdit: Dispatch<SetStateAction<boolean>>
-    setUserStory: Dispatch<SetStateAction<UserStoryModel>>
-    removeUserStory: Function
+    userStory: UserStoryModel,
+    edit: boolean,
+    setEdit: Dispatch<SetStateAction<boolean>>,
+    setUserStory: Dispatch<SetStateAction<UserStoryModel>>,
+    removeUserStory: Function,
 }
+
 
 const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory, removeUserStory}) => {
 
-
     const appContext = useContext(ApplicationContext);
+    const projectContext = useContext(ProjectContext);
+
 
     const EditUserStory = (story: string) => {
         userStory.userStory = story;
@@ -31,12 +35,10 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
         setUserStory(userStory);
     };
 
-    const EditUserStoryOwner = (owner: number) => {
+    const EditUserStoryOwner = (owner: string) => {
         userStory.ownerId = owner;
         setUserStory(userStory);
     };
-
-
 
     const EditUserStoryEstimation = (point: number) => {
         let userId = appContext.getUserId();
@@ -59,7 +61,7 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
 
 
     return (
-        <UserStoryStyleComponent onClick={event => event.stopPropagation()} onKeyDown={event => handleEnter(event)}>
+        <UserStoryStyleComponent onClick={event => event.stopPropagation()} onKeyDown={event => handleEnter(event)} hover={true}>
             <div className={"userStory-id UserStory-part"}>
                 {userStory.id}
             </div>
@@ -75,13 +77,11 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
                        }}/>
             </div>
             <div className={"userStory-ownerId UserStory-part"}>
-                <Input type={"number"} defaultValue={userStory.ownerId ? userStory.ownerId : ''}
-                       onChange={e => {
-                           EditUserStoryOwner(e.target.valueAsNumber)
-                       }}/>
+               <UserDropdown userData={projectContext.participants} onChange={EditUserStoryOwner} base={projectContext.getUserName(userStory.ownerId)}/>
             </div>
             <div className={"userStory-estimation UserStory-part"}>
-                <EstimationModal editUserStoryEstimation={EditUserStoryEstimation} estimatedUsers={userStory.estimatedUsers}/>
+                <EstimationModal editUserStoryEstimation={EditUserStoryEstimation}
+                                 estimatedUsers={userStory.estimatedUsers} />
             </div>
             <div className={"UserStory-part"}>
 
@@ -95,8 +95,3 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
 };
 
 export default EditUserStory;
-
-/*
-<Input type={"number"} defaultValue={userStory.estimatedUsers[getUserId()]}
-                       onChange={e => EditUserStoryPoint(e.target.valueAsNumber)}/>SP
- */

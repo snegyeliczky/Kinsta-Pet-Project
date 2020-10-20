@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {useParams} from "react-router";
 import ProjectService from "../services/ProjectService";
 import "../assets/ProjectStyle.css"
@@ -9,47 +9,58 @@ import {ProjectTitleContainer, UserStoryStyleComponent} from "../assets/styledCo
 import UserStory from "../components/UserStory";
 import UserStoryService from "../services/UserStoryService";
 import TaskTable from "../components/TaskTable";
+import ProjectContext from "../context/ProjectContext";
 
 const ProjectPage = () => {
 
-
+    const projectContext=useContext(ProjectContext);
     const {id} = useParams();
     const [userStories, setUserStories] = useState(UserStoryService.getUserStoresByProjectId(parseInt(id)));
-    const [sortDir,setSortDir] = useState(true);
+    const [sortDir, setSortDir] = useState(true);
 
-    const sortByUserBusinessValueStory = () =>{
-        let userStoryModels = userStories.sort((a, b)=>{
-            if(sortDir)return (a.businessValue>b.businessValue)? -1:1;
-            return (a.businessValue>b.businessValue)? 1:-1
+
+    useEffect(()=>{
+        projectContext.loadParticipantUsersById(id);
+    },[id]);
+
+
+    const sortByUserBusinessValueStory = () => {
+        let userStoryModels = userStories.sort((a, b) => {
+            if (sortDir) return (a.businessValue > b.businessValue) ? -1 : 1;
+            return (a.businessValue > b.businessValue) ? 1 : -1
         });
         setSortDir(!sortDir);
         setUserStories([...userStoryModels])
     };
 
+
     const getProjectData = () => {
         let project = ProjectService.getProject(parseInt(id));
-        if (project)
+        if (project) {
             return (
                 <ProjectTitleContainer className={"project-title-container"}>
                     <h2>{project.name}</h2>
                     <h3>projectID: {project.id}</h3>
                 </ProjectTitleContainer>
             );
-        else return (
+        } else return (
             <h2>No project found wit this id </h2>
         )
     };
 
-    const removeUSerStoryById =(storyId:number) =>{
+
+    const removeUSerStoryById = (storyId: number) => {
         let userStories = UserStoryService.removeUserStory(storyId);
         setUserStories(userStories);
     };
 
+
     const getUserStores = () => {
         return (<Collapse>{userStories.map(userStory => {
             return (
-                <CollapsePanel key={userStory.id} header={ <UserStory UserStory={userStory} removeUserStory={removeUSerStoryById}/>}>
-                    <TaskTable userStory={userStory}/>
+                <CollapsePanel key={userStory.id}
+                               header={<UserStory UserStory={userStory} removeUserStory={removeUSerStoryById}/>}>
+                    <TaskTable userStory={userStory} />
                 </CollapsePanel>
             )
         })}
@@ -64,14 +75,15 @@ const ProjectPage = () => {
             </div>
 
             <div className={"userStory-container"}>
-                <NewUserStoryModal projectId={parseInt(id)} setTasks={setUserStories}/>
-                <UserStoryStyleComponent id={"userStory-names"} className={"userStory-component"}>
+                <NewUserStoryModal projectId={parseInt(id)} setTasks={setUserStories} participants={projectContext.participants}/>
+                <UserStoryStyleComponent id={"userStory-names"} className={"userStory-component"} hover={false}>
                     <div className={"userStory-id UserStory-part"}>Story ID</div>
                     <div className={"userStory-userStory UserStory-part userStory-title"}>User Story</div>
                     <div className={"userStory-businessValue-title UserStory-part"} onClick={
                         sortByUserBusinessValueStory
-                    }>Business value</div>
-                    <div className={"userStory-ownerId UserStory-part"}>Owner id</div>
+                    }>Business value
+                    </div>
+                    <div className={"userStory-ownerId UserStory-part"}>Owner</div>
                     <div className={"userStory-estimation UserStory-part"}>Estimation Avg. (Story Point)</div>
                 </UserStoryStyleComponent>
                 {getUserStores()}

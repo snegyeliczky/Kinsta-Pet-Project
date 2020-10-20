@@ -6,6 +6,8 @@ import {TaskModel} from "../interfaces/TaskModel";
 import {DeleteOutlined, SettingOutlined} from '@ant-design/icons';
 import TaskService from "../services/TaskService";
 import {ApplicationContext} from "../context/ApplicationContext";
+import UserDropdown from './userDropdown';
+import ProjectContext from "../context/ProjectContext";
 
 type props = {
     Task: TaskModel,
@@ -14,14 +16,15 @@ type props = {
     setEdit: Dispatch<SetStateAction<boolean>>,
     ready: boolean,
     setTasks: Dispatch<SetStateAction<TaskModel[]>>,
-
 }
 
 
 const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready, setTasks}) => {
 
     const appContext = useContext(ApplicationContext);
+    const projectContext = useContext(ProjectContext);
     const [updatedTask, updateTask] = useState(Task);
+
 
     const removeTaskAndCloseEditing = () => {
         setEdit(false);
@@ -38,8 +41,8 @@ const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready, setT
         updateTask(updatedTask);
     }
 
-    function updateOwner(valueAsNumber: number) {
-        updatedTask.ownerId = valueAsNumber;
+    function updateOwner(userId: string) {
+        updatedTask.ownerId = userId;
         updateTask(updatedTask);
     }
 
@@ -84,9 +87,8 @@ const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready, setT
             <div className={"task-description"}><Input.TextArea
                 defaultValue={Task.description} onChange={(e) => updateDescription(e.target.value)}/></div>
             <div>{editTime()}</div>
-            <div><Input
-                type={"number"} defaultValue={Task.ownerId ? Task.ownerId : ""}
-                onChange={(e) => updateOwner(e.target.valueAsNumber)}/></div>
+            <div><UserDropdown userData={projectContext.participants}
+                               onChange={updateOwner} base={projectContext.getUserName(Task.ownerId)}/></div>
             <AlertModal text={"Are you sure to delete this task ?"} buttonText={<DeleteOutlined/>}
                         OkFunction={() => removeTaskAndCloseEditing()}/>
             <div><SettingOutlined spin={edit} onClick={handleStopEdit} className={"userStory-edit"}/></div>

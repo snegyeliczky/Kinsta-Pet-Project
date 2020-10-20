@@ -3,16 +3,18 @@ import {Button, Input, Modal} from "antd";
 import {EstimationUsersStyledComponent, ModalContainer} from "../../assets/styledComponents/styledComponents";
 import {ProjectOutlined} from '@ant-design/icons';
 import {ApplicationContext} from "../../context/ApplicationContext";
+import ProjectContext from "../../context/ProjectContext";
 
 
 type Props = {
     editUserStoryEstimation:Function,
-    estimatedUsers:{[key:number]:number}
+    estimatedUsers:{[key:string]:number}
 };
 
 const EstimationModal:React.FC<Props> = ({editUserStoryEstimation,estimatedUsers}) => {
 
     const appContext = useContext(ApplicationContext);
+    const projectContext = useContext(ProjectContext);
     const [visible, setVisible] = useState(false);
     const[showEstimationValues,setShowEstimationValues] = useState<boolean>(false);
 
@@ -25,7 +27,6 @@ const EstimationModal:React.FC<Props> = ({editUserStoryEstimation,estimatedUsers
 
     function isEstimated(){
         return estimatedUsers[appContext.getUserId()] !== undefined;
-
     }
 
     function showModal(event: React.MouseEvent<HTMLElement>) {
@@ -57,6 +58,7 @@ const EstimationModal:React.FC<Props> = ({editUserStoryEstimation,estimatedUsers
                 title={isEstimated()?"Estimations:":"Estimate to see other estimations and average!"}
                 visible={visible}
                 footer={estimationModalFooter}
+                onCancel={handleCancel}
 
             >
                 <div className={"newEstimation"}>
@@ -71,7 +73,7 @@ const EstimationModal:React.FC<Props> = ({editUserStoryEstimation,estimatedUsers
                         {
                             Object.entries(estimatedUsers).map((k)=>{
                                 return <>
-                                    <div className={"estimation-user"}>{k[0]}</div>
+                                    <div className={"estimation-user"}>{projectContext.getUserName(k[0])}</div>
                                     <div className={"estimation-estimation"}>{k[1]}-SP</div>
                                 </>
                             })

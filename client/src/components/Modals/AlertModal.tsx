@@ -2,7 +2,6 @@ import React, { useState} from 'react';
 import {Modal, Button} from 'antd';
 
 
-
 type Props = {
     text:string,
     buttonText:any,

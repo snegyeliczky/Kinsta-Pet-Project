@@ -6,17 +6,20 @@ import {TaskHeaderTitleStyledComponent} from "../assets/styledComponents/styledC
 import NewTaskModal from "./Modals/NewTaskModal";
 
 type props = {
-    userStory: UserStoryModel
+    userStory: UserStoryModel,
 }
+
 
 const TaskTable: React.FC<props> = ({userStory}) => {
 
     const [tasks, setTasks] = useState(TaskService.getTasksByUserStory(userStory.id));
 
+
     const removeTask = (taskId: string) => {
         let refreshedTasks = TaskService.removeTask(taskId);
         setTasks([...refreshedTasks]);
     };
+
 
     return (
         <div>
@@ -30,7 +33,7 @@ const TaskTable: React.FC<props> = ({userStory}) => {
             </TaskHeaderTitleStyledComponent>
             {
                 tasks.map(task => {
-                    return <TaskComponent Task={task} removeTask={removeTask} setTasks={setTasks}/>
+                    return <TaskComponent key={task.id} Task={task} removeTask={removeTask} setTasks={setTasks}/>
                 })
             }
         </div>

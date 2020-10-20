@@ -1,10 +1,12 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React, {Dispatch, SetStateAction, useContext, useState} from 'react';
 import {TaskModel} from "../interfaces/TaskModel";
 import {TaskStyledComponent} from "../assets/styledComponents/styledComponents";
 import { SettingOutlined } from '@ant-design/icons';
 import { Checkbox } from 'antd';
 import TaskService from "../services/TaskService";
 import EditTask from "./EditTask";
+import ProjectContext from "../context/ProjectContext";
+import {ApplicationContext} from "../context/ApplicationContext";
 
 type Props ={
     Task:TaskModel,
@@ -14,6 +16,8 @@ type Props ={
 
 const TaskComponent:React.FC<Props> = ({Task,removeTask,setTasks}) => {
 
+    const projectContext= useContext(ProjectContext);
+    const appContext = useContext(ApplicationContext);
     const[edit, setEdit] = useState(false);
 
 
@@ -22,6 +26,13 @@ const TaskComponent:React.FC<Props> = ({Task,removeTask,setTasks}) => {
         setTasks(refreshedTasks);
 
     };
+
+    function showCheckBox(ownerId:string|null|undefined) {
+       if(appContext.getUserId()===ownerId)
+            return(<Checkbox onChange={e => handleCheck()} checked={Task.ready}/>);
+       return '';
+    }
+
 
     return (
         <>
@@ -33,8 +44,8 @@ const TaskComponent:React.FC<Props> = ({Task,removeTask,setTasks}) => {
                     <div className={"task-title"}>{Task.title}</div>
                     <div className={"task-description"}>{Task.description}</div>
                     <div>{Task.time}</div>
-                    <div>{Task.ownerId}</div>
-                    <div><Checkbox onChange={e => handleCheck()} checked={Task.ready}/></div>
+                    <div>{projectContext.getUserName(Task.ownerId)}</div>
+                    <div>{showCheckBox(Task.ownerId)}</div>
                     <div><SettingOutlined spin={edit} onClick={()=>setEdit(true)} className={"userStory-edit"}/></div>
                 </TaskStyledComponent>
         }

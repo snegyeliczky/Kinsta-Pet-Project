@@ -7,9 +7,11 @@ type Props = {
     company: Company
 }
 
+
 const CompanyHeader: React.FC<Props> = ({company}) => {
 
     const [isActive, setActive] = useState(false);
+
 
     return (
         <StyledCompanyHeader  onClick={event => {

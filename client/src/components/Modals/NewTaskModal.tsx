@@ -1,9 +1,12 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React, {Dispatch, SetStateAction, useContext, useState} from 'react';
 import {Button, Input, Modal} from "antd";
 import {ModalContainer} from "../../assets/styledComponents/styledComponents";
 import {PlusOutlined, ProjectOutlined} from '@ant-design/icons';
 import {TaskModel} from "../../interfaces/TaskModel";
 import TaskService from "../../services/TaskService";
+import UserDropdown from "../userDropdown";
+import ProjectContext from "../../context/ProjectContext";
+import {ApplicationContext} from "../../context/ApplicationContext";
 
 type Props = {
     UserStoryId: number
@@ -12,10 +15,12 @@ type Props = {
 
 const NewTaskModal: React.FC<Props> = ({UserStoryId, setTasks}) => {
 
+    const appContext = useContext(ApplicationContext);
+    const projectContext = useContext(ProjectContext);
     const [visible, setVisible] = useState(false);
     const [taskTitle, setTaskTitle] = useState("");
     const [taskDescription, setTaskDescription] = useState("");
-    const [OwnerId, setOwnerId] = useState<number | null>(null);
+    const [OwnerId, setOwnerId] = useState<string | null>(null);
     const [time, setTime] = useState<string>();
 
     function showModal(event: React.MouseEvent<HTMLElement>) {
@@ -77,11 +82,7 @@ const NewTaskModal: React.FC<Props> = ({UserStoryId, setTasks}) => {
                                             setTaskDescription(event.target.value)
                                         }}
                         />
-                        <Input placeholder={"Task owner"} prefix={<ProjectOutlined/>} type={"number"}
-                               onChange={event => {
-                                   setOwnerId(event.target.valueAsNumber)
-                               }}
-                        />
+                        <UserDropdown userData={projectContext.participants} onChange={setOwnerId} base={appContext.getLoggedInUserName()}/>
                         <Input type={"time"} onChange={event => {
                             setTime(event.target.value)
                         }}/>

@@ -3,5 +3,5 @@ export interface Project {
     companyId:number,
     name:string,
     owner?:string
-    participants?:string[]
+    participants:string[]
 }

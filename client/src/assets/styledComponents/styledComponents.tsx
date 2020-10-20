@@ -1,40 +1,6 @@
 import styled from '@emotion/styled'
 
 
-type H1Props = {
-    color: string
-    size: number
-};
-
-
-type CustomButtonProps = {
-    primary?: boolean
-};
-
-
-export const H1 = styled('h1')<H1Props>(
-    {
-        gridColumn: 1 / 3,
-    },
-    props => ({
-        fontSize: props.size,
-        color: props.color
-    })
-);
-
-
-export const CustomButton = styled("button")<CustomButtonProps>(
-    props => ({
-        color: props.primary ? "white" : "red",
-        borderRadius: props.primary ? "20px" : "0",
-        backgroundColor: props.primary ? "#7629ce" : "29ce3c",
-        ":hover": {
-            color: "red",
-        }
-    })
-);
-
-
 export const NewCompanyContainer = styled("div")(
     {
         display: "grid",
@@ -131,8 +97,11 @@ export const StyledCompanyHeader = styled("div")<StyledCompanyHeaderProps>(
     })
 );
 
+type userStoryProps = {
+    hover:boolean
+}
 
-export const UserStoryStyleComponent = styled("div")(
+export const UserStoryStyleComponent = styled("div")<userStoryProps>(
     {
         display: "grid",
         gridTemplateColumns: "repeat(8,1fr)",
@@ -140,6 +109,7 @@ export const UserStoryStyleComponent = styled("div")(
         borderBottom: "1px solid white",
         fontSize: "15px",
         fontWeight: "bold",
+        transition: "all .3s ease-in-out",
         "> .UserStory-part": {
             color: "white",
             display: "flex",
@@ -182,7 +152,13 @@ export const UserStoryStyleComponent = styled("div")(
                 color: "white",
             }
         }
-    }
+    },
+    props => ({
+        ":hover":{
+            transform: props.hover?"scale(1.03)":""
+        }
+
+    })
 );
 
 
@@ -222,6 +198,7 @@ export const TaskStyledComponent = styled("div")<TaskProps>(
         gridAutoRows: "minmax(70px,auto)",
         borderBottom: "1px solid green",
         color: "white",
+        transition: "all .3s ease-in-out",
         "> div": {
             display: "flex",
             justifyContent: "center",
@@ -233,6 +210,9 @@ export const TaskStyledComponent = styled("div")<TaskProps>(
             gridTemplateColumns: "repeat(1,1fr)",
             gridAutoRows: "minmax(10px,auto)",
             gridGap: "0px",
+        },
+        ":hover":{
+            transform: "scale(1.03)"
         }
 
 
@@ -248,7 +228,10 @@ const TaskHeaderStyledComponent = styled("div")(
         marginTop: "15px",
         width: "87%",
         backgroundColor: "rgba(138, 43, 226,0.4)",
-        borderRadius: "20px"
+        borderRadius: "20px",
+        ":hover":{
+            transform: "scale(1.00)"
+        }
     }
 );
 

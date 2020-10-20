@@ -1,11 +1,15 @@
 import React, {createContext, Dispatch, SetStateAction, useState} from 'react';
 import {useHistory} from "react-router-dom";
+import {UserModel} from "../interfaces/UserModel";
+import UserService from "../services/userService";
 
 
 interface applicationContextProps{
     username:string,
     setUserName:Dispatch<SetStateAction<string>>,
-    getUserId: ()=>number;
+    getUserId: ()=>string;
+    getLoggedInUser: ()=>UserModel;
+    getLoggedInUserName: ()=>string;
 }
 
 
@@ -18,18 +22,27 @@ export const ApplicationProvider = (props:any) => {
     const [username,setUserName] = useState<string>("");
 
 
-    const getUserId=():number=>{
+    const getUserId=():string=>{
         let userId = localStorage.getItem("userId");
-        if (userId) return parseInt(userId);
+        if (userId) return userId;
         history.push("/auth");
-        return 0;
+        return "";
     };
 
+    const getLoggedInUser = ():UserModel =>{
+        return UserService.getUserById(getUserId())
+    };
+
+    const getLoggedInUserName = ():string =>{
+        return getLoggedInUser().firstName;
+    };
 
     const sampleAppContext: applicationContextProps ={
         username:username,
         setUserName:setUserName,
-        getUserId:getUserId
+        getUserId:getUserId,
+        getLoggedInUser:getLoggedInUser,
+        getLoggedInUserName:getLoggedInUserName
     };
 
 

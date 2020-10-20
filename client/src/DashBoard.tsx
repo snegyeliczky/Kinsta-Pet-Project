@@ -8,6 +8,7 @@ import NavBar from "./parts/NavBar";
 import Footer from "./parts/Footer";
 import requireAuthentication from "./components/authComp/AuthenticatedComponent";
 import {ApplicationContext} from "./context/ApplicationContext";
+import {ProjectProvider} from "./context/ProjectContext";
 
 
 const DashBoard = () => {
@@ -23,16 +24,20 @@ const DashBoard = () => {
         paddingBottom: "11vh"
     };
 
-    const history=useHistory();
+    const history = useHistory();
     const appContext = useContext(ApplicationContext);
 
     return (
         <>
             <NavBar/>
             <div id={"main-content-container"} style={style}>
-                <Route exact path={`/app`} component={requireAuthentication(MainPage,history,appContext)}/>
-                <Route exact path={`/app/project/:id`} component={requireAuthentication(ProjectPage,history,appContext)}/>
-                <Route exact path={`/app/new-company`} component={requireAuthentication(NewCompany,history,appContext)}/>
+                <Route exact path={`/app`} component={requireAuthentication(MainPage, history, appContext)}/>
+                <ProjectProvider>
+                    <Route exact path={`/app/project/:id`}
+                           component={requireAuthentication(ProjectPage, history, appContext)}/>
+                </ProjectProvider>
+                <Route exact path={`/app/new-company`}
+                       component={requireAuthentication(NewCompany, history, appContext)}/>
             </div>
             <Footer/>
         </>

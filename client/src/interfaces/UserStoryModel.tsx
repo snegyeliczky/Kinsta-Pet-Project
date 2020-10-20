@@ -4,7 +4,7 @@ export interface UserStoryModel {
     userStory:string,
     businessValue:number,
     estimation:number,
-    ownerId:number|null,
+    ownerId:string|null,
     status:boolean
-    estimatedUsers:{[key:number]:number}
+    estimatedUsers:{[key:string]:number}
 }

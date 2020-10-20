@@ -38,6 +38,7 @@ const CompanyComponent: React.FC<Props> = ({company}) => {
         )
     }
 
+
     return (
         <div className={"projects"}>
             {getProjects()}

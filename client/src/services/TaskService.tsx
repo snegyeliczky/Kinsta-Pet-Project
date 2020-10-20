@@ -4,28 +4,28 @@ import {TaskModel} from "../interfaces/TaskModel";
 let TaskList:TaskModel[] = [];
 
 let Task1:TaskModel={
-    id:uuid(),
+    id:"292ae9d4-ae31-4fa9-ac73-78185c017bd6",
     userStoryId:1,
     title:"registration page",
     description:"creat a page where the user can create account",
     time:"01:10",
-    ownerId:1,
+    ownerId:"d448b8bb-3df5-4683-9507-3648e6d98b67",
     ready:true,
 };
 TaskList.push(Task1);
 
 let Task2:TaskModel={
-    id:uuid(),
+    id:"d8c6f859-b639-4119-a969-53ca0144811c",
     userStoryId:1,
     title:"Login page",
     description:"creat a page where the user can Login",
-    ownerId:1,
+    ownerId:"6f0050a8-f799-49ad-b71d-9372744ce063",
     ready:false,
 };
 TaskList.push(Task2);
 
 let Task3:TaskModel={
-    id:uuid(),
+    id:"e8ceda22-2314-4992-b3d2-493e67c74851",
     userStoryId:1,
     title:"Create backend for Accounts",
     description:"creat DB where the data stored ",
@@ -35,23 +35,23 @@ let Task3:TaskModel={
 TaskList.push(Task3);
 
 let Task4:TaskModel={
-    id:uuid(),
+    id:"a3193d5f-6af4-4213-970e-7ed0637d5d27",
     userStoryId:1,
     title:"Create service to get data from db",
     description:"",
     time:"01:50",
-    ownerId:1,
+    ownerId:"d448b8bb-3df5-4683-9507-3648e6d98b67",
     ready:false,
 };
 TaskList.push(Task4);
 
 let Task5:TaskModel={
-    id:uuid(),
+    id:"a3fc43e8-e0d5-4d78-9db0-b367c22b33b8",
     userStoryId:2,
     title:"Create service to get Account balance",
     description:"Create service to get Account balance from Db",
     time:"04:00",
-    ownerId:1,
+    ownerId:"d448b8bb-3df5-4683-9507-3648e6d98b67",
     ready:false,
 };
 TaskList.push(Task5);
