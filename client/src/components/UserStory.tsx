@@ -12,6 +12,7 @@ interface Props {
     removeUserStory:Function,
 }
 
+
 const UserStory: React.FC<Props> = ({UserStory, removeUserStory}) => {
 
     const appContext = useContext(ApplicationContext);
@@ -30,7 +31,6 @@ const UserStory: React.FC<Props> = ({UserStory, removeUserStory}) => {
         return userStory.estimatedUsers[appContext.getUserId()] !== undefined;
 
     }
-
 
     function getEstimatedAverage() {
         let estimatedUsers = userStory.estimatedUsers;

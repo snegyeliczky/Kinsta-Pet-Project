@@ -25,6 +25,7 @@ const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready, setT
     const projectContext = useContext(ProjectContext);
     const [updatedTask, updateTask] = useState(Task);
 
+
     const removeTaskAndCloseEditing = () => {
         setEdit(false);
         removeTask(Task.id);

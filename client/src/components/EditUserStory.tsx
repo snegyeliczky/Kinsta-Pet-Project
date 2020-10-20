@@ -18,11 +18,12 @@ type Props = {
     removeUserStory: Function,
 }
 
-const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory, removeUserStory}) => {
 
+const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory, removeUserStory}) => {
 
     const appContext = useContext(ApplicationContext);
     const projectContext = useContext(ProjectContext);
+
 
     const EditUserStory = (story: string) => {
         userStory.userStory = story;
@@ -38,8 +39,6 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
         userStory.ownerId = owner;
         setUserStory(userStory);
     };
-
-
 
     const EditUserStoryEstimation = (point: number) => {
         let userId = appContext.getUserId();
