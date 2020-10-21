@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Company} from "../interfaces/Company";
 import {StyledCompanyHeader} from "../assets/styledComponents/styledComponents";
 import {CaretRightOutlined} from '@ant-design/icons';
