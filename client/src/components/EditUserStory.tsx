@@ -23,21 +23,22 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
 
     const appContext = useContext(ApplicationContext);
     const projectContext = useContext(ProjectContext);
+    const editedUserStory = {...userStory};
 
 
     const EditUserStory = (story: string) => {
-        userStory.userStory = story;
-        setUserStory(userStory);
+        editedUserStory.userStory = story;
+
     };
 
     const EditUserStoryValue = (value: number) => {
-        userStory.businessValue = value;
-        setUserStory(userStory);
+        editedUserStory.businessValue = value;
+
     };
 
     const EditUserStoryOwner = (owner: string) => {
-        userStory.ownerId = owner;
-        setUserStory(userStory);
+        editedUserStory.ownerId = owner;
+
     };
 
     const EditUserStoryEstimation = (point: number) => {
@@ -46,22 +47,28 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
         setUserStory(userStory);
     };
 
-    function handleEnter(event: React.KeyboardEvent<HTMLDivElement>) {
+    function handleKeyBoard(event: React.KeyboardEvent<HTMLDivElement>) {
         if (event.key === 'Enter') {
             event.preventDefault();
+            setUserStory(editedUserStory);
             UserStoryService.updateUserStory(userStory);
+            setEdit(false);
+        }
+        if (event.key === 'Escape') {
+            event.preventDefault();
             setEdit(false);
         }
     }
 
     function handleStopEditing() {
-        UserStoryService.updateUserStory(userStory);
+        UserStoryService.updateUserStory(editedUserStory);
+        setUserStory(editedUserStory);
         setEdit(false)
     }
 
 
     return (
-        <UserStoryStyleComponent onClick={event => event.stopPropagation()} onKeyDown={event => handleEnter(event)} hover={true}>
+        <UserStoryStyleComponent onClick={event => event.stopPropagation()} onKeyDown={event => handleKeyBoard(event)} hover={true}>
             <div className={"userStory-id UserStory-part"}>
                 {userStory.id}
             </div>

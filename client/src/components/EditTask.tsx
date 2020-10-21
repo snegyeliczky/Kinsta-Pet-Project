@@ -23,7 +23,7 @@ const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready, setT
 
     const appContext = useContext(ApplicationContext);
     const projectContext = useContext(ProjectContext);
-    const [updatedTask, updateTask] = useState(Task);
+    const [updatedTask, updateTask] = useState({...Task});
 
 
     const removeTaskAndCloseEditing = () => {
@@ -51,10 +51,12 @@ const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready, setT
         updateTask(updatedTask);
     }
 
-    function handleEnter(event: React.KeyboardEvent<HTMLDivElement>) {
+    function handleKeyBoard(event: React.KeyboardEvent<HTMLDivElement>) {
         if (event.key === 'Enter') {
             let updatedUserStoryTasks = TaskService.updateTask(updatedTask);
-            setTasks(updatedUserStoryTasks);
+            setTasks([...updatedUserStoryTasks]);
+            setEdit(false);
+        }if (event.key === 'Escape'){
             setEdit(false);
         }
     }
@@ -80,7 +82,7 @@ const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready, setT
 
 
     return (
-        <TaskStyledComponent className={"TaskComponent"} ready={ready} onKeyDown={event => handleEnter(event)}>
+        <TaskStyledComponent className={"TaskComponent"} ready={ready} onKeyDown={event => handleKeyBoard(event)}>
             <div className={"task-id"}>{Task.id.substring(0, 5)}</div>
             <div className={"task-title"}><Input
                 defaultValue={Task.title} onChange={(e) => updateTitle(e.target.value)}/></div>

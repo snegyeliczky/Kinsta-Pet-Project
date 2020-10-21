@@ -89,10 +89,15 @@ export default {
     updateTask:(updatedTask:TaskModel):TaskModel[] =>{
         TaskList.map(task =>{
             if (task.id===updatedTask.id){
-                task=updatedTask;
+                task.description=updatedTask.description;
+                task.title=updatedTask.title;
+                task.time=updatedTask.time;
+                task.ownerId=updatedTask.ownerId;
+                task.ready=updatedTask.ready;
             }
             return task;
         });
+
         return TaskList.filter(task=>{
             return task.userStoryId===updatedTask.userStoryId
         })
