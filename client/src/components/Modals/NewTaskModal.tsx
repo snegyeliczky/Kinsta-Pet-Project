@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction, useContext, useState} from 'react';
-import {Button, Input, Modal} from "antd";
+import {Button, Input, Modal,message} from "antd";
 import {ModalContainer} from "../../assets/styledComponents/styledComponents";
 import {PlusOutlined, ProjectOutlined} from '@ant-design/icons';
 import {TaskModel} from "../../interfaces/TaskModel";
@@ -49,7 +49,7 @@ const NewTaskModal: React.FC<Props> = ({UserStoryId, setTasks}) => {
             let tasks = TaskService.saveNewTask(newTask);
             setTasks(tasks);
             setVisible(false);
-        }else alert("Task title must be 3 character long!")
+        }else message.error("Task title must be minimum 3 character long!",5)
     }
 
 

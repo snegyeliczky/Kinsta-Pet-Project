@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction, useContext, useState} from 'react';
-import {Button, Input, Modal} from 'antd';
+import {Button, Input, Modal,message} from 'antd';
 import {PlusOutlined, ProjectOutlined} from '@ant-design/icons';
 import {UserStoryModel} from "../../interfaces/UserStoryModel";
 import TaskService from "../../services/UserStoryService";
@@ -50,7 +50,7 @@ const NewUserStoryModal:React.FC<Props>= ({projectId,setTasks,participants}) => 
             let tasks = TaskService.saveNewUserStory(newTask);
             setTasks(tasks);
             setVisible(!visible);
-        }else alert("Project name must be 3 character long!")
+        }else message.error("User story must be minimum 3 character long!",5)
     };
 
     const handleCancel = (e:React.MouseEvent<HTMLElement>) => {
