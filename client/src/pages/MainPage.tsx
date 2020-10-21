@@ -12,11 +12,11 @@ const MainPage = () => {
     const appContext = useContext(ApplicationContext);
     let userId:string = appContext.getUserId();
 
-    const [open,setOpen] = useState<string[]|string>();
+    const [open,setOpen] = useState<string[]|string>([]);
     const companies = CompanyService.getMyCompanies(userId);
 
     function callback(key: string | string[]) {
-        setOpen(key)
+        setOpen(key);
     }
 
     const {Panel} = Collapse;
@@ -28,7 +28,7 @@ const MainPage = () => {
             {
                 companies.map(company => {
                     return (
-                        <Panel key={company.id} header={<CompanyHeader key={company.id} company={company}/>} showArrow={false}>
+                        <Panel key={company.id} header={<CompanyHeader key={company.id} company={company} activeKey={open}/>} showArrow={false}>
                             <CompanyComponent company={company}/>
                         </Panel>
                     )

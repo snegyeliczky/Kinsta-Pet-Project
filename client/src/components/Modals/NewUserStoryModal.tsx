@@ -51,21 +51,12 @@ const NewUserStoryModal:React.FC<Props>= ({projectId,setTasks,participants}) => 
             setTasks(tasks);
             setVisible(!visible);
         }else alert("Project name must be 3 character long!")
-
     };
 
     const handleCancel = (e:React.MouseEvent<HTMLElement>) => {
         e.stopPropagation();
         setVisible(false);
     };
-
-    /*
-     <Button shape={"round"} icon={<PlusOutlined />} type={"primary"} onClick={event => {
-                showModal(event)
-            }}>
-                Add new task
-            </Button>
-     */
 
 
     return (

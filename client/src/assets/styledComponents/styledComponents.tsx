@@ -75,7 +75,6 @@ export const StyledCompanyHeader = styled("div")<StyledCompanyHeaderProps>(
         gridTemplateColumns: "repeat(4,1fr)",
         alignItems: "center",
         backgroundColor: "rgba(48, 197, 219, 0.5)",
-        width: "90%",
         margin: "0 auto",
         minHeight: "40px",
         borderRadius: "20px",

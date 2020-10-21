@@ -44,10 +44,12 @@ const NewTaskModal: React.FC<Props> = ({UserStoryId, setTasks}) => {
     }
 
     function handleSave(e: React.MouseEvent<HTMLElement>) {
-        let newTask = creatNewTask();
-        let tasks = TaskService.saveNewTask(newTask);
-        setTasks(tasks);
-        setVisible(false);
+        if (taskTitle.length>2) {
+            let newTask = creatNewTask();
+            let tasks = TaskService.saveNewTask(newTask);
+            setTasks(tasks);
+            setVisible(false);
+        }else alert("Task title must be 3 character long!")
     }
 
 
