@@ -1,5 +1,7 @@
 import {Model} from "objection";
 import User from "./User";
+import path from "path";
+
 
 export default class Company extends Model {
 
@@ -7,7 +9,7 @@ export default class Company extends Model {
 
     id!: number;
     name!: string;
-    employees?: User[];
+    users?: User[];
 
     static idColumn = "id";
 
@@ -22,14 +24,13 @@ export default class Company extends Model {
     };
 
     static get relationMappings (){
-        const User = require('./User');
 
         return {
-            employees: {
+            users: {
 
                 relation: Model.ManyToManyRelation,
 
-                modelClass: User,
+                modelClass: path.join(__dirname, 'User'),
 
                 join: {
                     from: 'companies.id',

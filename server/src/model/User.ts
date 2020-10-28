@@ -1,5 +1,6 @@
 import Animal from "./Animal";
 import Company from "./Company";
+import path from "path";
 
 const { Model } = require('objection');
 
@@ -15,9 +16,7 @@ export default class User extends Model {
     pets?: Animal[];
     companies?:Company[];
 
-
     static  idColumn =  "id";
-
 
     getName =()=>{
         return this.firstName +" "+this.lastName
@@ -48,20 +47,9 @@ export default class User extends Model {
 
     static get relationMappings() {
         return {
-            pets: {
-                relation: Model.HasManyRelation,
-                // The related model. This can be either a Model subclass constructor or an
-                // absolute file path to a module that exports one.
-                modelClass: Animal,
-                join: {
-                    from: 'users.id',
-                    to: 'animals.ownerId'
-                }
-            },
-
             companies: {
                 relation: Model.ManyToManyRelation,
-                modelClass: Company,
+                modelClass: path.join(__dirname, 'Company'),
                 join: {
                     from: 'users.id',
                     // ManyToMany relation needs the `through` object to describe the join table.

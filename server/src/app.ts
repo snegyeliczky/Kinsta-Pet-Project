@@ -1,6 +1,7 @@
 import express, { Application, Request, Response, NextFunction} from "express";
 import knexConfig from "../knexfile"
 import User from "./model/User";
+import Company from "./model/Company";
 const mysql = require('mysql');
 const { Model } = require('objection');
 
@@ -13,6 +14,7 @@ Model.knex(knex);
 async function insertBaseUsersToDb(){
 
     let users = await User.query();
+
     if (users.length<1){
         await User.query().insertGraph(
             {firstName: "JhonLine",lastName:"Sylvester",email:"SJ@gmail.com", password:"1234"}
@@ -20,12 +22,18 @@ async function insertBaseUsersToDb(){
         await User.query().insertGraph(
             {firstName: "Jone",lastName:"Wick",email:"JW@gmail.com", password:"4321"}
         );
+        await User.relatedQuery('companies')
+            .for(2)
+            .insert({name:'Morgen Stanly'});
     }
-    const Jones = await User.query()
-        .where('firstName', 'Jone');
 
-    console.log(Jones[0].getName());
-    console.log('Wicks:', Jones);
+    const Jone = await User.query().findById(1);
+    const stanly = await Company.query().findById(1);
+
+   let usersCompany = await User.relatedQuery('companies').for(1);
+   let companyUsers = await Company.relatedQuery('users').for(1);
+
+   console.log(companyUsers);
 }
 
 
