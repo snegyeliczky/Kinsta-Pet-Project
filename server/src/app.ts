@@ -1,26 +1,22 @@
-import express, {Application, Request, Response, NextFunction} from "express";
 import {GraphQLServer} from "graphql-yoga";
 import knexConfig from "../knexfile"
 import User from "./model/User";
 import Company from "./model/Company";
 import {Model} from "objection";
-import {Resolvers} from "./resolvers/UserResolver";
-
-const app: Application = express();
+import {Resolvers} from "./resolvers/userResolver";
 
 const resolvers = {
-    ...Resolvers,
+    ...Resolvers
 };
 
 const server = new GraphQLServer({
     typeDefs: './src/schema.graphql',
-    resolvers
-
-
+    resolvers,
 });
 
 let knex = require('knex')(knexConfig.production);
 Model.knex(knex);
+
 
 
 async function insertBaseUsersToDb() {

@@ -1,6 +1,9 @@
 type Query{
     users:[User!]
     user(id:ID!):User
+
+    companies:[Company!]
+    company(id:ID!):Company
 }
 
 
@@ -9,4 +12,10 @@ type User {
     firstName:String!
     lastName:String!
     email:String!
+    companies:[Company!]
+}
+
+type Company {
+    id:Int
+    name:String
 }
