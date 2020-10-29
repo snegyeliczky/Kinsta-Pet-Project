@@ -10,20 +10,6 @@ exports.up = knex =>{
             table.string('email');
             table.json('address');
         })
-        .createTable('animals', table => {
-            table.increments('id').primary();
-
-            table
-                .integer('ownerId')
-                .unsigned()
-                .references('id')
-                .inTable('users')
-                .onDelete('SET NULL')
-                .index();
-
-            table.string('name');
-            table.string('species');
-        })
         .createTable('companies', table => {
             table.increments('id').primary();
             table.string('name')
@@ -47,13 +33,34 @@ exports.up = knex =>{
                 .onDelete('CASCADE')
                 .index()
         })
+        .createTable('projects',table =>{
+            table.increments('id').primary()
+
+            table
+                .integer('companyId')
+                .unsigned()
+                .references('id')
+                .inTable('companies')
+                .onDelete('SET NULL')
+                .index()
+
+            table
+                .integer('ownerId')
+                .unsigned()
+                .references('id')
+                .inTable('users')
+                .onDelete('SET NULL')
+                .index()
+
+            table.string('name')
+    })
 };
 
 exports.down = knex => {
     return knex.schema
         .dropTableIfExists('users_company')
+        .dropTableIfExists('projects')
         .dropTableIfExists('companies')
-        .dropTableIfExists('animals')
         .dropTableIfExists('users')
 
 };

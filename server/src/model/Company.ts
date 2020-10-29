@@ -1,5 +1,6 @@
 import {Model} from "objection";
 import User from "./User";
+import Project from "./Project";
 
 
 
@@ -10,6 +11,7 @@ export default class Company extends Model {
     id!: number;
     name!: string;
     users?: User[];
+    projects?:Project[];
 
     static idColumn = "id";
 
@@ -42,6 +44,14 @@ export default class Company extends Model {
                     },
 
                     to: 'users.id'
+                }
+            },
+            projects:{
+                relation: Model.HasManyRelation,
+                modelClass: Project,
+                join: {
+                    from:'companies.id',
+                    to:'projects.companyId'
                 }
             }
         }

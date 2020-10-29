@@ -3,6 +3,9 @@ import knexConfig from "../knexfile"
 import User from "./model/User";
 import {Model} from "objection";
 import {Resolvers} from "./resolvers/resolver";
+import Company from "./model/Company";
+import Project from "./model/Project";
+import {DbInit} from "./util/initialiser";
 
 const resolvers = {
     ...Resolvers
@@ -19,19 +22,12 @@ Model.knex(knex);
 async function insertBaseUsersToDb() {
     let users = await User.query();
     if (users.length < 1) {
-        await User.query().insertGraph(
-            {firstName: "JhonLine", lastName: "Sylvester", email: "SJ@gmail.com", password: "1234"}
-        );
-        await User.query().insertGraph(
-            {firstName: "Jone", lastName: "Wick", email: "JW@gmail.com", password: "4321"}
-        );
-        await User.relatedQuery('companies')
-            .for(1)
-            .insert({name: 'Morgen Stanly'});
-        await User.relatedQuery('companies')
-            .for(2)
-            .insert({name: 'JP morgen'});
+       await DbInit()
     }
+    await User.relatedQuery('projects').for(1).relate([1,2]);
+    let p = await User.relatedQuery('projects').for(1);
+    let c = await  Project.relatedQuery('company').for(1);
+    console.log(p)
 }
 
 

@@ -1,7 +1,7 @@
-import Animal from "./Animal";
 import Company from "./Company";
 import path from "path";
 import {Model} from "objection";
+import Project from "./Project";
 
 export default class User extends Model {
 
@@ -12,8 +12,8 @@ export default class User extends Model {
     lastName!: string;
     email!: string;
     password!:string;
-    pets?: Animal[];
     companies?:Company[];
+    projects?:Project[];
 
     static  idColumn =  "id";
 
@@ -48,7 +48,7 @@ export default class User extends Model {
         return {
             companies: {
                 relation: Model.ManyToManyRelation,
-                modelClass: path.join(__dirname, 'Company'),
+                modelClass: Company,
                 join: {
                     from: 'users.id',
                     // ManyToMany relation needs the `through` object to describe the join table.
@@ -57,6 +57,14 @@ export default class User extends Model {
                         to: 'users_company.companyId'
                     },
                     to: 'companies.id'
+                }
+            },
+            projects:{
+                relation: Model.HasManyRelation,
+                modelClass: Project,
+                join: {
+                    from: 'users.id',
+                    to: 'projects.ownerId'
                 }
             }
         }
