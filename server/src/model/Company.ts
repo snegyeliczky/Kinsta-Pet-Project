@@ -1,6 +1,6 @@
 import {Model} from "objection";
 import User from "./User";
-import path from "path";
+
 
 
 export default class Company extends Model {
@@ -30,7 +30,7 @@ export default class Company extends Model {
 
                 relation: Model.ManyToManyRelation,
 
-                modelClass: path.join(__dirname, 'User'),
+                modelClass: User,
 
                 join: {
                     from: 'companies.id',

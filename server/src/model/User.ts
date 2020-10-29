@@ -1,8 +1,7 @@
 import Animal from "./Animal";
 import Company from "./Company";
 import path from "path";
-
-const { Model } = require('objection');
+import {Model} from "objection";
 
 export default class User extends Model {
 
