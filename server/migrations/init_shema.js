@@ -53,12 +53,32 @@ exports.up = knex =>{
                 .index()
 
             table.string('name')
-    })
+         })
+        .createTable('user_projects', table => {
+            table.increments('id').primary()
+
+            table
+                .integer('userId')
+                .unsigned()
+                .references('id')
+                .inTable('users')
+                .onDelete('CASCADE')
+                .index()
+
+            table
+                .integer('projectId')
+                .unsigned()
+                .references('id')
+                .inTable('projects')
+                .onDelete('CASCADE')
+                .index()
+        })
 };
 
 exports.down = knex => {
     return knex.schema
         .dropTableIfExists('users_company')
+        .dropTableIfExists('user_projects')
         .dropTableIfExists('projects')
         .dropTableIfExists('companies')
         .dropTableIfExists('users')

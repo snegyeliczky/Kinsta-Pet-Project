@@ -19,4 +19,7 @@ export async function DbInit() {
     await Company.relatedQuery('projects')
         .for(1).insert({name:'Recuiter system for HR'});
     await User.relatedQuery('projects').for(1).relate([1,2]);
+    await User.relatedQuery('participate').for(2).relate(1);
+    await User.relatedQuery('participate').for(1).relate(2);
+    await User.relatedQuery('participate').for(2).relate(2);
 }

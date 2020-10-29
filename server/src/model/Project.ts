@@ -29,6 +29,18 @@ export default class Project extends Model{
                     from:'projects.ownerId',
                     to:'users.id'
                 }
+            },
+            participants:{
+                relation: Model.ManyToManyRelation,
+                modelClass:User,
+                join:{
+                    from:'projects.id',
+                    through:{
+                        from:'user_projects.projectId',
+                        to:'user_projects.userId'
+                    },
+                    to:'users.id'
+                }
             }
 
         }

@@ -14,6 +14,7 @@ export default class User extends Model {
     password!:string;
     companies?:Company[];
     projects?:Project[];
+    participate?:Project[];
 
     static  idColumn =  "id";
 
@@ -31,7 +32,6 @@ export default class User extends Model {
             lastName: { type: 'string', minLength: 1, maxLength: 255 },
             email: { type: 'string' },
             password:{type:'string'}
-
         },
 
         address: {
@@ -65,6 +65,18 @@ export default class User extends Model {
                 join: {
                     from: 'users.id',
                     to: 'projects.ownerId'
+                }
+            },
+            participate:{
+                relation: Model.ManyToManyRelation,
+                modelClass:Project,
+                join:{
+                    from:'users.id',
+                    through:{
+                        from:'user_projects.userId',
+                        to:'user_projects.projectId'
+                    },
+                    to:'projects.id'
                 }
             }
         }
