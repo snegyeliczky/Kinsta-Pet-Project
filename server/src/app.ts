@@ -3,7 +3,7 @@ import knexConfig from "../knexfile"
 import User from "./model/User";
 import Company from "./model/Company";
 import {Model} from "objection";
-import {Resolvers} from "./resolvers/userResolver";
+import {Resolvers} from "./resolvers/resolver";
 
 const resolvers = {
     ...Resolvers

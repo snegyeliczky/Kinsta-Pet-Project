@@ -18,4 +18,5 @@ type User {
 type Company {
     id:Int
     name:String
+    users:[User!]
 }

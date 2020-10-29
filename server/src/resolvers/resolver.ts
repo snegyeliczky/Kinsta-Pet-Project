@@ -22,7 +22,10 @@ export const Resolvers = {
 
     Company:{
         id:(parent:Company)=>parent.id,
-        name:(parent:Company)=>parent.name
+        name:(parent:Company)=>parent.name,
+        users:(parent:Company)=>{
+            return Company.relatedQuery('users').for(parent.id)
+        }
     }
 
 };
