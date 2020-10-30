@@ -1,6 +1,7 @@
 import {Model} from "objection";
 import Company from "./Company";
 import User from "./User";
+import UserStory from "./UserStory";
 
 export default class Project extends Model{
 
@@ -11,6 +12,7 @@ export default class Project extends Model{
     name!:string;
     owner!:User;
     participants?:User[];
+    userStories?:UserStory[];
 
     static get relationMappings(){
         return{
@@ -41,8 +43,15 @@ export default class Project extends Model{
                     },
                     to:'users.id'
                 }
+            },
+            userStories:{
+                relation:Model.HasManyRelation,
+                modelClass:UserStory,
+                join:{
+                    from:'projects.id',
+                    to:'user_stories.projectId'
+                }
             }
-
         }
     }
 }

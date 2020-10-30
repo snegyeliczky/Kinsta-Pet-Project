@@ -6,6 +6,11 @@ type Query{
     company(id:ID!):Company
 }
 
+type Mutation{
+    addUser(newFirstName:String!,newLastName:String!,email:String!,password:String!):User!
+    addCompany(userId:Int,CompanyName:String!):Company!
+    addUserToCompany(userId:Int,companyId:Int):Int
+}
 
 type User {
     id:Int!
