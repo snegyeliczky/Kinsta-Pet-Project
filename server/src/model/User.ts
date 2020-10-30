@@ -2,6 +2,7 @@ import Company from "./Company";
 import path from "path";
 import {Model} from "objection";
 import Project from "./Project";
+import UserStory from "./UserStory";
 
 export default class User extends Model {
 
@@ -14,7 +15,9 @@ export default class User extends Model {
     password!:string;
     companies?:Company[];
     projects?:Project[];
+    userStories?:UserStory[];
     participate?:Project[];
+    userStoryEstimations?:UserStory[];
 
     static  idColumn =  "id";
 
@@ -78,7 +81,29 @@ export default class User extends Model {
                     },
                     to:'projects.id'
                 }
+            },
+            userStories:{
+                relation:Model.HasManyRelation,
+                modelClass:UserStory,
+                join:{
+                    from:'users.id',
+                    to:'user_stories.id'
+                }
+            },
+            userStoryEstimations:{
+                relation: Model.ManyToManyRelation,
+                modelClass: UserStory,
+                join: {
+                    from: 'users.id',
+                    through:{
+                        from:'user_estimations.userId',
+                        to:'user_estimations.user_storyId',
+                        extra:['estimation']
+                    },
+                    to:'user_stories.id'
+                }
             }
+
         }
     }
 
