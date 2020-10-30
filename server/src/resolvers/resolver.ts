@@ -10,6 +10,24 @@ export const Resolvers = {
         company: (parent:Company,args:{id:number}) =>{return Company.query().findById(args.id)}
     },
 
+    Mutation:{
+        addUser: (parent:User,args:{newFirstName:string, newLastName:string,email:string,password:string})=>{
+               return  User.query().insert(
+                {firstName: args.newFirstName, lastName: args.newLastName, email: args.email, password: args.password}
+            )
+        },
+        addCompany:(parent:Company,args:{userId:number,CompanyName:string})=>{
+            return  User.relatedQuery('companies')
+                .for(args.userId)
+                .insert({name: args.CompanyName});
+        },
+        addUserToCompany: async (parent:Company , args:{userId:number,companyId:number})=>{
+           await User.relatedQuery('companies').for(args.userId).relate(args.companyId);
+           return 1;
+
+        }
+    },
+
     User:{
         id:(parent:User)=>parent.id,
         firstName:(parent:User)=>parent.firstName,
