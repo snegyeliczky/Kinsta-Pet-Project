@@ -97,7 +97,7 @@ exports.up = knex =>{
             table.integer('estimation')
         })
         .createTable('user_projects', table => {
-            table.increments('id').primary()
+            table.increments('id').primary().unique()
 
             table
                 .integer('userId')

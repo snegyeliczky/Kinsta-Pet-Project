@@ -5,6 +5,7 @@ import {Model} from "objection";
 import {Resolvers} from "./resolvers/resolver";
 import Project from "./model/Project";
 import {DbInit} from "./util/initialiser";
+import UserStory from "./model/UserStory";
 
 const resolvers = {
     ...Resolvers
@@ -23,7 +24,10 @@ async function insertBaseUsersToDb() {
     if (users.length < 1) {
        await DbInit();
     }
-    let testData = await  Project.relatedQuery('participants').for(2);
+    // @ts-ignore
+    await User.relatedQuery('userStoryEstimations').for(1).patch({estimation:12}).where('user_storyId',1);
+    let testData = await UserStory.relatedQuery('estimatedUsers').for(1);
+
     console.log(testData);
 }
 

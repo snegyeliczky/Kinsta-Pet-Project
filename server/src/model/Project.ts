@@ -12,7 +12,7 @@ export default class Project extends Model{
     name!:string;
     owner!:User;
     participants?:User[];
-    userStories?:Project[];
+    userStories?:UserStory[];
 
     static get relationMappings(){
         return{

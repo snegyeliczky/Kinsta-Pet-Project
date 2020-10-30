@@ -87,7 +87,7 @@ export default class User extends Model {
                 modelClass:UserStory,
                 join:{
                     from:'users.id',
-                    to:'user_stories.id'
+                    to:'user_stories.userId'
                 }
             },
             userStoryEstimations:{
