@@ -22,9 +22,7 @@ export const Resolvers = {
                 .insert({name: args.CompanyName});
         },
         addUserToCompany: async (parent:Company , args:{userId:number,companyId:number})=>{
-           await User.relatedQuery('companies').for(args.userId).relate(args.companyId);
-           return 1;
-
+           return  User.relatedQuery('companies').for(args.userId).relate(args.companyId);
         }
     },
 
