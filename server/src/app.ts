@@ -28,12 +28,7 @@ async function insertBaseUsersToDb() {
     await User.relatedQuery('userStoryEstimations').for(1).patch({estimation:12}).where('user_storyId',1);
     let testData = await UserStory.relatedQuery('estimatedUsers').for(1);
 
-    await User.relatedQuery('companies')
-        .for(3)
-        .relate(2);
-    let testd2 = await User.relatedQuery('companies')
-        .for(3);
-    console.log(testd2);
+    console.log(testData);
 }
 
 
