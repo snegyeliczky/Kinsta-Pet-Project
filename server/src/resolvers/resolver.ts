@@ -18,6 +18,7 @@ export const Resolvers = {
         project:(parent:Project,args:{id:number})=>{ return Project.query().findById(args.id)},
 
         userStories: ()=> UserStory.query(),
+        userStory:(parent:UserStory,args:{id:number})=>{ return UserStory.query().findById(args.id) },
     },
 
     Mutation:{

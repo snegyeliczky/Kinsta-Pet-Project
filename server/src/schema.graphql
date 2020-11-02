@@ -11,6 +11,7 @@ type Query{
     project(id:ID!):Project
 
     userStories:[UserStory!]
+    userStory(id:ID!):UserStory
 }
 
 type Mutation{
