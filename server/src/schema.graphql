@@ -9,12 +9,16 @@ type Query{
 
     projects:[Project!]
     project(id:ID!):Project
+
+    userStories:[UserStory!]
 }
 
 type Mutation{
     addUser(newFirstName:String!,newLastName:String!,email:String!,password:String!):User!
     addCompany(userId:Int,CompanyName:String!):Company!
     addUserToCompany(userId:Int,companyId:Int):Int
+    addNewProject(userId:Int,companyId:Int,projectName:String):Project!
+
 }
 
 type User {
@@ -23,7 +27,10 @@ type User {
     lastName:String!
     email:String!
     companies:[Company!]
+
+    estimation:Int
 }
+
 
 type Company {
     id:Int
@@ -38,4 +45,14 @@ type Project{
     name:String,
     owner:User,
     participants:[User!],
+}
+
+type UserStory{
+    id:Int,
+    userStory:String,
+    project:Project,
+    status:Boolean,
+    businessValue:Int,
+    owner:User,
+    estimatedUsers:[User!]
 }

@@ -1,20 +1,23 @@
 import User from "../model/User";
 import Company from "../model/Company";
 import Project from "../model/Project";
+import UserStory from "../model/UserStory";
 
 export const Resolvers = {
     Query : {
         users: ()=>User.query(),
         user: (parent:User,args:{id:number}) =>{return User.query().findById(args.id)},
+        //not necessary  user knows
         getCompaniesForUser:(parent:User,args:{userId:number})=>{
             return User.relatedQuery('companies').for(args.userId)},
 
         companies: () => Company.query(),
         company: (parent:Company,args:{id:number}) =>{return Company.query().findById(args.id)},
-        getProjectsForCompany:(parent:Company,args:{companyId:number})=>{},
 
         projects: () =>  Project.query(),
         project:(parent:Project,args:{id:number})=>{ return Project.query().findById(args.id)},
+
+        userStories: ()=> UserStory.query(),
     },
 
     Mutation:{
@@ -30,6 +33,17 @@ export const Resolvers = {
         },
         addUserToCompany: async (parent:Company , args:{userId:number,companyId:number})=>{
            return  User.relatedQuery('companies').for(args.userId).relate(args.companyId);
+        },
+        addNewProject:async (parent:Project,args:{userId:number,companyId:number,projectName:string})=>{
+            let newProject = await Company.relatedQuery('projects')
+                .for(args.companyId).insert({name:args.projectName});
+            /*
+            await User.relatedQuery('projects').for(args.userId).relate(newProject.id);
+            return Project.query().findById(newProject.id);
+             */
+            await newProject.$relatedQuery('owner').relate(args.userId);
+            return newProject;
+
         }
     },
 
@@ -66,6 +80,24 @@ export const Resolvers = {
             return ownerInList[0];
         },
         participants:(parent:Project)=>{return Project.relatedQuery('participants').for(parent.id)},
+    },
+
+    UserStory:{
+        id:(parent:UserStory)=> parent.id,
+        userStory:(parent:UserStory)=> parent.userStory,
+        project:async (parent:UserStory)=>{
+            let projectList = await UserStory.relatedQuery('project').for(parent.id);
+            return projectList[0]
+        },
+        status:(parent:UserStory)=> parent.status,
+        businessValue:(parent:UserStory) => parent.businessValue,
+        owner:async (parent:UserStory)=>{
+            let ownerList = await UserStory.relatedQuery('owner').for(parent.id);
+            return ownerList[0]
+        },
+        estimatedUsers:async (parent:UserStory)=>{
+            return UserStory.relatedQuery('estimatedUsers').for(parent.id);
+        }
     }
 
 };
