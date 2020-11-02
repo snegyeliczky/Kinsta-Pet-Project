@@ -1,9 +1,14 @@
 type Query{
     users:[User!]
     user(id:ID!):User
+    getCompaniesForUser(userId:ID!):[Company!]
 
     companies:[Company!]
     company(id:ID!):Company
+    getProjectsForCompany(companyId:ID!):[Project!]
+
+    projects:[Project!]
+    project(id:ID!):Project
 }
 
 type Mutation{
@@ -24,4 +29,13 @@ type Company {
     id:Int
     name:String
     users:[User!]
+    projects:[Project!]
+}
+
+type Project{
+    id:Int,
+    company:Company!,
+    name:String,
+    owner:User,
+    participants:[User!],
 }
