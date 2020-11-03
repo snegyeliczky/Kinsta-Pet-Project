@@ -56,8 +56,16 @@ export const Resolvers = {
             await newUserStory.$relatedQuery('owner').relate(args.userId);
             console.log(newUserStory);
             return newUserStory;
+        },
+        updateUserStory: async (parent: UserStory, args: { ownerId: number, userStory: string, status: boolean, userStoryId: number }) => {
+            await UserStory.relatedQuery('owner').for(args.userStoryId).relate(args.ownerId);
+            await UserStory.query().findById(args.userStoryId)
+                .patch({
+                    userStory: args.userStory,
+                    status: args.status
+                });
+            return UserStory.query().findById(args.userStoryId)
         }
-
     },
 
     User: {

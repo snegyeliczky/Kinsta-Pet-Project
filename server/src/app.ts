@@ -27,7 +27,7 @@ async function insertBaseUsersToDb() {
     }
     //replace testData with other queries to test and log data from DB
 
-    let testData = await UserStory.relatedQuery('estimatedUsers').for(1);
+    let testData =await UserStory.relatedQuery('owner').for(1);
 
     console.log(testData);
 }

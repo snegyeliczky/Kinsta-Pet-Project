@@ -20,6 +20,7 @@ type Mutation{
     addUserToCompany(userId:Int,companyId:Int):Int
     addNewProject(userId:Int,companyId:Int,projectName:String):Project!
     addNewUserStory(userId:Int,projectId:Int,userStory:String):UserStory!
+    updateUserStory(ownerId:Int,userStory:String,status:Boolean, userStoryId:Int):UserStory!
 }
 
 type User {
