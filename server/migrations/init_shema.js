@@ -1,7 +1,7 @@
-exports.up = knex =>{
+exports.up = knex => {
     return knex.schema
 
-        .createTable('users', table =>{
+        .createTable('users', table => {
             table.increments('id').primary();
 
             table.string('firstName');
@@ -33,7 +33,7 @@ exports.up = knex =>{
                 .onDelete('CASCADE')
                 .index()
         })
-        .createTable('projects',table =>{
+        .createTable('projects', table => {
             table.increments('id').primary()
 
             table
@@ -53,8 +53,8 @@ exports.up = knex =>{
                 .index()
 
             table.string('name')
-         })
-        .createTable('user_stories', table =>{
+        })
+        .createTable('user_stories', table => {
             table.increments('id').primary()
 
             table
@@ -77,7 +77,7 @@ exports.up = knex =>{
             table.boolean('status')
             table.integer('businessValue')
         })
-        .createTable('user_estimations', table=>{
+        .createTable('user_estimations', table => {
             table.increments('id').primary()
 
             table.integer('userId')
@@ -115,6 +115,29 @@ exports.up = knex =>{
                 .onDelete('CASCADE')
                 .index()
         })
+        .createTable('tasks', table => {
+            table.increments('id').primary()
+            table.string('title')
+            table.string('description')
+            table.boolean('ready')
+            table.string('time')
+
+            table
+                .integer('user_story_id')
+                .unsigned()
+                .references('id')
+                .inTable('user_stories')
+                .onDelete('SET NULL')
+                .index()
+
+            table
+                .integer('owner_id')
+                .unsigned()
+                .references('id')
+                .inTable('users')
+                .onDelete('SET NULL')
+                .index()
+        })
 };
 
 exports.down = knex => {
@@ -122,6 +145,7 @@ exports.down = knex => {
         .dropTableIfExists('users_company')
         .dropTableIfExists('user_projects')
         .dropTableIfExists('user_estimations')
+        .dropTableIfExists('tasks')
         .dropTableIfExists('user_stories')
         .dropTableIfExists('projects')
         .dropTableIfExists('companies')

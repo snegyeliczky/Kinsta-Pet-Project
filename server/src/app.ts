@@ -6,6 +6,8 @@ import {Resolvers} from "./resolvers/resolver";
 import Project from "./model/Project";
 import {DbInit} from "./util/initialiser";
 import UserStory from "./model/UserStory";
+import Company from "./model/Company";
+import Task from "./model/Task";
 
 const resolvers = {
     ...Resolvers
@@ -22,22 +24,17 @@ Model.knex(knex);
 async function insertBaseUsersToDb() {
     let users = await User.query();
     if (users.length < 1) {
-       await DbInit();
+        await DbInit();
     }
-    // @ts-ignore
-    await User.relatedQuery('userStoryEstimations').for(1).patch({estimation:12}).where('user_storyId',1);
-    let testData = await UserStory.relatedQuery('estimatedUsers').for(1);
+    //replace testData with other queries to test and log data from DB
 
-    await User.relatedQuery('companies')
-        .for(3)
-        .relate(2);
-    let testd2 = await User.relatedQuery('companies')
-        .for(3);
-    console.log(testd2);
+    let testData =await Task.relatedQuery('owner').for(2);
+
+    console.log(testData);
 }
 
 
-server.start({port: 4001,endpoint:"/gql"}, () => {
+server.start({port: 4001, endpoint: "/gql"}, () => {
     console.log('Server is running on http://localhost:4001/gql');
     insertBaseUsersToDb();
 });

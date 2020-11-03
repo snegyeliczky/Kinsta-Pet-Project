@@ -3,7 +3,6 @@ import User from "./User";
 import Project from "./Project";
 
 
-
 export default class Company extends Model {
 
     static tableName = "companies";
@@ -11,7 +10,7 @@ export default class Company extends Model {
     id!: number;
     name!: string;
     users?: User[];
-    projects?:Project[];
+    projects?: Project[];
 
     static idColumn = "id";
 
@@ -25,7 +24,7 @@ export default class Company extends Model {
         },
     };
 
-    static get relationMappings (){
+    static get relationMappings() {
 
         return {
             users: {
@@ -46,12 +45,12 @@ export default class Company extends Model {
                     to: 'users.id'
                 }
             },
-            projects:{
+            projects: {
                 relation: Model.HasManyRelation,
                 modelClass: Project,
                 join: {
-                    from:'companies.id',
-                    to:'projects.companyId'
+                    from: 'companies.id',
+                    to: 'projects.companyId'
                 }
             }
         }

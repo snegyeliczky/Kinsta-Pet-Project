@@ -3,46 +3,48 @@ import path from "path";
 import {Model} from "objection";
 import Project from "./Project";
 import UserStory from "./UserStory";
+import Task from "./Task";
 
 export default class User extends Model {
 
-    static  tableName = 'users';
+    static tableName = 'users';
 
     id!: number;
     firstName!: string;
     lastName!: string;
     email!: string;
-    password!:string;
-    companies?:Company[];
-    projects?:Project[];
-    userStories?:UserStory[];
-    participate?:Project[];
-    userStoryEstimations?:UserStory[];
+    password!: string;
+    companies?: Company[];
+    projects?: Project[];
+    userStories?: UserStory[];
+    participate?: Project[];
+    userStoryEstimations?: UserStory[];
+    tasks?: Task[];
 
-    static  idColumn =  "id";
+    static idColumn = "id";
 
-    getName =()=>{
-        return this.firstName +" "+this.lastName
+    getName = () => {
+        return this.firstName + " " + this.lastName
     };
 
     static jsonSchema = {
         type: 'Object',
-        required:['firstName','lastName'],
+        required: ['firstName', 'lastName'],
 
-        properties:{
-            id: { type: 'integer' },
-            firstName: { type: 'string', minLength: 1, maxLength: 255 },
-            lastName: { type: 'string', minLength: 1, maxLength: 255 },
-            email: { type: 'string' },
-            password:{type:'string'}
+        properties: {
+            id: {type: 'integer'},
+            firstName: {type: 'string', minLength: 1, maxLength: 255},
+            lastName: {type: 'string', minLength: 1, maxLength: 255},
+            email: {type: 'string'},
+            password: {type: 'string'}
         },
 
         address: {
             type: 'object',
             properties: {
-                street: { type: 'string' },
-                city: { type: 'string' },
-                zipCode: { type: 'string' }
+                street: {type: 'string'},
+                city: {type: 'string'},
+                zipCode: {type: 'string'}
             }
         }
     };
@@ -62,7 +64,7 @@ export default class User extends Model {
                     to: 'companies.id'
                 }
             },
-            projects:{
+            projects: {
                 relation: Model.HasManyRelation,
                 modelClass: Project,
                 join: {
@@ -70,37 +72,45 @@ export default class User extends Model {
                     to: 'projects.ownerId'
                 }
             },
-            participate:{
+            participate: {
                 relation: Model.ManyToManyRelation,
-                modelClass:Project,
-                join:{
-                    from:'users.id',
-                    through:{
-                        from:'user_projects.userId',
-                        to:'user_projects.projectId'
+                modelClass: Project,
+                join: {
+                    from: 'users.id',
+                    through: {
+                        from: 'user_projects.userId',
+                        to: 'user_projects.projectId'
                     },
-                    to:'projects.id'
+                    to: 'projects.id'
                 }
             },
-            userStories:{
-                relation:Model.HasManyRelation,
-                modelClass:UserStory,
-                join:{
-                    from:'users.id',
-                    to:'user_stories.userId'
+            userStories: {
+                relation: Model.HasManyRelation,
+                modelClass: UserStory,
+                join: {
+                    from: 'users.id',
+                    to: 'user_stories.userId'
                 }
             },
-            userStoryEstimations:{
+            userStoryEstimations: {
                 relation: Model.ManyToManyRelation,
                 modelClass: UserStory,
                 join: {
                     from: 'users.id',
-                    through:{
-                        from:'user_estimations.userId',
-                        to:'user_estimations.user_storyId',
-                        extra:['estimation']
+                    through: {
+                        from: 'user_estimations.userId',
+                        to: 'user_estimations.user_storyId',
+                        extra: ['estimation']
                     },
-                    to:'user_stories.id'
+                    to: 'user_stories.id'
+                }
+            },
+            tasks: {
+                relation: Model.HasManyRelation,
+                modelClass: Task,
+                join: {
+                    from: 'users.id',
+                    to: 'tasks.owner_id'
                 }
             }
 
