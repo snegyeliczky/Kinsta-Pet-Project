@@ -5,8 +5,6 @@ import Task from "./Task";
 
 export default class UserStory extends Model {
 
-    static tableName = 'user_stories';
-
     id!: number;
     project!: Project;
     userStory!: string;
@@ -15,6 +13,8 @@ export default class UserStory extends Model {
     owner?: User;
     estimatedUsers?: User[];
     tasks?: Task[];
+
+    static tableName = 'user_stories';
 
     static get relationMappings() {
         return {
