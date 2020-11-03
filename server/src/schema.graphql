@@ -15,11 +15,11 @@ type Query{
 }
 
 type Mutation{
-    addUser(newFirstName:String!,newLastName:String!,email:String!,password:String!):User!
-    addCompany(userId:Int,CompanyName:String!):Company!
+    addNewUser(newFirstName:String!,newLastName:String!,email:String!,password:String!):User!
+    addNewCompany(userId:Int,CompanyName:String!):Company!
     addUserToCompany(userId:Int,companyId:Int):Int
     addNewProject(userId:Int,companyId:Int,projectName:String):Project!
-
+    addNewUserStory(userId:Int,projectId:Int,userStory:String):UserStory!
 }
 
 type User {
@@ -46,6 +46,7 @@ type Project{
     name:String,
     owner:User,
     participants:[User!],
+    userStories:[UserStory!]
 }
 
 type UserStory{
