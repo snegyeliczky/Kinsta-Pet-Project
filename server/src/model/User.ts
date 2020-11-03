@@ -3,6 +3,7 @@ import path from "path";
 import {Model} from "objection";
 import Project from "./Project";
 import UserStory from "./UserStory";
+import Task from "./Task";
 
 export default class User extends Model {
 
@@ -18,6 +19,7 @@ export default class User extends Model {
     userStories?: UserStory[];
     participate?: Project[];
     userStoryEstimations?: UserStory[];
+    tasks?: Task[];
 
     static idColumn = "id";
 
@@ -101,6 +103,14 @@ export default class User extends Model {
                         extra: ['estimation']
                     },
                     to: 'user_stories.id'
+                }
+            },
+            tasks: {
+                relation: Model.HasManyRelation,
+                modelClass: Task,
+                join: {
+                    from: 'users.id',
+                    to: 'tasks.owner_id'
                 }
             }
 

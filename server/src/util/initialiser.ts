@@ -1,6 +1,8 @@
 import User from "../model/User";
 import Company from "../model/Company";
 import Project from "../model/Project";
+import UserStory from "../model/UserStory";
+import Task from "../model/Task";
 
 export async function DbInit() {
     await User.query().insertGraph(
@@ -42,4 +44,10 @@ export async function DbInit() {
     await User.relatedQuery('userStoryEstimations').for(2).relate({id: 2, estimation: 2});
     // @ts-ignore
     await User.relatedQuery('userStoryEstimations').for(1).patch({estimation: 12}).where('user_storyId', 1);
+    await UserStory.relatedQuery('tasks').for(1)
+        .insert({title: "creat security", description: "hash password", ready: false});
+    await UserStory.relatedQuery('tasks').for(1)
+        .insert({title: "creat user model", description: "user have name ", ready: false});
+    await Task.relatedQuery('owner').for(1).relate(1)
+    await Task.relatedQuery('owner').for(2).relate(2)
 }

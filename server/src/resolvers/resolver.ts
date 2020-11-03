@@ -2,16 +2,14 @@ import User from "../model/User";
 import Company from "../model/Company";
 import Project from "../model/Project";
 import UserStory from "../model/UserStory";
+import Task from "../model/Task";
 
 export const Resolvers = {
+
     Query: {
         users: () => User.query(),
         user: (parent: User, args: { id: number }) => {
             return User.query().findById(args.id)
-        },
-        //not necessary  user knows
-        getCompaniesForUser: (parent: User, args: { userId: number }) => {
-            return User.relatedQuery('companies').for(args.userId)
         },
 
         companies: () => Company.query(),
@@ -28,6 +26,11 @@ export const Resolvers = {
         userStory: (parent: UserStory, args: { id: number }) => {
             return UserStory.query().findById(args.id)
         },
+
+        tasks: () => Task.query(),
+        task: (parent: Task, args: { id: number }) => {
+            return Task.query().findById(args.id)
+        }
     },
 
     Mutation: {
@@ -123,6 +126,26 @@ export const Resolvers = {
         },
         estimatedUsers: async (parent: UserStory) => {
             return UserStory.relatedQuery('estimatedUsers').for(parent.id);
+        },
+        tasks: async (parent: UserStory) => {
+            return UserStory.relatedQuery('tasks').for(parent.id)
+        }
+    },
+
+    Task: {
+        id: (parent: Task) => parent.id,
+        title: (parent: Task) => parent.title,
+        description: (parent: Task) => parent.description,
+        ready: (parent: Task) => parent.ready,
+        time: (parent: Task) => parent.time,
+        userStory: async (parent: Task) => {
+            let userStoryInList = await Task.relatedQuery('userStory').for(parent.id);
+            return userStoryInList[0]
+
+        },
+        owner: async (parent: Task) => {
+            let ownerInList = await Task.relatedQuery('owner').for(parent.id);
+            return ownerInList[0]
         }
     }
 

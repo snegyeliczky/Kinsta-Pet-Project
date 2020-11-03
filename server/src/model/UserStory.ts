@@ -1,6 +1,7 @@
 import {Model} from "objection";
 import Project from "./Project";
 import User from "./User";
+import Task from "./Task";
 
 export default class UserStory extends Model {
 
@@ -13,6 +14,7 @@ export default class UserStory extends Model {
     businessValue?: number;
     owner?: User;
     estimatedUsers?: User[];
+    tasks?: Task[];
 
     static get relationMappings() {
         return {
@@ -43,6 +45,14 @@ export default class UserStory extends Model {
                         extra: ['estimation']
                     },
                     to: 'users.id'
+                }
+            },
+            tasks: {
+                relation: Model.HasManyRelation,
+                modelClass: Task,
+                join: {
+                    from: 'user_stories.id',
+                    to: 'tasks.user_story_id'
                 }
             }
         }

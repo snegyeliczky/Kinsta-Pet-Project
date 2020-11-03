@@ -7,6 +7,7 @@ import Project from "./model/Project";
 import {DbInit} from "./util/initialiser";
 import UserStory from "./model/UserStory";
 import Company from "./model/Company";
+import Task from "./model/Task";
 
 const resolvers = {
     ...Resolvers
@@ -27,7 +28,7 @@ async function insertBaseUsersToDb() {
     }
     //replace testData with other queries to test and log data from DB
 
-    let testData =await UserStory.relatedQuery('owner').for(1);
+    let testData =await Task.relatedQuery('owner').for(2);
 
     console.log(testData);
 }

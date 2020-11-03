@@ -12,6 +12,9 @@ type Query{
 
     userStories:[UserStory!]
     userStory(id:ID!):UserStory
+
+    tasks:[Task!]
+    task(id:ID!):Task
 }
 
 type Mutation{
@@ -57,5 +60,16 @@ type UserStory{
     status:Boolean,
     businessValue:Int,
     owner:User,
-    estimatedUsers:[User!]
+    estimatedUsers:[User!],
+    tasks:[Task!]
+}
+
+type Task{
+    id: Int,
+    title:String,
+    description:String,
+    ready: Boolean,
+    time: String,
+    userStory: UserStory,
+    owner: User
 }
