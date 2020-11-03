@@ -176,7 +176,6 @@ export const Resolvers = {
         time: (parent: Task) => parent.time,
         userStory: async (parent: Task) => {
             let userStoryInList = await Task.relatedQuery("userStory").for(parent.id);
-
             return userStoryInList[0];
         },
         owner: async (parent: Task) => {
