@@ -3,8 +3,10 @@ import Company from "../model/Company";
 import Project from "../model/Project";
 import UserStory from "../model/UserStory";
 import Task from "../model/Task";
+import UserEstimation from "../model/UserEstimation";
+import {GqlService} from "../services/GqlService";
 
-export const Resolvers = {
+export const resolvers = {
     Query: {
         users: () => User.query(),
         user: (parent: User, args: { id: number }) => {
@@ -105,6 +107,12 @@ export const Resolvers = {
             });
             return UserStory.query().findById(args.userStoryId);
         },
+        estimateUserStory: async (
+            parent: UserEstimation,
+            args: { userId: number, userStoryId: number, estimation: number }
+        ) => {
+           return  await GqlService.checkEstimation(args.userId,args.userStoryId,args.estimation)
+        }
     },
 
     User: {

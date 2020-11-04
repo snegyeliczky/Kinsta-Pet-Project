@@ -36,7 +36,6 @@ export async function DbInit() {
         .relate(1);
     await User.relatedQuery('userStories').for(2)
         .relate(2);
-    // @ts-ignore
     await User.relatedQuery('userStoryEstimations').for(1).relate({id: 1, estimation: 1});
     // @ts-ignore
     await User.relatedQuery('userStoryEstimations').for(2).relate({id: 1, estimation: 3});

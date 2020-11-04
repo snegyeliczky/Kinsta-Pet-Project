@@ -4,6 +4,7 @@ import {Model} from "objection";
 import Project from "./Project";
 import UserStory from "./UserStory";
 import Task from "./Task";
+import UserEstimation from "./UserEstimation";
 
 export default class User extends Model {
 
@@ -18,7 +19,7 @@ export default class User extends Model {
     projects?: Project[];
     userStories?: UserStory[];
     participate?: Project[];
-    userStoryEstimations?: UserStory[];
+    userStoryEstimations?: UserEstimation[];
     tasks?: Task[];
 
     static idColumn = "id";
