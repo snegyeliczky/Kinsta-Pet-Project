@@ -8,6 +8,7 @@ import Task from "./model/Task";
 import UserStory from "./model/UserStory";
 import {GqlService} from "./services/GqlService";
 import Project from "./model/Project";
+import {GqlUtil} from "./util/GqlUtil";
 
 
 const server = new GraphQLServer({
@@ -23,10 +24,7 @@ async function insertBaseUsersToDb() {
     if (users.length < 1) {
         await DbInit();
     }
-
-
-    let testData = await Task.query();
-
+    let testData = await GqlUtil.checkUserStoryStatus(1);
     console.log(testData);
 }
 
