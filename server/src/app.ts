@@ -22,9 +22,8 @@ async function insertBaseUsersToDb() {
     if (users.length < 1) {
         await DbInit();
     }
-
-    await GqlService.checkEstimation(1,2,3);
-    let testData =await UserStory.relatedQuery('estimatedUsers').for(2);
+    await GqlService.estimator(1,2,4);
+    let testData =await UserStory.relatedQuery('estimatedUsers').for(1);
     console.log(testData);
 }
 

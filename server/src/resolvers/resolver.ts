@@ -111,7 +111,7 @@ export const resolvers = {
             parent: UserEstimation,
             args: { userId: number, userStoryId: number, estimation: number }
         ) => {
-           return  await GqlService.checkEstimation(args.userId,args.userStoryId,args.estimation)
+           return  await GqlService.estimator(args.userId,args.userStoryId,args.estimation)
         }
     },
 
@@ -123,6 +123,9 @@ export const resolvers = {
         companies: (parent: User) => {
             return User.relatedQuery("companies").for(parent.id);
         },
+        userStoryEstimations:(parent:User) =>{
+            return User.relatedQuery('userStoryEstimations').for(parent.id)
+        }
     },
 
     Company: {
@@ -191,4 +194,16 @@ export const resolvers = {
             return ownerInList[0];
         },
     },
+    UserEstimation:{
+        id:(parent:UserEstimation)=>parent.id,
+        estimation:(parent:UserEstimation)=>parent.estimation,
+        owner:async (parent:UserEstimation)=>{
+            let ownerList = await UserEstimation.relatedQuery('owner').for(parent.id);
+            return ownerList[0]
+        },
+        userStory:async (parent:UserEstimation)=>{
+            let storyList = await UserEstimation.relatedQuery('userStory').for(parent.id);
+            return storyList[0];
+        },
+    }
 };

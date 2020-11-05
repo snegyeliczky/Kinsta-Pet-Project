@@ -33,8 +33,7 @@ type User {
     lastName:String!
     email:String!
     companies:[Company!]
-
-    estimation:Int
+    userStoryEstimations:[UserEstimation!]
 }
 
 
@@ -61,7 +60,7 @@ type UserStory{
     status:Boolean,
     businessValue:Int,
     owner:User,
-    estimatedUsers:[User!],
+    estimatedUsers:[UserEstimation!],
     tasks:[Task!]
 }
 
@@ -73,4 +72,11 @@ type Task{
     time: String,
     userStory: UserStory,
     owner: User
+}
+
+type UserEstimation{
+    id:Int,
+    estimation:Int,
+    owner:User,
+    userStory:UserStory,
 }

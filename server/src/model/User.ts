@@ -94,16 +94,11 @@ export default class User extends Model {
                 }
             },
             userStoryEstimations: {
-                relation: Model.ManyToManyRelation,
-                modelClass: UserStory,
+                relation: Model.HasManyRelation,
+                modelClass: UserEstimation,
                 join: {
-                    from: 'users.id',
-                    through: {
-                        from: 'user_estimations.userId',
-                        to: 'user_estimations.user_storyId',
-                        extra: ['estimation']
-                    },
-                    to: 'user_stories.id'
+                    from:'users.id',
+                    to:'user_estimations.userId'
                 }
             },
             tasks: {

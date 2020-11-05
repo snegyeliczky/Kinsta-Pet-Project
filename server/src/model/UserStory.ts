@@ -2,6 +2,7 @@ import {Model} from "objection";
 import Project from "./Project";
 import User from "./User";
 import Task from "./Task";
+import UserEstimation from "./UserEstimation";
 
 export default class UserStory extends Model {
 
@@ -11,7 +12,7 @@ export default class UserStory extends Model {
     status!: boolean;
     businessValue?: number;
     owner?: User;
-    estimatedUsers?: User[];
+    estimatedUsers?: UserEstimation[];
     tasks?: Task[];
 
     static tableName = 'user_stories';
@@ -35,16 +36,11 @@ export default class UserStory extends Model {
                 }
             },
             estimatedUsers: {
-                relation: Model.ManyToManyRelation,
-                modelClass: User,
+                relation: Model.HasManyRelation,
+                modelClass: UserEstimation,
                 join: {
                     from: 'user_stories.id',
-                    through: {
-                        from: 'user_estimations.user_storyId',
-                        to: 'user_estimations.userId',
-                        extra: ['estimation']
-                    },
-                    to: 'users.id'
+                    to: 'user_estimations.user_storyId',
                 }
             },
             tasks: {

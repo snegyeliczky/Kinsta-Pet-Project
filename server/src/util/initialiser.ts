@@ -36,13 +36,10 @@ export async function DbInit() {
         .relate(1);
     await User.relatedQuery('userStories').for(2)
         .relate(2);
-    await User.relatedQuery('userStoryEstimations').for(1).relate({id: 1, estimation: 1});
-    // @ts-ignore
-    await User.relatedQuery('userStoryEstimations').for(2).relate({id: 1, estimation: 3});
-    // @ts-ignore
-    await User.relatedQuery('userStoryEstimations').for(2).relate({id: 2, estimation: 2});
-    // @ts-ignore
-    await User.relatedQuery('userStoryEstimations').for(1).patch({estimation: 12}).where('user_storyId', 1);
+    let estimation = await User.relatedQuery('userStoryEstimations').for(1).insert({estimation:1});
+    await estimation.$relatedQuery('userStory').relate(1);
+    let estimation2 = await User.relatedQuery('userStoryEstimations').for(2).insert({estimation:2});
+    await estimation2.$relatedQuery('userStory').relate(1);
     await UserStory.relatedQuery('tasks').for(1)
         .insert({title: "creat security", description: "hash password", ready: false});
     await UserStory.relatedQuery('tasks').for(1)
