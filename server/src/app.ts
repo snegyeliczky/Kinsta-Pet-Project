@@ -7,6 +7,7 @@ import {DbInit} from "./util/initialiser";
 import Task from "./model/Task";
 import UserStory from "./model/UserStory";
 import {GqlService} from "./services/GqlService";
+import Project from "./model/Project";
 
 
 const server = new GraphQLServer({
@@ -22,8 +23,8 @@ async function insertBaseUsersToDb() {
     if (users.length < 1) {
         await DbInit();
     }
-    await GqlService.estimator(1,2,4);
-    let testData =await UserStory.relatedQuery('estimatedUsers').for(1);
+
+    let testData =await UserStory.relatedQuery('owner').for(1);
     console.log(testData);
 }
 
