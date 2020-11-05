@@ -41,7 +41,7 @@ exports.up = knex => {
                 .unsigned()
                 .references('id')
                 .inTable('companies')
-                .onDelete('SET NULL')
+                .onDelete('CASCADE')
                 .index()
 
             table
@@ -70,7 +70,7 @@ exports.up = knex => {
                 .unsigned()
                 .references('id')
                 .inTable('projects')
-                .onDelete('SET NULL')
+                .onDelete('CASCADE')
                 .index()
 
             table.string('userStory')
@@ -127,7 +127,7 @@ exports.up = knex => {
                 .unsigned()
                 .references('id')
                 .inTable('user_stories')
-                .onDelete('SET NULL')
+                .onDelete('CASCADE')
                 .index()
 
             table

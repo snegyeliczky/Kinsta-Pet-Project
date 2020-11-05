@@ -119,6 +119,16 @@ export const resolvers = {
             return UserStory.query().findById(args.userStoryId);
         },
 
+        deleteProject:(parent:Project,args:{projectId:number})=>{
+            return Project.query().deleteById(args.projectId);
+        },
+        deleteUserStory: (parent:UserStory,args:{userStoryId:number}) =>{
+            return UserStory.query().deleteById(args.userStoryId);
+        },
+        deleteTask: (parent:Task, args:{taskId:number}) =>{
+            return Task.query().deleteById(args.taskId);
+        },
+
         estimateUserStory: async (
             parent: UserEstimation,
             args: { userId: number, userStoryId: number, estimation: number }

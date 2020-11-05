@@ -24,7 +24,9 @@ async function insertBaseUsersToDb() {
         await DbInit();
     }
 
-    let testData =await UserStory.relatedQuery('owner').for(1);
+
+    let testData = await Task.query();
+
     console.log(testData);
 }
 

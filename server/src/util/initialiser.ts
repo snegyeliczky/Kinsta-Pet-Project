@@ -32,6 +32,8 @@ export async function DbInit() {
         .insert({userStory: "frontend colors shames", status: false});
     await Project.relatedQuery('userStories').for(1)
         .insert({userStory: "backend db connection", status: false});
+    await Project.relatedQuery('userStories').for(2)
+        .insert({userStory: "MySql db backend", status: false});
     await User.relatedQuery('userStories').for(1)
         .relate(1);
     await User.relatedQuery('userStories').for(2)

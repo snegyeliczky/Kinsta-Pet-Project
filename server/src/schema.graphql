@@ -28,6 +28,10 @@ type Mutation{
     addOwnerToUserStory(userId:Int,userStoryId:Int):Int
     addOwnerToTask(userId:Int,taskId:Int):Int
 
+    deleteProject(projectId:Int):Int
+    deleteUserStory(userStoryId:Int):Int
+    deleteTask(taskId:Int):Int
+
     updateUserStory(ownerId:Int,userStory:String,status:Boolean, userStoryId:Int):UserStory!
 
     estimateUserStory(userId:Int, userStoryId:Int, estimation:Int):Int
