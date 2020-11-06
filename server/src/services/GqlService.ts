@@ -26,11 +26,10 @@ export const GqlService = {
     },
 
     updateUserStory: async (ownerId: number, userStory: string,
-                            status: boolean, userStoryId: number) => {
+                            userStoryId: number) => {
         await UserStory.relatedQuery("owner").for(userStoryId).relate(ownerId);
         await UserStory.query().findById(userStoryId).patch({
             userStory: userStory,
-            status: status,
         });
         return UserStory.query().findById(userStoryId);
     },

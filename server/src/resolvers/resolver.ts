@@ -129,9 +129,9 @@ export const resolvers = {
             parent: UserStory,
             args: {
                 ownerId: number; userStory: string;
-                status: boolean; userStoryId: number;
+                userStoryId: number;
             }) => {
-            return GqlService.updateUserStory(args.ownerId, args.userStory, args.status, args.userStoryId);
+            return GqlService.updateUserStory(args.ownerId, args.userStory, args.userStoryId);
         },
 
         // update the task status and return the userStory status
