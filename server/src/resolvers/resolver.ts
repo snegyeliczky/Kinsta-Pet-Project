@@ -82,6 +82,17 @@ export const resolvers = {
             console.log(newUserStory);
             return newUserStory;
         },
+        addNewTask: async (
+            parent: Task,
+            args: {
+                userStoryId: number, taskTitle: string,
+                taskDescription: string, ownerId: number
+            }) => {
+            let newTask = await UserStory.relatedQuery('tasks').for(args.userStoryId)
+                .insert({title: args.taskTitle, description: args.taskDescription, ready: false});
+            if (args.ownerId) await Task.relatedQuery('owner').for(newTask.id).relate(args.ownerId);
+            return newTask
+        },
 
         addUserToCompany: async (
             parent: Company,
@@ -124,6 +135,12 @@ export const resolvers = {
         updateTaskStatus: async (parent: Task, args: { taskId: number, taskStatus: boolean }): Promise<boolean> => {
             await Task.query().findById(args.taskId).patch({ready: args.taskStatus});
             return GqlUtil.checkUserStoryStatus(args.taskId);
+        },
+        updateTask: async (parent: Task, args: {
+            taskId: number, title: string,
+            description: string, time: string
+        }) => {
+            return GqlService.updateTask(args.taskId,args.title,args.description,args.time)
         },
 
         // if user doesn't estimate the story creat new estimation else update the existing one

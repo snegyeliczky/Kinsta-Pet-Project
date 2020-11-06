@@ -1,5 +1,6 @@
 import User from "../model/User";
 import UserStory from "../model/UserStory";
+import Task from "../model/Task";
 
 export const GqlService = {
 
@@ -33,6 +34,16 @@ export const GqlService = {
         });
         return UserStory.query().findById(userStoryId);
     },
+
+    updateTask: async (taskId: number, title: string,
+                       description: string, time: string) =>{
+        await Task.query().findById(taskId).patch({
+            title:title,
+            description:description,
+            time:time
+        });
+        return Task.query().findById(taskId);
+    }
 };
 
 

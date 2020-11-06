@@ -15,13 +15,15 @@ type Query{
 
     tasks:[Task!]
     task(id:ID!):Task
+    unfiishedTasks(userId:ID):[Task]
 }
 
 type Mutation{
     addNewUser(newFirstName:String!,newLastName:String!,email:String!,password:String!):User!
-    addNewCompany(userId:Int,CompanyName:String!):Company!
-    addNewProject(userId:Int,companyId:Int,projectName:String):Project!
-    addNewUserStory(userId:Int,projectId:Int,userStory:String):UserStory!
+    addNewCompany(userId:Int!,CompanyName:String!):Company!
+    addNewProject(userId:Int,companyId:Int!,projectName:String):Project!
+    addNewUserStory(userId:Int,projectId:Int!,userStory:String):UserStory!
+    addNewTask(userStoryId:Int!,taskTitle:String!,taskDescription:String,ownerId:Int):Task!
 
     addUserToCompany(userId:Int,companyId:Int):Int
     addOwnerToProject(userId:Int,projectId:Int):Int
@@ -34,6 +36,7 @@ type Mutation{
 
     updateUserStory(ownerId:Int,userStory:String,status:Boolean, userStoryId:Int):UserStory!
     updateTaskStatus(taskId:Int,taskStatus:Boolean):Boolean
+    updateTask( taskId:Int, title:String, description: String,time:String):Task!
 
     estimateUserStory(userId:Int, userStoryId:Int, estimation:Int):Int
 
