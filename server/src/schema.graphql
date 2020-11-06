@@ -33,6 +33,7 @@ type Mutation{
     deleteTask(taskId:Int):Int
 
     updateUserStory(ownerId:Int,userStory:String,status:Boolean, userStoryId:Int):UserStory!
+    updateTaskStatus(taskId:Int,taskStatus:Boolean):Boolean
 
     estimateUserStory(userId:Int, userStoryId:Int, estimation:Int):Int
 

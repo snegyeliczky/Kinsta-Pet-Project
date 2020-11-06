@@ -1,4 +1,5 @@
 import User from "../model/User";
+import UserStory from "../model/UserStory";
 
 export const GqlService = {
 
@@ -23,7 +24,16 @@ export const GqlService = {
         }
     },
 
-}
+    updateUserStory: async (ownerId: number, userStory: string,
+                            status: boolean, userStoryId: number) => {
+        await UserStory.relatedQuery("owner").for(userStoryId).relate(ownerId);
+        await UserStory.query().findById(userStoryId).patch({
+            userStory: userStory,
+            status: status,
+        });
+        return UserStory.query().findById(userStoryId);
+    },
+};
 
 
 

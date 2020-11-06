@@ -5,6 +5,7 @@ import UserStory from "../model/UserStory";
 import Task from "../model/Task";
 import UserEstimation from "../model/UserEstimation";
 import {GqlService} from "../services/GqlService";
+import {GqlUtil} from "../util/GqlUtil";
 
 export const resolvers = {
     Query: {
@@ -100,25 +101,6 @@ export const resolvers = {
             return Task.relatedQuery('owner').for(args.taskId).relate(args.userId);
         },
 
-        updateUserStory: async (
-            parent: UserStory,
-            args: {
-                ownerId: number;
-                userStory: string;
-                status: boolean;
-                userStoryId: number;
-            }
-        ) => {
-            await UserStory.relatedQuery("owner")
-                .for(args.userStoryId)
-                .relate(args.ownerId);
-            await UserStory.query().findById(args.userStoryId).patch({
-                userStory: args.userStory,
-                status: args.status,
-            });
-            return UserStory.query().findById(args.userStoryId);
-        },
-
         deleteProject: (parent: Project, args: { projectId: number }) => {
             return Project.query().deleteById(args.projectId);
         },
@@ -129,6 +111,22 @@ export const resolvers = {
             return Task.query().deleteById(args.taskId);
         },
 
+        updateUserStory: async (
+            parent: UserStory,
+            args: {
+                ownerId: number; userStory: string;
+                status: boolean; userStoryId: number;
+            }) => {
+            return GqlService.updateUserStory(args.ownerId, args.userStory, args.status, args.userStoryId);
+        },
+
+        // update the task status and return the userStory status
+        updateTaskStatus: async (parent: Task, args: { taskId: number, taskStatus: boolean }): Promise<boolean> => {
+            await Task.query().findById(args.taskId).patch({ready: args.taskStatus});
+            return GqlUtil.checkUserStoryStatus(args.taskId);
+        },
+
+        // if user doesn't estimate the story creat new estimation else update the existing one
         estimateUserStory: async (
             parent: UserEstimation,
             args: { userId: number, userStoryId: number, estimation: number }

@@ -2,7 +2,7 @@ import Task from "../model/Task";
 import UserStory from "../model/UserStory";
 
 export const GqlUtil = {
-    checkUserStoryStatus: async (taskId: number) => {
+    checkUserStoryStatus: async (taskId: number):Promise<boolean> => {
         let userStoryInList = await Task.relatedQuery('userStory').for(taskId);
         let userStory = userStoryInList[0];
         let tasks = await userStory.$relatedQuery('tasks');
