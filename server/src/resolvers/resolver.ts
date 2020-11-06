@@ -33,6 +33,9 @@ export const resolvers = {
         task: (parent: Task, args: { id: number }) => {
             return Task.query().findById(args.id);
         },
+        unFinishedTasks:(parent:Task, args:{userId:number}) =>{
+            return GqlUtil.unFinishedTasksForUser(args.userId);
+        },
     },
 
     Mutation: {

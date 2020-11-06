@@ -15,7 +15,7 @@ type Query{
 
     tasks:[Task!]
     task(id:ID!):Task
-    unfiishedTasks(userId:ID):[Task]
+    unFinishedTasks(userId:ID):[Task]
 }
 
 type Mutation{
