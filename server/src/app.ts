@@ -24,8 +24,10 @@ async function insertBaseUsersToDb() {
     if (users.length < 1) {
         await DbInit();
     }
+    await Task.query().findById(2).patch({ready:false});
+    let tasks = await Task.query();
     let testData = await GqlUtil.checkUserStoryStatus(1);
-    console.log(testData);
+    console.log(tasks,testData);
 }
 
 
