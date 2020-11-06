@@ -15,15 +15,31 @@ type Query{
 
     tasks:[Task!]
     task(id:ID!):Task
+    unFinishedTasks(userId:ID):[Task]
 }
 
 type Mutation{
     addNewUser(newFirstName:String!,newLastName:String!,email:String!,password:String!):User!
-    addNewCompany(userId:Int,CompanyName:String!):Company!
+    addNewCompany(userId:Int!,CompanyName:String!):Company!
+    addNewProject(userId:Int,companyId:Int!,projectName:String):Project!
+    addNewUserStory(userId:Int,projectId:Int!,userStory:String):UserStory!
+    addNewTask(userStoryId:Int!,taskTitle:String!,taskDescription:String,ownerId:Int):Task!
+
     addUserToCompany(userId:Int,companyId:Int):Int
-    addNewProject(userId:Int,companyId:Int,projectName:String):Project!
-    addNewUserStory(userId:Int,projectId:Int,userStory:String):UserStory!
+    addOwnerToProject(userId:Int,projectId:Int):Int
+    addOwnerToUserStory(userId:Int,userStoryId:Int):Int
+    addOwnerToTask(userId:Int,taskId:Int):Int
+
+    deleteProject(projectId:Int):Int
+    deleteUserStory(userStoryId:Int):Int
+    deleteTask(taskId:Int):Int
+
     updateUserStory(ownerId:Int,userStory:String,status:Boolean, userStoryId:Int):UserStory!
+    updateTaskStatus(taskId:Int,taskStatus:Boolean):Boolean
+    updateTask( taskId:Int, title:String, description: String,time:String):Task!
+
+    estimateUserStory(userId:Int, userStoryId:Int, estimation:Int):Int
+
 }
 
 type User {
@@ -32,8 +48,7 @@ type User {
     lastName:String!
     email:String!
     companies:[Company!]
-
-    estimation:Int
+    userStoryEstimations:[UserEstimation!]
 }
 
 
@@ -60,7 +75,7 @@ type UserStory{
     status:Boolean,
     businessValue:Int,
     owner:User,
-    estimatedUsers:[User!],
+    estimatedUsers:[UserEstimation!],
     tasks:[Task!]
 }
 
@@ -72,4 +87,11 @@ type Task{
     time: String,
     userStory: UserStory,
     owner: User
+}
+
+type UserEstimation{
+    id:Int,
+    estimation:Int,
+    owner:User,
+    userStory:UserStory,
 }

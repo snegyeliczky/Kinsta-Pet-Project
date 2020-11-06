@@ -2,20 +2,18 @@ import {GraphQLServer} from "graphql-yoga";
 import knexConfig from "../knexfile"
 import User from "./model/User";
 import {Model} from "objection";
-import {Resolvers} from "./resolvers/resolver";
-import Project from "./model/Project";
+import {resolvers} from "./resolvers/resolver";
 import {DbInit} from "./util/initialiser";
-import UserStory from "./model/UserStory";
-import Company from "./model/Company";
 import Task from "./model/Task";
+import UserStory from "./model/UserStory";
+import {GqlService} from "./services/GqlService";
+import Project from "./model/Project";
+import {GqlUtil} from "./util/GqlUtil";
 
-const resolvers = {
-    ...Resolvers
-};
 
 const server = new GraphQLServer({
     typeDefs: './src/schema.graphql',
-    resolvers,
+    resolvers
 });
 
 let knex = require('knex')(knexConfig.production);
@@ -26,10 +24,7 @@ async function insertBaseUsersToDb() {
     if (users.length < 1) {
         await DbInit();
     }
-    //replace testData with other queries to test and log data from DB
-
-    let testData =await Task.relatedQuery('owner').for(2);
-
+    let testData = await Task.query()
     console.log(testData);
 }
 

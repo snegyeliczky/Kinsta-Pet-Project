@@ -3,8 +3,11 @@ import Company from "../model/Company";
 import Project from "../model/Project";
 import UserStory from "../model/UserStory";
 import Task from "../model/Task";
+import UserEstimation from "../model/UserEstimation";
+import {GqlService} from "../services/GqlService";
+import {GqlUtil} from "../util/GqlUtil";
 
-export const Resolvers = {
+export const resolvers = {
     Query: {
         users: () => User.query(),
         user: (parent: User, args: { id: number }) => {
@@ -29,6 +32,9 @@ export const Resolvers = {
         tasks: () => Task.query(),
         task: (parent: Task, args: { id: number }) => {
             return Task.query().findById(args.id);
+        },
+        unFinishedTasks:(parent:Task, args:{userId:number}) =>{
+            return GqlUtil.unFinishedTasksForUser(args.userId);
         },
     },
 
@@ -57,14 +63,6 @@ export const Resolvers = {
                 .for(args.userId)
                 .insert({name: args.CompanyName});
         },
-        addUserToCompany: async (
-            parent: Company,
-            args: { userId: number; companyId: number }
-        ) => {
-            return User.relatedQuery("companies")
-                .for(args.userId)
-                .relate(args.companyId);
-        },
         addNewProject: async (
             parent: Project,
             args: { userId: number; companyId: number; projectName: string }
@@ -87,24 +85,74 @@ export const Resolvers = {
             console.log(newUserStory);
             return newUserStory;
         },
+        addNewTask: async (
+            parent: Task,
+            args: {
+                userStoryId: number, taskTitle: string,
+                taskDescription: string, ownerId: number
+            }) => {
+            let newTask = await UserStory.relatedQuery('tasks').for(args.userStoryId)
+                .insert({title: args.taskTitle, description: args.taskDescription, ready: false});
+            if (args.ownerId) await Task.relatedQuery('owner').for(newTask.id).relate(args.ownerId);
+            return newTask
+        },
+
+        addUserToCompany: async (
+            parent: Company,
+            args: { userId: number; companyId: number }
+        ) => {
+            return User.relatedQuery("companies")
+                .for(args.userId)
+                .relate(args.companyId);
+        },
+        addOwnerToProject: (parent: Project, args: { userId: number, projectId: number }) => {
+            return Project.relatedQuery('owner').for(args.projectId).relate(args.userId);
+        },
+        addOwnerToUserStory: (parent: UserStory, args: { userId: number, userStoryId: number }) => {
+            return UserStory.relatedQuery('owner').for(args.userStoryId).relate(args.userId);
+        },
+        addOwnerToTask: (parent: Task, args: { userId: number, taskId: number }) => {
+            return Task.relatedQuery('owner').for(args.taskId).relate(args.userId);
+        },
+
+        deleteProject: (parent: Project, args: { projectId: number }) => {
+            return Project.query().deleteById(args.projectId);
+        },
+        deleteUserStory: (parent: UserStory, args: { userStoryId: number }) => {
+            return UserStory.query().deleteById(args.userStoryId);
+        },
+        deleteTask: (parent: Task, args: { taskId: number }) => {
+            return Task.query().deleteById(args.taskId);
+        },
+
         updateUserStory: async (
             parent: UserStory,
             args: {
-                ownerId: number;
-                userStory: string;
-                status: boolean;
-                userStoryId: number;
-            }
-        ) => {
-            await UserStory.relatedQuery("owner")
-                .for(args.userStoryId)
-                .relate(args.ownerId);
-            await UserStory.query().findById(args.userStoryId).patch({
-                userStory: args.userStory,
-                status: args.status,
-            });
-            return UserStory.query().findById(args.userStoryId);
+                ownerId: number; userStory: string;
+                status: boolean; userStoryId: number;
+            }) => {
+            return GqlService.updateUserStory(args.ownerId, args.userStory, args.status, args.userStoryId);
         },
+
+        // update the task status and return the userStory status
+        updateTaskStatus: async (parent: Task, args: { taskId: number, taskStatus: boolean }): Promise<boolean> => {
+            await Task.query().findById(args.taskId).patch({ready: args.taskStatus});
+            return GqlUtil.checkUserStoryStatus(args.taskId);
+        },
+        updateTask: async (parent: Task, args: {
+            taskId: number, title: string,
+            description: string, time: string
+        }) => {
+            return GqlService.updateTask(args.taskId,args.title,args.description,args.time)
+        },
+
+        // if user doesn't estimate the story creat new estimation else update the existing one
+        estimateUserStory: async (
+            parent: UserEstimation,
+            args: { userId: number, userStoryId: number, estimation: number }
+        ) => {
+            return await GqlService.estimator(args.userId, args.userStoryId, args.estimation)
+        }
     },
 
     User: {
@@ -115,6 +163,9 @@ export const Resolvers = {
         companies: (parent: User) => {
             return User.relatedQuery("companies").for(parent.id);
         },
+        userStoryEstimations: (parent: User) => {
+            return User.relatedQuery('userStoryEstimations').for(parent.id)
+        }
     },
 
     Company: {
@@ -183,4 +234,16 @@ export const Resolvers = {
             return ownerInList[0];
         },
     },
+    UserEstimation: {
+        id: (parent: UserEstimation) => parent.id,
+        estimation: (parent: UserEstimation) => parent.estimation,
+        owner: async (parent: UserEstimation) => {
+            let ownerList = await UserEstimation.relatedQuery('owner').for(parent.id);
+            return ownerList[0]
+        },
+        userStory: async (parent: UserEstimation) => {
+            let storyList = await UserEstimation.relatedQuery('userStory').for(parent.id);
+            return storyList[0];
+        },
+    }
 };
