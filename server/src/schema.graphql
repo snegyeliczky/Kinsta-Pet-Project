@@ -12,6 +12,7 @@ type Query{
 
     userStories:[UserStory!]
     userStory(id:ID!):UserStory
+    getUserStoryEstimations(userStoryId:ID):[UserEstimation!]
 
     tasks:[Task!]
     task(id:ID!):Task
@@ -34,7 +35,7 @@ type Mutation{
     deleteUserStory(userStoryId:Int):Int
     deleteTask(taskId:Int):Int
 
-    updateUserStory(ownerId:Int,userStory:String,status:Boolean, userStoryId:Int):UserStory!
+    updateUserStory(ownerId:Int,userStory:String, userStoryId:Int):UserStory!
     updateTaskStatus(taskId:Int,taskStatus:Boolean):Boolean
     updateTask( taskId:Int, title:String, description: String,time:String):Task!
 

@@ -24,7 +24,7 @@ async function insertBaseUsersToDb() {
     if (users.length < 1) {
         await DbInit();
     }
-    let testData = await Task.query()
+    let testData = await UserStory.relatedQuery('estimatedUsers').for(1);
     console.log(testData);
 }
 
