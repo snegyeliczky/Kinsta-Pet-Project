@@ -12,6 +12,7 @@ type Query{
 
     userStories:[UserStory!]
     userStory(id:ID!):UserStory
+    getUserStoryEstimations(userStoryId:ID):[UserEstimation!]
 
     tasks:[Task!]
     task(id:ID!):Task

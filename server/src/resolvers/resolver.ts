@@ -28,6 +28,9 @@ export const resolvers = {
         userStory: (parent: UserStory, args: { id: number }) => {
             return UserStory.query().findById(args.id);
         },
+        getUserStoryEstimations:(parent:UserStory,args:{userStoryId:number})=>{
+            return UserStory.relatedQuery('estimatedUsers').for(args.userStoryId)
+        },
 
         tasks: () => Task.query(),
         task: (parent: Task, args: { id: number }) => {
