@@ -31,13 +31,17 @@ type Mutation{
     addOwnerToUserStory(userId:Int,userStoryId:Int):Int
     addOwnerToTask(userId:Int,taskId:Int):Int
 
+    deleteUser(userId:Int):Int
+    deleteCompany(companyId:Int):Int
     deleteProject(projectId:Int):Int
     deleteUserStory(userStoryId:Int):Int
     deleteTask(taskId:Int):Int
 
+    updateCompany(companyId:Int, projectName:String):Company!
+    updateProject(projectId:Int, projectName:String):Project!
     updateUserStory(ownerId:Int,userStory:String, userStoryId:Int):UserStory!
     updateTaskStatus(taskId:Int,taskStatus:Boolean):Boolean
-    updateTask( taskId:Int, title:String, description: String,time:String):Task!
+    updateTask( taskId:Int, title:String, description: String, time:String):Task!
 
     estimateUserStory(userId:Int, userStoryId:Int, estimation:Int):Int
 

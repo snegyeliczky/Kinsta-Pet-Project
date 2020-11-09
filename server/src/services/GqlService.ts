@@ -1,6 +1,8 @@
 import User from "../model/User";
 import UserStory from "../model/UserStory";
 import Task from "../model/Task";
+import Project from "../model/Project";
+import Company from "../model/Company";
 
 export const GqlService = {
 
@@ -23,6 +25,17 @@ export const GqlService = {
             await userEstimation.$relatedQuery('userStory').relate(userStoryId);
             return 0
         }
+    },
+
+    updateCompany: async (companyId:number, companyName:string) =>{
+        await Company.query().findById(companyId).patch({name:companyName});
+        return Company.query().findById(companyId);
+    },
+    updateProject: async (projectId:number, projectName:string) =>{
+        await Project.query().findById(projectId).patch({
+            name:projectName
+        });
+       return Project.query().findById(projectId);
     },
 
     updateUserStory: async (ownerId: number, userStory: string,

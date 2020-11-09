@@ -118,6 +118,12 @@ export const resolvers = {
             return Task.relatedQuery('owner').for(args.taskId).relate(args.userId);
         },
 
+        deleteUser:(parent:Company, args:{userId:number}) =>{
+            return User.query().deleteById(args.userId)
+        },
+        deleteCompany:(parent:Company, args:{companyId:number}) =>{
+           return Company.query().deleteById(args.companyId)
+        },
         deleteProject: (parent: Project, args: { projectId: number }) => {
             return Project.query().deleteById(args.projectId);
         },
@@ -128,6 +134,12 @@ export const resolvers = {
             return Task.query().deleteById(args.taskId);
         },
 
+        updateCompany: (parent:Company, args:{companyId:number,companyName:string}) =>{
+            return GqlService.updateCompany(args.companyId,args.companyName)
+        },
+        updateProject: (parent:Project,args:{projectId:number, projectName:string}) =>{
+            return GqlService.updateProject(args.projectId,args.projectName)
+        },
         updateUserStory: async (
             parent: UserStory,
             args: {
