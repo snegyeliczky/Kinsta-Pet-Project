@@ -9,6 +9,7 @@ import UserStory from "./model/UserStory";
 import {GqlService} from "./services/GqlService";
 import Project from "./model/Project";
 import {GqlUtil} from "./util/GqlUtil";
+import ParticipateInvite from "./model/ParticipateInvite";
 
 
 const server = new GraphQLServer({
@@ -24,7 +25,7 @@ async function insertBaseUsersToDb() {
     if (users.length < 1) {
         await DbInit();
     }
-    let testData = await UserStory.relatedQuery('estimatedUsers').for(1);
+    let testData = await User.relatedQuery('receivedInvites').for(2);
     console.log(testData);
 }
 

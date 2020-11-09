@@ -138,6 +138,33 @@ exports.up = knex => {
                 .onDelete('SET NULL')
                 .index()
         })
+        .createTable('participate_invites', table => {
+            table.increments('id').primary()
+
+            table
+                .integer('sanderId')
+                .unsigned()
+                .references('id')
+                .inTable('users')
+                .onDelete('SET NULL')
+                .index()
+
+            table
+                .integer('receiverId')
+                .unsigned()
+                .references('id')
+                .inTable('users')
+                .onDelete('CASCADE')
+                .index()
+
+            table
+                .integer('projectId')
+                .unsigned()
+                .references('id')
+                .inTable('projects')
+                .onDelete('CASCADE')
+                .index()
+        })
 };
 
 exports.down = knex => {
@@ -147,6 +174,7 @@ exports.down = knex => {
         .dropTableIfExists('user_estimations')
         .dropTableIfExists('tasks')
         .dropTableIfExists('user_stories')
+        .dropTableIfExists('participate_invites')
         .dropTableIfExists('projects')
         .dropTableIfExists('companies')
         .dropTableIfExists('users')
