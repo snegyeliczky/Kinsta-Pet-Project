@@ -55,6 +55,18 @@ export const GqlService = {
             time:time
         });
         return Task.query().findById(taskId);
+    },
+
+    sendProjectParticipationInvite:async (senderId:number,receiverId:number,projectId:number) =>{
+        let invitation = await User.relatedQuery('sandedInvites').for(senderId).insert({});
+        await invitation.$relatedQuery('project').relate(projectId);
+        await invitation.$relatedQuery('receiver').relate(receiverId);
+        return invitation
+    },
+
+
+    addUserToProjectAsParticipant: async (userId:number, projectId:number) => {
+        return Project.relatedQuery('participants').for(projectId).relate(userId);
     }
 };
 

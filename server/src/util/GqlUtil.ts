@@ -28,6 +28,9 @@ export const GqlUtil = {
                 return task;
             }
         })
+    },
 
+    getProjectInvitationsForUser: async (userId:number) =>{
+        return  User.relatedQuery('receivedInvites').for(userId)
     },
 };
