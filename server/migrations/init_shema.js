@@ -107,6 +107,7 @@ exports.up = knex => {
                 .onDelete('CASCADE')
                 .index()
 
+
             table
                 .integer('projectId')
                 .unsigned()

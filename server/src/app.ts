@@ -25,10 +25,11 @@ async function insertBaseUsersToDb() {
     if (users.length < 1) {
         await DbInit();
     }
-    let testData = await User.relatedQuery('receivedInvites').for(2);
-    console.log(testData);
+    let inv =await GqlService.sendProjectParticipationInvite(1,1,1)
+    console.log(inv);
+    let accept =await GqlService.acceptParticipationInvitation(1)
+    console.log(accept);
 }
-
 
 server.start({port: 4001, endpoint: "/gql"}, () => {
     console.log('Server is running on http://localhost:4001/gql');

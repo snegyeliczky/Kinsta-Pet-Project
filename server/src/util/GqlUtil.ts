@@ -33,4 +33,5 @@ export const GqlUtil = {
     getProjectInvitationsForUser: async (userId:number) =>{
         return  User.relatedQuery('receivedInvites').for(userId)
     },
+
 };
