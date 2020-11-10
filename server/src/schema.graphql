@@ -2,6 +2,7 @@ type Query{
     users:[User!]
     user(id:ID!):User
     getCompaniesForUser(userId:ID!):[Company!]
+    getInvitesForParticipation(userId:ID):[ParticipateInvite!]
 
     companies:[Company!]
     company(id:ID!):Company
@@ -26,6 +27,7 @@ type Mutation{
     addNewUserStory(userId:Int,projectId:Int!,userStory:String):UserStory!
     addNewTask(userStoryId:Int!,taskTitle:String!,taskDescription:String,ownerId:Int):Task!
 
+
     addUserToCompany(userId:Int,companyId:Int):Int
     addOwnerToProject(userId:Int,projectId:Int):Int
     addOwnerToUserStory(userId:Int,userStoryId:Int):Int
@@ -44,6 +46,8 @@ type Mutation{
     updateTask( taskId:Int, title:String, description: String, time:String):Task!
 
     estimateUserStory(userId:Int, userStoryId:Int, estimation:Int):Int
+    sendParticipateInviteToUser(senderId:Int,receiverId:Int,projectId:Int):String!
+    acceptParticipationInvite(invitationId:Int):[User!]
 
 }
 
@@ -99,4 +103,11 @@ type UserEstimation{
     estimation:Int,
     owner:User,
     userStory:UserStory,
+}
+
+type ParticipateInvite{
+    id:Int,
+    sander:User,
+    receiver:User,
+    project:Project
 }

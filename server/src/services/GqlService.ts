@@ -28,15 +28,15 @@ export const GqlService = {
         }
     },
 
-    updateCompany: async (companyId:number, companyName:string) =>{
-        await Company.query().findById(companyId).patch({name:companyName});
+    updateCompany: async (companyId: number, companyName: string) => {
+        await Company.query().findById(companyId).patch({name: companyName});
         return Company.query().findById(companyId);
     },
-    updateProject: async (projectId:number, projectName:string) =>{
+    updateProject: async (projectId: number, projectName: string) => {
         await Project.query().findById(projectId).patch({
-            name:projectName
+            name: projectName
         });
-       return Project.query().findById(projectId);
+        return Project.query().findById(projectId);
     },
 
     updateUserStory: async (ownerId: number, userStory: string,
@@ -49,40 +49,42 @@ export const GqlService = {
     },
 
     updateTask: async (taskId: number, title: string,
-                       description: string, time: string) =>{
+                       description: string, time: string) => {
         await Task.query().findById(taskId).patch({
-            title:title,
-            description:description,
-            time:time
+            title: title,
+            description: description,
+            time: time
         });
         return Task.query().findById(taskId);
     },
 
-    sendProjectParticipationInvite:async (senderId:number,receiverId:number,projectId:number) =>{
+    sendProjectParticipationInvite: async (senderId: number, receiverId: number, projectId: number) => {
         let projectParticipants = await Project.relatedQuery('participants').for(projectId);
-        if (projectParticipants.some((user:User)=>{return user.id===receiverId})){
-            return "user all ready have Invitation"
+        if (projectParticipants.some((user: User) => {
+            return user.id === receiverId
+        })) {
+            return "user all ready participate in the project"
         }
         let invitation = await User.relatedQuery('sandedInvites').for(senderId).insert({});
         await invitation.$relatedQuery('project').relate(projectId);
         await invitation.$relatedQuery('receiver').relate(receiverId);
-        return invitation
+        return "invitation sent"
     },
 
-    addUserToProjectAsParticipant: async (userId:number, projectId:number) => {
+    addUserToProjectAsParticipant: async (userId: number, projectId: number) => {
         return Project.relatedQuery('participants').for(projectId).relate(userId);
     },
 
-    acceptParticipationInvitation : async (invitationId:number) =>{
+    acceptParticipationInvitation: async (invitationId: number) => {
         let invite = await ParticipateInvite.query().findById(invitationId);
         let project = await invite.$relatedQuery('project');
         let receiver = await invite.$relatedQuery('receiver');
         let participants = await project.$relatedQuery('participants');
-        if (!participants.some((user:User) =>{ return user.id===receiver.id})) {
+        if (!participants.some((user: User) => {
+            return user.id === receiver.id
+        })) {
             await project.$relatedQuery('participants').relate(receiver.id);
             await ParticipateInvite.query().deleteById(invitationId);
-        }else {
-            console.log("user is all ready participate in project")
         }
         return project.$relatedQuery('participants');
     }

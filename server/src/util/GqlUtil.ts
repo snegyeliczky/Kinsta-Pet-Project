@@ -21,17 +21,17 @@ export const GqlUtil = {
         return false;
     },
 
-    unFinishedTasksForUser: async(userId:number)=>{
+    unFinishedTasksForUser: async (userId: number) => {
         let userTasks = await User.relatedQuery('tasks').for(userId);
-        return userTasks.map(task =>{
-            if (!task.ready){
+        return userTasks.map(task => {
+            if (!task.ready) {
                 return task;
             }
         })
     },
 
-    getProjectInvitationsForUser: async (userId:number) =>{
-        return  User.relatedQuery('receivedInvites').for(userId)
+    getProjectInvitationsForUser: async (userId: number) => {
+        return User.relatedQuery('receivedInvites').for(userId)
     },
 
 };

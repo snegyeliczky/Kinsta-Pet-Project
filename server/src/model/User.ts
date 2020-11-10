@@ -22,8 +22,8 @@ export default class User extends Model {
     participate?: Project[];
     userStoryEstimations?: UserEstimation[];
     tasks?: Task[];
-    sandedInvites?:ParticipateInvite[];
-    receivedInvites?:ParticipateInvite[];
+    sandedInvites?: ParticipateInvite[];
+    receivedInvites?: ParticipateInvite[];
 
     static idColumn = "id";
 
@@ -100,8 +100,8 @@ export default class User extends Model {
                 relation: Model.HasManyRelation,
                 modelClass: UserEstimation,
                 join: {
-                    from:'users.id',
-                    to:'user_estimations.userId'
+                    from: 'users.id',
+                    to: 'user_estimations.userId'
                 }
             },
             tasks: {
@@ -112,20 +112,20 @@ export default class User extends Model {
                     to: 'tasks.owner_id'
                 }
             },
-            sandedInvites:{
-                relation:Model.HasManyRelation,
-                modelClass:ParticipateInvite,
-                join:{
-                    from:'users.id',
-                    to:'participate_invites.sanderId'
+            sandedInvites: {
+                relation: Model.HasManyRelation,
+                modelClass: ParticipateInvite,
+                join: {
+                    from: 'users.id',
+                    to: 'participate_invites.sanderId'
                 }
             },
-            receivedInvites:{
-                relation:Model.HasManyRelation,
-                modelClass:ParticipateInvite,
-                join:{
-                    from:'users.id',
-                    to:'participate_invites.receiverId'
+            receivedInvites: {
+                relation: Model.HasManyRelation,
+                modelClass: ParticipateInvite,
+                join: {
+                    from: 'users.id',
+                    to: 'participate_invites.receiverId'
                 }
             }
 
