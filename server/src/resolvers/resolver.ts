@@ -81,6 +81,7 @@ export const resolvers = {
                 .for(args.companyId)
                 .insert({name: args.projectName});
             await newProject.$relatedQuery("owner").relate(args.userId);
+            await newProject.$relatedQuery('participants').relate(args.userId);
             return newProject;
         },
         addNewUserStory: async (
@@ -111,9 +112,7 @@ export const resolvers = {
             parent: Company,
             args: { userId: number; companyId: number }
         ) => {
-            return User.relatedQuery("companies")
-                .for(args.userId)
-                .relate(args.companyId);
+            return GqlService.addUserToCompany(args.userId,args.companyId);
         },
         addOwnerToProject: (parent: Project, args: { userId: number, projectId: number }) => {
             return Project.relatedQuery('owner').for(args.projectId).relate(args.userId);

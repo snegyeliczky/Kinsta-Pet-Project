@@ -28,7 +28,7 @@ type Mutation{
     addNewTask(userStoryId:Int!,taskTitle:String!,taskDescription:String,ownerId:Int):Task!
 
 
-    addUserToCompany(userId:Int,companyId:Int):Int
+    addUserToCompany(userId:Int,companyId:Int):String
     addOwnerToProject(userId:Int,projectId:Int):Int
     addOwnerToUserStory(userId:Int,userStoryId:Int):Int
     addOwnerToTask(userId:Int,taskId:Int):Int

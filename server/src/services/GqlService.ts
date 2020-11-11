@@ -4,6 +4,7 @@ import Task from "../model/Task";
 import Project from "../model/Project";
 import Company from "../model/Company";
 import ParticipateInvite from "../model/ParticipateInvite";
+import {userInfo} from "os";
 
 export const GqlService = {
 
@@ -95,7 +96,24 @@ export const GqlService = {
             await ParticipateInvite.query().deleteById(invitationId);
         }
         return project.$relatedQuery('participants');
-    }
+    },
+    addUserToCompany: async (userId: number, companyId:number) =>{
+        let users = await Company.relatedQuery('users').for(companyId);
+        let isInclude = users.some(user => user.id === userId);
+        if(isInclude)return "user is already collaborator";
+        await User.relatedQuery("companies")
+            .for(userId)
+            .relate(companyId);
+        return "user is added as collaborator";
+
+    },
+
+    getProjectForUserByCompanyId: async (userId:number,companyId:number) =>{
+        let projects = await User.relatedQuery('participate')
+            .for(userId)
+            .where('companyId',companyId);
+        return projects;
+    },
 };
 
 
