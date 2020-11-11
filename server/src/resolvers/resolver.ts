@@ -30,6 +30,9 @@ export const resolvers = {
         project: (parent: Project, args: { id: number }) => {
             return Project.query().findById(args.id);
         },
+        projectsForCompanyByUser:async (parent: Project,args:{userId:number,companyId:number})=>{
+            return GqlService.getProjectForUserByCompanyId(args.userId,args.companyId);
+        },
 
         userStories: () => UserStory.query(),
         userStory: (parent: UserStory, args: { id: number }) => {

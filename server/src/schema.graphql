@@ -10,6 +10,7 @@ type Query{
 
     projects:[Project!]
     project(id:ID!):Project
+    projectsForCompanyByUser(userId:Int,companyId:Int):[Project!]
 
     userStories:[UserStory!]
     userStory(id:ID!):UserStory
