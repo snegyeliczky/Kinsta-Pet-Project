@@ -57,7 +57,10 @@ type User {
     lastName:String!
     email:String!
     companies:[Company!]
+    participate:[Project!]
     userStoryEstimations:[UserEstimation!]
+    invites:[ParticipateInvite!]
+    sentInviter: [ParticipateInvite!]
 }
 
 

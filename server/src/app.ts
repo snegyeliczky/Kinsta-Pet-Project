@@ -25,10 +25,8 @@ async function insertBaseUsersToDb() {
     if (users.length < 1) {
         await DbInit();
     }
-    let inv = await GqlService.sendProjectParticipationInvite(1, 1, 1)
+    let inv = ''// await GqlService.sendProjectParticipationInvite(2, 1, 1);
     console.log(inv);
-    let accept = await GqlService.acceptParticipationInvitation(1)
-    console.log(accept);
 }
 
 server.start({port: 4001, endpoint: "/gql"}, () => {

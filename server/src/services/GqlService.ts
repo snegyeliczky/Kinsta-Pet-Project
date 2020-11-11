@@ -60,6 +60,14 @@ export const GqlService = {
 
     sendProjectParticipationInvite: async (senderId: number, receiverId: number, projectId: number) => {
         let projectParticipants = await Project.relatedQuery('participants').for(projectId);
+        let receiverInvites = await User.relatedQuery('receivedInvites').for(receiverId);
+        if (receiverInvites.some(async (invite: ParticipateInvite) => {
+            let projectInInviteInList = await ParticipateInvite.relatedQuery('project').for(invite.id);
+            return projectInInviteInList[0].id === projectId;
+            })
+        ) {
+            return "user have invitation to this project"
+        };
         if (projectParticipants.some((user: User) => {
             return user.id === receiverId
         })) {
