@@ -19,6 +19,7 @@ type Query{
     tasks:[Task!]
     task(id:ID!):Task
     unFinishedTasks(userId:ID):[Task]
+    geTasksDistributionForProject(projectId:Int):TaskDistribution
 }
 
 type Mutation{
@@ -114,4 +115,9 @@ type ParticipateInvite{
     sander:User,
     receiver:User,
     project:Project
+}
+
+type TaskDistribution {
+    finishedTasks:Int
+    allTasks:Int
 }

@@ -49,6 +49,9 @@ export const resolvers = {
         unFinishedTasks: (parent: Task, args: { userId: number }) => {
             return GqlUtil.unFinishedTasksForUser(args.userId);
         },
+        geTasksDistributionForProject:(parent:Task, args:{projectId:number})=>{
+            return GqlUtil.geTasksDistributionForProject(args.projectId);
+        }
     },
 
     Mutation: {
@@ -299,5 +302,9 @@ export const resolvers = {
             let pl = await ParticipateInvite.relatedQuery('project').for(parent.id);
             return pl[0];
         }
+    },
+    TaskDistribution:{
+        finishedTasks:(parent:{finishedTasks:number, allTasks:number }) => parent.finishedTasks,
+        allTasks:(parent:{finishedTasks:number, allTasks:number }) => parent.allTasks
     }
 };

@@ -25,7 +25,7 @@ async function insertBaseUsersToDb() {
     if (users.length < 1) {
         await DbInit();
     }
-    let inv = await GqlService.getProjectForUserByCompanyId(1,1)
+    let inv = await GqlUtil.geTasksDistributionForProject(1);
     console.log(inv);
 }
 
