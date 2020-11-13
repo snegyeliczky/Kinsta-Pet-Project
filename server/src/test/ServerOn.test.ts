@@ -3,6 +3,8 @@ import User from "../model/User";
 import knexConfig from "../../knexfile";
 import {Model} from "objection";
 
+
+
 function sum(a: number, b: number) {
     return a + b;
 }
@@ -30,3 +32,4 @@ test("Get user 1 from DB", async ()=>{
     expect(user1.id).toEqual(1);
     await knex.destroy()
 });
+

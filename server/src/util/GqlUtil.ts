@@ -2,6 +2,8 @@ import Task from "../model/Task";
 import UserStory from "../model/UserStory";
 import User from "../model/User";
 import Project from "../model/Project";
+import {GqlService} from "../services/GqlService";
+import {MySqlService} from "../services/MySqlService";
 
 export const GqlUtil = {
 
@@ -35,12 +37,14 @@ export const GqlUtil = {
         return User.relatedQuery('receivedInvites').for(userId)
     },
 
+
+
     geTasksDistributionForProject: async (projectId: number) => {
-        let userStories = await Project.relatedQuery('userStories').for(projectId);
+        let userStories = await MySqlService.getUserStoriesByProjectId(projectId);
         let finishedTasks = 0;
         let allTask = 0;
         for (let us of userStories) {
-            let tasks = await us.$relatedQuery('tasks').for(us.id);
+            let tasks = await MySqlService.getTasksForUserStory(us);
             let filtered = tasks.filter(t => {
                 return !!t.ready === true;
             });

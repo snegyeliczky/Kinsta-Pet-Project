@@ -5,6 +5,7 @@ import {Model} from "objection";
 import {resolvers} from "./resolvers/resolver";
 import {DbInit} from "./util/initialiser";
 import {GqlUtil} from "./util/GqlUtil";
+import {GqlService} from "./services/GqlService";
 
 
 async function insertBaseUsersToDb() {
