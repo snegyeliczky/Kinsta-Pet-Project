@@ -13,7 +13,7 @@ async function insertBaseUsersToDb() {
     if (users.length < 1) {
         await DbInit();
     }
-    let inv = await GqlUtil.geTasksDistributionForProject(1);
+    let inv = await GqlUtil.unFinishedTasksForUser(1);
     console.log(inv);
 };
 
