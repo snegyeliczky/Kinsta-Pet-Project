@@ -2,6 +2,7 @@ type Query{
     users:[User!]
     user(id:ID!):User
     getCompaniesForUser(userId:ID!):[Company!]
+    getInvitesForParticipation(userId:ID):[ParticipateInvite!]
 
     companies:[Company!]
     company(id:ID!):Company
@@ -9,6 +10,7 @@ type Query{
 
     projects:[Project!]
     project(id:ID!):Project
+    projectsForCompanyByUser(userId:Int,companyId:Int):[Project!]
 
     userStories:[UserStory!]
     userStory(id:ID!):UserStory
@@ -17,6 +19,7 @@ type Query{
     tasks:[Task!]
     task(id:ID!):Task
     unFinishedTasks(userId:ID):[Task]
+    geTasksDistributionForProject(projectId:Int):TaskDistribution
 }
 
 type Mutation{
@@ -26,20 +29,27 @@ type Mutation{
     addNewUserStory(userId:Int,projectId:Int!,userStory:String):UserStory!
     addNewTask(userStoryId:Int!,taskTitle:String!,taskDescription:String,ownerId:Int):Task!
 
-    addUserToCompany(userId:Int,companyId:Int):Int
+
+    addUserToCompany(userId:Int,companyId:Int):String
     addOwnerToProject(userId:Int,projectId:Int):Int
     addOwnerToUserStory(userId:Int,userStoryId:Int):Int
     addOwnerToTask(userId:Int,taskId:Int):Int
 
+    deleteUser(userId:Int):Int
+    deleteCompany(companyId:Int):Int
     deleteProject(projectId:Int):Int
     deleteUserStory(userStoryId:Int):Int
     deleteTask(taskId:Int):Int
 
+    updateCompany(companyId:Int, projectName:String):Company!
+    updateProject(projectId:Int, projectName:String):Project!
     updateUserStory(ownerId:Int,userStory:String, userStoryId:Int):UserStory!
     updateTaskStatus(taskId:Int,taskStatus:Boolean):Boolean
-    updateTask( taskId:Int, title:String, description: String,time:String):Task!
+    updateTask( taskId:Int, title:String, description: String, time:String):Task!
 
     estimateUserStory(userId:Int, userStoryId:Int, estimation:Int):Int
+    sendParticipateInviteToUser(senderId:Int,receiverId:Int,projectId:Int):String!
+    acceptParticipationInvite(invitationId:Int):[User!]
 
 }
 
@@ -49,7 +59,10 @@ type User {
     lastName:String!
     email:String!
     companies:[Company!]
+    participate:[Project!]
     userStoryEstimations:[UserEstimation!]
+    invites:[ParticipateInvite!]
+    sentInviter: [ParticipateInvite!]
 }
 
 
@@ -95,4 +108,16 @@ type UserEstimation{
     estimation:Int,
     owner:User,
     userStory:UserStory,
+}
+
+type ParticipateInvite{
+    id:Int,
+    sander:User,
+    receiver:User,
+    project:Project
+}
+
+type TaskDistribution {
+    finishedTasks:Int
+    allTasks:Int
 }

@@ -6,12 +6,19 @@ import Task from "../model/Task";
 import UserEstimation from "../model/UserEstimation";
 import {GqlService} from "../services/GqlService";
 import {GqlUtil} from "../util/GqlUtil";
+import ParticipateInvite from "../model/ParticipateInvite";
 
 export const resolvers = {
     Query: {
         users: () => User.query(),
         user: (parent: User, args: { id: number }) => {
             return User.query().findById(args.id);
+        },
+        getCompaniesForUser: (parent: User, args: { userId: number }) => {
+            return User.relatedQuery('companies').for(args.userId)
+        },
+        getInvitesForParticipation: (parent: User, args: { userId: number }) => {
+            return GqlUtil.getProjectInvitationsForUser(args.userId);
         },
 
         companies: () => Company.query(),
@@ -23,12 +30,15 @@ export const resolvers = {
         project: (parent: Project, args: { id: number }) => {
             return Project.query().findById(args.id);
         },
+        projectsForCompanyByUser:async (parent: Project,args:{userId:number,companyId:number})=>{
+            return GqlService.getProjectForUserByCompanyId(args.userId,args.companyId);
+        },
 
         userStories: () => UserStory.query(),
         userStory: (parent: UserStory, args: { id: number }) => {
             return UserStory.query().findById(args.id);
         },
-        getUserStoryEstimations:(parent:UserStory,args:{userStoryId:number})=>{
+        getUserStoryEstimations: (parent: UserStory, args: { userStoryId: number }) => {
             return UserStory.relatedQuery('estimatedUsers').for(args.userStoryId)
         },
 
@@ -36,9 +46,12 @@ export const resolvers = {
         task: (parent: Task, args: { id: number }) => {
             return Task.query().findById(args.id);
         },
-        unFinishedTasks:(parent:Task, args:{userId:number}) =>{
+        unFinishedTasks: (parent: Task, args: { userId: number }) => {
             return GqlUtil.unFinishedTasksForUser(args.userId);
         },
+        geTasksDistributionForProject:(parent:Task, args:{projectId:number})=>{
+            return GqlUtil.geTasksDistributionForProject(args.projectId);
+        }
     },
 
     Mutation: {
@@ -74,6 +87,7 @@ export const resolvers = {
                 .for(args.companyId)
                 .insert({name: args.projectName});
             await newProject.$relatedQuery("owner").relate(args.userId);
+            await newProject.$relatedQuery('participants').relate(args.userId);
             return newProject;
         },
         addNewUserStory: async (
@@ -104,9 +118,7 @@ export const resolvers = {
             parent: Company,
             args: { userId: number; companyId: number }
         ) => {
-            return User.relatedQuery("companies")
-                .for(args.userId)
-                .relate(args.companyId);
+            return GqlService.addUserToCompany(args.userId,args.companyId);
         },
         addOwnerToProject: (parent: Project, args: { userId: number, projectId: number }) => {
             return Project.relatedQuery('owner').for(args.projectId).relate(args.userId);
@@ -118,6 +130,12 @@ export const resolvers = {
             return Task.relatedQuery('owner').for(args.taskId).relate(args.userId);
         },
 
+        deleteUser: (parent: Company, args: { userId: number }) => {
+            return User.query().deleteById(args.userId)
+        },
+        deleteCompany: (parent: Company, args: { companyId: number }) => {
+            return Company.query().deleteById(args.companyId)
+        },
         deleteProject: (parent: Project, args: { projectId: number }) => {
             return Project.query().deleteById(args.projectId);
         },
@@ -128,6 +146,12 @@ export const resolvers = {
             return Task.query().deleteById(args.taskId);
         },
 
+        updateCompany: (parent: Company, args: { companyId: number, companyName: string }) => {
+            return GqlService.updateCompany(args.companyId, args.companyName)
+        },
+        updateProject: (parent: Project, args: { projectId: number, projectName: string }) => {
+            return GqlService.updateProject(args.projectId, args.projectName)
+        },
         updateUserStory: async (
             parent: UserStory,
             args: {
@@ -146,7 +170,7 @@ export const resolvers = {
             taskId: number, title: string,
             description: string, time: string
         }) => {
-            return GqlService.updateTask(args.taskId,args.title,args.description,args.time)
+            return GqlService.updateTask(args.taskId, args.title, args.description, args.time)
         },
 
         // if user doesn't estimate the story creat new estimation else update the existing one
@@ -155,7 +179,13 @@ export const resolvers = {
             args: { userId: number, userStoryId: number, estimation: number }
         ) => {
             return await GqlService.estimator(args.userId, args.userStoryId, args.estimation)
-        }
+        },
+        sendParticipateInviteToUser: async (parent: any, args: { senderId: number, receiverId: number, projectId: number }) => {
+            return GqlService.sendProjectParticipationInvite(args.senderId, args.receiverId, args.projectId);
+        },
+        acceptParticipationInvite: (parent: any, args: { invitationId: number }) => {
+            return GqlService.acceptParticipationInvitation(args.invitationId);
+        },
     },
 
     User: {
@@ -166,8 +196,17 @@ export const resolvers = {
         companies: (parent: User) => {
             return User.relatedQuery("companies").for(parent.id);
         },
+        participate:(parent:User) =>{
+            return User.relatedQuery('participate').for(parent.id)
+        },
         userStoryEstimations: (parent: User) => {
             return User.relatedQuery('userStoryEstimations').for(parent.id)
+        },
+        invites: (parent:User) =>{
+            return User.relatedQuery('receivedInvites').for(parent.id)
+        },
+        sentInviter: (parent:User) =>{
+            return User.relatedQuery('sandedInvites').for(parent.id)
         }
     },
 
@@ -248,5 +287,24 @@ export const resolvers = {
             let storyList = await UserEstimation.relatedQuery('userStory').for(parent.id);
             return storyList[0];
         },
+    },
+    ParticipateInvite: {
+        id: (parent: ParticipateInvite) => parent.id,
+        sander: async (parent: ParticipateInvite) => {
+             let su = await ParticipateInvite.relatedQuery('sander').for(parent.id);
+             return su[0];
+        },
+        receiver:async (parent: ParticipateInvite) => {
+            let ru = await ParticipateInvite.relatedQuery('receiver').for(parent.id);
+            return ru[0]
+        },
+        project: async (parent: ParticipateInvite) => {
+            let pl = await ParticipateInvite.relatedQuery('project').for(parent.id);
+            return pl[0];
+        }
+    },
+    TaskDistribution:{
+        finishedTasks:(parent:{finishedTasks:number, allTasks:number }) => parent.finishedTasks,
+        allTasks:(parent:{finishedTasks:number, allTasks:number }) => parent.allTasks
     }
 };

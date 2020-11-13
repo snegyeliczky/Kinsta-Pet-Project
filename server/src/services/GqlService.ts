@@ -1,6 +1,10 @@
 import User from "../model/User";
 import UserStory from "../model/UserStory";
 import Task from "../model/Task";
+import Project from "../model/Project";
+import Company from "../model/Company";
+import ParticipateInvite from "../model/ParticipateInvite";
+import {userInfo} from "os";
 
 export const GqlService = {
 
@@ -25,6 +29,17 @@ export const GqlService = {
         }
     },
 
+    updateCompany: async (companyId: number, companyName: string) => {
+        await Company.query().findById(companyId).patch({name: companyName});
+        return Company.query().findById(companyId);
+    },
+    updateProject: async (projectId: number, projectName: string) => {
+        await Project.query().findById(projectId).patch({
+            name: projectName
+        });
+        return Project.query().findById(projectId);
+    },
+
     updateUserStory: async (ownerId: number, userStory: string,
                             userStoryId: number) => {
         await UserStory.relatedQuery("owner").for(userStoryId).relate(ownerId);
@@ -35,14 +50,70 @@ export const GqlService = {
     },
 
     updateTask: async (taskId: number, title: string,
-                       description: string, time: string) =>{
+                       description: string, time: string) => {
         await Task.query().findById(taskId).patch({
-            title:title,
-            description:description,
-            time:time
+            title: title,
+            description: description,
+            time: time
         });
         return Task.query().findById(taskId);
-    }
+    },
+
+    sendProjectParticipationInvite: async (senderId: number, receiverId: number, projectId: number) => {
+        let projectParticipants = await Project.relatedQuery('participants').for(projectId);
+        let receiverInvites = await User.relatedQuery('receivedInvites').for(receiverId);
+        if (receiverInvites.some(async (invite: ParticipateInvite) => {
+            let projectInInviteInList = await ParticipateInvite.relatedQuery('project').for(invite.id);
+            return projectInInviteInList[0].id === projectId;
+            })
+        ) {
+            return "user have invitation to this project"
+        };
+        if (projectParticipants.some((user: User) => {
+            return user.id === receiverId
+        })) {
+            return "user all ready participate in the project"
+        }
+        let invitation = await User.relatedQuery('sandedInvites').for(senderId).insert({});
+        await invitation.$relatedQuery('project').relate(projectId);
+        await invitation.$relatedQuery('receiver').relate(receiverId);
+        return "invitation sent"
+    },
+
+    addUserToProjectAsParticipant: async (userId: number, projectId: number) => {
+        return Project.relatedQuery('participants').for(projectId).relate(userId);
+    },
+
+    acceptParticipationInvitation: async (invitationId: number) => {
+        let invite = await ParticipateInvite.query().findById(invitationId);
+        let project = await invite.$relatedQuery('project');
+        let receiver = await invite.$relatedQuery('receiver');
+        let participants = await project.$relatedQuery('participants');
+        if (!participants.some((user: User) => {
+            return user.id === receiver.id
+        })) {
+            await project.$relatedQuery('participants').relate(receiver.id);
+            await ParticipateInvite.query().deleteById(invitationId);
+        }
+        return project.$relatedQuery('participants');
+    },
+    addUserToCompany: async (userId: number, companyId:number) =>{
+        let users = await Company.relatedQuery('users').for(companyId);
+        let isInclude = users.some(user => user.id === userId);
+        if(isInclude)return "user is already collaborator";
+        await User.relatedQuery("companies")
+            .for(userId)
+            .relate(companyId);
+        return "user is added as collaborator";
+
+    },
+
+    getProjectForUserByCompanyId: async (userId:number,companyId:number) =>{
+        let projects = await User.relatedQuery('participate')
+            .for(userId)
+            .where('companyId',companyId);
+        return projects;
+    },
 };
 
 
