@@ -6,6 +6,7 @@ import {resolvers} from "./resolvers/resolver";
 import {DbInit} from "./util/initialiser";
 import {GqlUtil} from "./util/GqlUtil";
 import {GqlService} from "./services/GqlService";
+import {MySqlService} from "./services/MySqlService";
 
 
 async function insertBaseUsersToDb() {
@@ -13,7 +14,7 @@ async function insertBaseUsersToDb() {
     if (users.length < 1) {
         await DbInit();
     }
-    let inv = await GqlUtil.unFinishedTasksForUser(1);
+    let inv = await GqlUtil.checkUserStoryStatus(1);
     console.log(inv);
 };
 

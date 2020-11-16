@@ -162,9 +162,9 @@ export const resolvers = {
         },
 
         // update the task status and return the userStory status
-        updateTaskStatus: async (parent: Task, args: { taskId: number, taskStatus: boolean }): Promise<boolean> => {
+        updateTaskStatus: async (parent: Task, args: { taskId: number, taskStatus: boolean }) => {
             await Task.query().findById(args.taskId).patch({ready: args.taskStatus});
-            return GqlUtil.checkUserStoryStatus(args.taskId);
+            return GqlService.updateUserStoryStatusAfterTaskStatusRefresh(args.taskId);
         },
         updateTask: async (parent: Task, args: {
             taskId: number, title: string,

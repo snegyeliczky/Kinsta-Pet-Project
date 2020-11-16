@@ -5,6 +5,8 @@ import Project from "../model/Project";
 import Company from "../model/Company";
 import ParticipateInvite from "../model/ParticipateInvite";
 import {userInfo} from "os";
+import {MySqlService} from "./MySqlService";
+import {GqlUtil} from "../util/GqlUtil";
 
 export const GqlService = {
 
@@ -38,6 +40,10 @@ export const GqlService = {
             name: projectName
         });
         return Project.query().findById(projectId);
+    },
+    updateUserStoryStatusAfterTaskStatusRefresh:async (taskId:number)=>{
+        let Story = await GqlUtil.checkUserStoryStatus(taskId);
+        return MySqlService.updateUserStory(Story.userStoryId,{status: Story.status});
     },
 
     updateUserStory: async (ownerId: number, userStory: string,

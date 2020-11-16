@@ -44,7 +44,7 @@ type Mutation{
     updateCompany(companyId:Int, projectName:String):Company!
     updateProject(projectId:Int, projectName:String):Project!
     updateUserStory(ownerId:Int,userStory:String, userStoryId:Int):UserStory!
-    updateTaskStatus(taskId:Int,taskStatus:Boolean):Boolean
+    updateTaskStatus(taskId:Int,taskStatus:Boolean):UserStory
     updateTask( taskId:Int, title:String, description: String, time:String):Task!
 
     estimateUserStory(userId:Int, userStoryId:Int, estimation:Int):Int

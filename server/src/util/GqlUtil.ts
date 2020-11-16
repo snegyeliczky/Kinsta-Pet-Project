@@ -1,16 +1,12 @@
-import Task from "../model/Task";
-import UserStory from "../model/UserStory";
 import User from "../model/User";
-import Project from "../model/Project";
-import {GqlService} from "../services/GqlService";
 import {MySqlService} from "../services/MySqlService";
 
 export const GqlUtil = {
 
-    checkUserStoryStatus: async (taskId: number): Promise<boolean> => {
-        let userStoryInList = await Task.relatedQuery('userStory').for(taskId);
+    checkUserStoryStatus: async (taskId: number)=> {
+        let userStoryInList = await MySqlService.getUserStoryForTask(taskId);
         let userStory = userStoryInList[0];
-        let tasks = await userStory.$relatedQuery('tasks');
+        let tasks = await MySqlService.getTasksForUserStory(userStory);
         if (tasks.length > 0) {
             let ready = tasks.reduce((re, task) => {
                 if (!task.ready) {
@@ -18,11 +14,10 @@ export const GqlUtil = {
                 }
                 return re;
             }, {status: true});
-            UserStory.query().findById(userStory.id).patch({status: ready.status});
-            return ready.status;
-        } else UserStory.query().findById(userStory.id).patch({status: false});
-        return false;
+            return {userStoryId:userStory.id,status: ready.status};
+        } else return  {userStoryId:userStory.id,status: false};
     },
+
 
     unFinishedTasksForUser: async (userId: number) => {
         let userTasks = await MySqlService.getTasksForUser(userId)
