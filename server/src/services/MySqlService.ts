@@ -44,6 +44,27 @@ export const MySqlService = {
         await invitation.$relatedQuery('project').relate(projectId);
         await invitation.$relatedQuery('receiver').relate(receiverId);
         return "invitation sent"
+    },
+
+    findInvitation: async (invitationId:number)=>{
+        return  ParticipateInvite.query().findById(invitationId)
+    },
+
+    findProjectForInvite: async (invite:ParticipateInvite) =>{
+        return  invite.$relatedQuery('project')
+    },
+
+    findReceiverForInvite: async (invite:ParticipateInvite) =>{
+        return  invite.$relatedQuery('receiver')
+    },
+
+    acceptAndDeleteInvitation: async (project:Project,receiverId:number,invitationId:number ) =>{
+        await project.$relatedQuery('participants').relate(receiverId);
+        await ParticipateInvite.query().deleteById(invitationId);
+    },
+
+    deleteInvite: async (inviteId:number) =>{
+        await ParticipateInvite.query().deleteById(inviteId);
     }
 
 

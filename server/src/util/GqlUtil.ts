@@ -1,5 +1,6 @@
 import User from "../model/User";
 import {MySqlService} from "../services/MySqlService";
+import ParticipateInvite from "../model/ParticipateInvite";
 
 export const GqlUtil = {
 
@@ -16,6 +17,14 @@ export const GqlUtil = {
             }, {status: true});
             return {userStoryId: userStory.id, status: ready.status};
         } else return {userStoryId: userStory.id, status: false};
+    },
+
+    checkUserHaveInvitationToProject: async (receiverInvites: ParticipateInvite[], projectId: number) => {
+        for (let invite of receiverInvites) {
+            let project = await MySqlService.getProjectForInvite(invite.id);
+            if (project.id === projectId) return true;
+        }
+        return false;
     },
 
     unFinishedTasksForUser: async (userId: number) => {

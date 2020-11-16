@@ -181,7 +181,7 @@ export const resolvers = {
             return await GqlService.estimator(args.userId, args.userStoryId, args.estimation)
         },
         sendParticipateInviteToUser: async (parent: any, args: { senderId: number, receiverId: number, projectId: number }) => {
-            return GqlService.sendProjectParticipationInvite(args.senderId, args.receiverId, args.projectId);
+            return await GqlService.sendProjectParticipationInvite(args.senderId, args.receiverId, args.projectId);
         },
         acceptParticipationInvite: (parent: any, args: { invitationId: number }) => {
             return GqlService.acceptParticipationInvitation(args.invitationId);
