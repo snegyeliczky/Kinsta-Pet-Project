@@ -101,7 +101,7 @@ export const GqlService = {
             await MySqlService.deleteInvite(invitationId);
             return "User participating in project";
         } catch (e) {
-            return "Invitation is not correct! Refresh The Page!"
+            return "Invitation is invalid! Refresh The Page!"
         }
 
     },

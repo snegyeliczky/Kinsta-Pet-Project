@@ -48,7 +48,4 @@ export async function DbInit() {
         .insert({title: "creat user model", description: "user have name ", ready: false});
     await Task.relatedQuery('owner').for(1).relate(1)
     await Task.relatedQuery('owner').for(2).relate(2)
-    let testData = await User.relatedQuery('sandedInvites').for(1).insert({});
-    await testData.$relatedQuery('project').relate(2);
-    await testData.$relatedQuery('receiver').relate(2);
 }
