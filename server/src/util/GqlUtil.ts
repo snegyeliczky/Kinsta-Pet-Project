@@ -3,7 +3,7 @@ import {MySqlService} from "../services/MySqlService";
 
 export const GqlUtil = {
 
-    checkUserStoryStatus: async (taskId: number)=> {
+    checkUserStoryStatus: async (taskId: number) => {
         let userStoryInList = await MySqlService.getUserStoryForTask(taskId);
         let userStory = userStoryInList[0];
         let tasks = await MySqlService.getTasksForUserStory(userStory);
@@ -14,10 +14,9 @@ export const GqlUtil = {
                 }
                 return re;
             }, {status: true});
-            return {userStoryId:userStory.id,status: ready.status};
-        } else return  {userStoryId:userStory.id,status: false};
+            return {userStoryId: userStory.id, status: ready.status};
+        } else return {userStoryId: userStory.id, status: false};
     },
-
 
     unFinishedTasksForUser: async (userId: number) => {
         let userTasks = await MySqlService.getTasksForUser(userId)
@@ -31,8 +30,6 @@ export const GqlUtil = {
     getProjectInvitationsForUser: async (userId: number) => {
         return User.relatedQuery('receivedInvites').for(userId)
     },
-
-
 
     geTasksDistributionForProject: async (projectId: number) => {
         let userStories = await MySqlService.getUserStoriesByProjectId(projectId);

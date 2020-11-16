@@ -35,12 +35,14 @@ export const GqlService = {
         await Company.query().findById(companyId).patch({name: companyName});
         return Company.query().findById(companyId);
     },
+
     updateProject: async (projectId: number, projectName: string) => {
         await Project.query().findById(projectId).patch({
             name: projectName
         });
         return Project.query().findById(projectId);
     },
+
     updateUserStoryStatusAfterTaskStatusRefresh:async (taskId:number)=>{
         let Story = await GqlUtil.checkUserStoryStatus(taskId);
         return MySqlService.updateUserStory(Story.userStoryId,{status: Story.status});
@@ -66,10 +68,10 @@ export const GqlService = {
     },
 
     sendProjectParticipationInvite: async (senderId: number, receiverId: number, projectId: number) => {
-        let projectParticipants = await Project.relatedQuery('participants').for(projectId);
-        let receiverInvites = await User.relatedQuery('receivedInvites').for(receiverId);
+        let projectParticipants = await MySqlService.getProjectParticipants(projectId);
+        let receiverInvites = await MySqlService.getUserInvitationsForParticipation(receiverId);
         if (receiverInvites.some(async (invite: ParticipateInvite) => {
-            let projectInInviteInList = await ParticipateInvite.relatedQuery('project').for(invite.id);
+            let projectInInviteInList = await MySqlService.getProjectForInvite(invite.id);
             return projectInInviteInList[0].id === projectId;
             })
         ) {
@@ -103,6 +105,7 @@ export const GqlService = {
         }
         return project.$relatedQuery('participants');
     },
+
     addUserToCompany: async (userId: number, companyId:number) =>{
         let users = await Company.relatedQuery('users').for(companyId);
         let isInclude = users.some(user => user.id === userId);
@@ -111,7 +114,6 @@ export const GqlService = {
             .for(userId)
             .relate(companyId);
         return "user is added as collaborator";
-
     },
 
     getProjectForUserByCompanyId: async (userId:number,companyId:number) =>{
