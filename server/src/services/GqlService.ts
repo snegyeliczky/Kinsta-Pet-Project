@@ -71,8 +71,8 @@ export const GqlService = {
         let projectParticipants = await MySqlService.getProjectParticipants(projectId);
         let receiverInvites = await MySqlService.getUserInvitationsForParticipation(receiverId);
         if (receiverInvites.some(async (invite: ParticipateInvite) => {
-            let projectInInviteInList = await MySqlService.getProjectForInvite(invite.id);
-            return projectInInviteInList[0].id === projectId;
+            let projectInInvite = await MySqlService.getProjectForInvite(invite.id);
+            return projectInInvite.id === projectId;
             })
         ) {
             return "user have invitation to this project"
@@ -82,10 +82,7 @@ export const GqlService = {
         })) {
             return "user all ready participate in the project"
         }
-        let invitation = await User.relatedQuery('sandedInvites').for(senderId).insert({});
-        await invitation.$relatedQuery('project').relate(projectId);
-        await invitation.$relatedQuery('receiver').relate(receiverId);
-        return "invitation sent"
+       return MySqlService.sendInvite(senderId,projectId,receiverId);
     },
 
     addUserToProjectAsParticipant: async (userId: number, projectId: number) => {

@@ -35,7 +35,15 @@ export const MySqlService = {
     },
 
     getProjectForInvite: async (inviteId:number)=>{
-        return ParticipateInvite.relatedQuery('project').for(inviteId)
+        let projectInList = await ParticipateInvite.relatedQuery('project').for(inviteId);
+        return projectInList[0]
+    },
+
+    sendInvite: async (senderId:number,projectId:number,receiverId:number) =>{
+        let invitation = await User.relatedQuery('sandedInvites').for(senderId).insert({});
+        await invitation.$relatedQuery('project').relate(projectId);
+        await invitation.$relatedQuery('receiver').relate(receiverId);
+        return "invitation sent"
     }
 
 
