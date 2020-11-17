@@ -13,11 +13,11 @@ async function insertBaseUsersToDb() {
     if (users.length < 1) {
         await DbInit();
     }
-    let inv = await GqlService.acceptParticipationInvitation(1);
+    let inv = await GqlService.sendProjectParticipationInvite(1,1,1);
     console.log(inv);
 };
 
-export const startServer =()=>{
+export const startServer = () => {
     const server = new GraphQLServer({
         typeDefs: './src/schema.graphql',
         resolvers

@@ -69,7 +69,9 @@ export const GqlService = {
 
     sendProjectParticipationInvite: async (senderId: number, receiverId: number, projectId: number) => {
         let projectParticipants = await MySqlService.getProjectParticipants(projectId);
-        let receiverInvites = await MySqlService.getUserInvitationsForParticipation(receiverId);
+        console.log(projectParticipants)
+        let receiverInvites = await MySqlService.getUserInvites(receiverId);
+        console.log(receiverInvites)
         if (await GqlUtil.checkUserHaveInvitationToProject(receiverInvites, projectId)) {
             return "user have invitation to this project"
         }

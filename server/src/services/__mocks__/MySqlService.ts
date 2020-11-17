@@ -1,5 +1,7 @@
 import UserStory from "../../model/UserStory";
 import User from "../../model/User";
+import Project from "../../model/Project";
+import ParticipateInvite from "../../model/ParticipateInvite";
 
 export const MySqlService = {
 
@@ -8,11 +10,12 @@ export const MySqlService = {
     },
 
     getTasksForUserStory: (userStory: UserStory) => {
-        if (userStory.id===1){
+        if (userStory.id === 1) {
             return [{id: 1, ready: 1}, {id: 2, ready: 1}];
-        }if (userStory.id===2){
+        }
+        if (userStory.id === 2) {
             return [{id: 3, ready: 0}, {id: 4, ready: 1}];
-        }else {
+        } else {
             return [{id: 5, ready: 0}, {id: 6, ready: 0}];
         }
 
@@ -21,7 +24,7 @@ export const MySqlService = {
         return [{id: 1, ready: 0, title: "not ready"}, {id: 2, ready: 1, title: "ready"}]
     },
     getUserStoryForTask: (taskId: number) => {
-        if (taskId===1 || taskId===2){
+        if (taskId === 1 || taskId === 2) {
             return [
                 {
                     id: 1,
@@ -32,7 +35,8 @@ export const MySqlService = {
                     businessValue: null
                 }
             ]
-        }if (taskId===3||taskId===4){
+        }
+        if (taskId === 3 || taskId === 4) {
             return [
                 {
                     id: 2,
@@ -43,7 +47,7 @@ export const MySqlService = {
                     businessValue: null
                 }
             ]
-        }else {
+        } else {
             return [
                 {
                     id: 3,
@@ -56,6 +60,63 @@ export const MySqlService = {
             ]
         }
 
-    }
+    },
+    getProjectParticipants: async (projectId: number) => {
+        if (projectId === 1) {
+            return [{
+                id: 1, firstName: 'JhonLine',
+                lastName: 'Szilvester', password: '432x',
+                email: 'JS@gmail.com', address: null
+            }
+            ]
+        } else {
+            return [{
+                id: 2, firstName: 'Jone',
+                lastName: 'Wick', password: '4321',
+                email: 'JW@gmail.com', address: null
+            }
+            ]
+        }
+    },
+
+    getUserInvites: async (userId: number) => {
+        if (userId === 1) {
+            return [
+                {
+                    id: 1, sander: 2,
+                    receiver: 1, project: 1
+                }, {
+                    id: 2, sander: 2,
+                    receiver: 1, project: 2
+                }
+            ]
+        } else {
+            return []
+        }
+    },
+
+    getProjectForInvite: async (inviteId: number) => {
+        if (inviteId === 1) {
+            return {
+                id: 1,
+                companyId: 1,
+                ownerId: 1,
+                name: 'New cash machine system'
+            }
+        }if (inviteId===2){
+            return {
+                id: 2,
+                companyId: 1,
+                ownerId: 1,
+                name: 'New test project'
+            }
+        }else {
+            return {}
+        }
+    },
+
+    sendInvite: async (senderId: number, projectId: number, receiverId: number) => {
+        return "invitation sent"
+    },
 
 }
