@@ -69,13 +69,15 @@ export const MySqlService = {
                 email: 'JS@gmail.com', address: null
             }
             ]
-        } else {
+        } if (projectId === 2) {
             return [{
                 id: 2, firstName: 'Jone',
                 lastName: 'Wick', password: '4321',
                 email: 'JW@gmail.com', address: null
             }
             ]
+        }else {
+            return []
         }
     },
 
@@ -83,9 +85,6 @@ export const MySqlService = {
         if (userId === 1) {
             return [
                 {
-                    id: 1, sander: 2,
-                    receiver: 1, project: 1
-                }, {
                     id: 2, sander: 2,
                     receiver: 1, project: 2
                 }
