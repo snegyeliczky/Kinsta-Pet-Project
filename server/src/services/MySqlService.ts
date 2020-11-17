@@ -50,10 +50,6 @@ export const MySqlService = {
         return ParticipateInvite.query().findById(invitationId)
     },
 
-    findProjectForInvite: async (invite: ParticipateInvite) => {
-        return invite.$relatedQuery('project')
-    },
-
     findReceiverForInvite: async (invite: ParticipateInvite) => {
         return invite.$relatedQuery('receiver')
     },

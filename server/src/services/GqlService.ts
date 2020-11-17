@@ -73,7 +73,6 @@ export const GqlService = {
         if (await GqlUtil.checkUserHaveInvitationToProject(receiverInvites, projectId)) {
             return "user have invitation to this project"
         }
-        ;
         if (projectParticipants.some((user: User) => {
             return user.id === receiverId
         })) {
@@ -89,7 +88,7 @@ export const GqlService = {
     acceptParticipationInvitation: async (invitationId: number) => {
         let invite = await MySqlService.findInvitation(invitationId);
         try {
-            let project = await MySqlService.findProjectForInvite(invite);
+            let project = await MySqlService.getProjectForInvite(invite.id);
             let receiver = await MySqlService.findReceiverForInvite(invite);
             let participants = await MySqlService.getProjectParticipants(project.id);
             if (!participants.some((user: User) => {

@@ -69,14 +69,15 @@ export const MySqlService = {
                 email: 'JS@gmail.com', address: null
             }
             ]
-        } if (projectId === 2) {
+        }
+        if (projectId === 2) {
             return [{
                 id: 2, firstName: 'Jone',
                 lastName: 'Wick', password: '4321',
                 email: 'JW@gmail.com', address: null
             }
             ]
-        }else {
+        } else {
             return []
         }
     },
@@ -102,20 +103,54 @@ export const MySqlService = {
                 ownerId: 1,
                 name: 'New cash machine system'
             }
-        }if (inviteId===2){
+        }
+        if (inviteId === 2) {
             return {
                 id: 2,
                 companyId: 1,
                 ownerId: 1,
                 name: 'New test project'
             }
-        }else {
-            return {}
+        } if (inviteId===undefined) {
+            throw new TypeError("Invitation doesn't exist")
         }
     },
 
     sendInvite: async (senderId: number, projectId: number, receiverId: number) => {
         return "invitation sent"
     },
+
+    findInvitation: async (invitationId: number) => {
+        if (invitationId === 1) {
+            return {
+                id: 1, sander: 2,
+                receiver: 1, project: 1
+            }
+        }
+        if (invitationId === 2) {
+            return {
+                id: 2, sander: 2,
+                receiver: 1, project: 2
+            }
+        } else
+            return {};
+    },
+
+    findReceiverForInvite: async (invite: ParticipateInvite) => {
+        return {
+            id: 1, firstName: 'JhonLine',
+            lastName: 'Szilvester', password: '432x',
+            email: 'JS@gmail.com', address: null
+        }
+
+    },
+
+    acceptAndDeleteInvitation: async (project: Project, receiverId: number, invitationId: number) => {
+        return true;
+    },
+
+    deleteInvite: async (inviteId: number) => {
+        return true;
+    }
 
 }
