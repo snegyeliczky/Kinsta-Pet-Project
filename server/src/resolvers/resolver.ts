@@ -162,9 +162,9 @@ export const resolvers = {
         },
 
         // update the task status and return the userStory status
-        updateTaskStatus: async (parent: Task, args: { taskId: number, taskStatus: boolean }): Promise<boolean> => {
+        updateTaskStatus: async (parent: Task, args: { taskId: number, taskStatus: boolean }) => {
             await Task.query().findById(args.taskId).patch({ready: args.taskStatus});
-            return GqlUtil.checkUserStoryStatus(args.taskId);
+            return GqlService.updateUserStoryStatusAfterTaskStatusRefresh(args.taskId);
         },
         updateTask: async (parent: Task, args: {
             taskId: number, title: string,
@@ -181,7 +181,7 @@ export const resolvers = {
             return await GqlService.estimator(args.userId, args.userStoryId, args.estimation)
         },
         sendParticipateInviteToUser: async (parent: any, args: { senderId: number, receiverId: number, projectId: number }) => {
-            return GqlService.sendProjectParticipationInvite(args.senderId, args.receiverId, args.projectId);
+            return await GqlService.sendProjectParticipationInvite(args.senderId, args.receiverId, args.projectId);
         },
         acceptParticipationInvite: (parent: any, args: { invitationId: number }) => {
             return GqlService.acceptParticipationInvitation(args.invitationId);
