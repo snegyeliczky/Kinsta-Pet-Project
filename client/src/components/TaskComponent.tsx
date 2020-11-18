@@ -44,8 +44,8 @@ const TaskComponent:React.FC<Props> = ({Task,removeTask,setTasks}) => {
                     <div className={"task-title"}>{Task.title}</div>
                     <div className={"task-description"}>{Task.description}</div>
                     <div>{Task.time}</div>
-                    <div>{projectContext.getUserName("d448b8bb-3df5-4683-9507-3648e6d98b67")}</div>
-                    <div>{showCheckBox("d448b8bb-3df5-4683-9507-3648e6d98b67")}</div>
+                    <div>{Task.owner?.firstName}</div>
+                    <div>{showCheckBox(Task.owner?.id)}</div>
                     <div><SettingOutlined spin={edit} onClick={()=>setEdit(true)} className={"userStory-edit"}/></div>
                 </TaskStyledComponent>
         }

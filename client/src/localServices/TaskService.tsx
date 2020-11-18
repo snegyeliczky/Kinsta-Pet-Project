@@ -9,7 +9,7 @@ let Task1:TaskModel={
     title:"registration page",
     description:"creat a page where the user can create account",
     time:"01:10",
-    ownerId:"d448b8bb-3df5-4683-9507-3648e6d98b67",
+    ownerId:"1",
     ready:true,
 };
 TaskList.push(Task1);
@@ -19,7 +19,7 @@ let Task2:TaskModel={
     userStoryId:1,
     title:"Login page",
     description:"creat a page where the user can Login",
-    ownerId:"6f0050a8-f799-49ad-b71d-9372744ce063",
+    ownerId:"1",
     ready:false,
 };
 TaskList.push(Task2);
@@ -40,7 +40,7 @@ let Task4:TaskModel={
     title:"Create service to get data from db",
     description:"",
     time:"01:50",
-    ownerId:"d448b8bb-3df5-4683-9507-3648e6d98b67",
+    ownerId:"2",
     ready:false,
 };
 TaskList.push(Task4);
@@ -51,7 +51,7 @@ let Task5:TaskModel={
     title:"Create service to get Account balance",
     description:"Create service to get Account balance from Db",
     time:"04:00",
-    ownerId:"d448b8bb-3df5-4683-9507-3648e6d98b67",
+    ownerId:"3",
     ready:false,
 };
 TaskList.push(Task5);

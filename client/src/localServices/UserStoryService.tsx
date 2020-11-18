@@ -8,9 +8,9 @@ let task1:UserStoryModel ={
     userStory:"As a user I want to creat new Account",
     businessValue:100,
     estimation:2,
-    ownerId:"d448b8bb-3df5-4683-9507-3648e6d98b67",
+    ownerId:"1",
     status:false,
-    estimatedUsers:{"d448b8bb-3df5-4683-9507-3648e6d98b67":2,"6f0050a8-f799-49ad-b71d-9372744ce063":3}
+    estimatedUsers:{"1":2,"2":3}
 
 };
 UserStoryList.push(task1);
@@ -23,7 +23,7 @@ let task2:UserStoryModel ={
     estimation:12,
     ownerId:null,
     status:false,
-    estimatedUsers:{"d448b8bb-3df5-4683-9507-3648e6d98b67":3,"6f0050a8-f799-49ad-b71d-9372744ce063":5}
+    estimatedUsers:{"1":3,"2":5}
 };
 UserStoryList.push(task2);
 
@@ -35,7 +35,7 @@ let task3:UserStoryModel ={
     estimation:8,
     ownerId:"6f0050a8-f799-49ad-b71d-9372744ce063",
     status:false,
-    estimatedUsers:{"b581a269-5e24-4079-82a6-16a5854a9bdc":2,"6f0050a8-f799-49ad-b71d-9372744ce063":3}
+    estimatedUsers:{"1":2,"2":3}
 };
 UserStoryList.push(task3);
 
@@ -47,7 +47,7 @@ let task4:UserStoryModel ={
     estimation:8,
     ownerId:"6f0050a8-f799-49ad-b71d-9372744ce063",
     status:false,
-    estimatedUsers:{"b581a269-5e24-4079-82a6-16a5854a9bdc":5,"6f0050a8-f799-49ad-b71d-9372744ce063":3}
+    estimatedUsers:{"2":5,"3":3}
 };
 UserStoryList.push(task4);
 
