@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Company} from "../interfaces/Company";
-import ProjectService from "../services/ProjectService";
+import ProjectService from "../localServices/ProjectService";
 import {useHistory} from "react-router-dom";
 import NewProjectModal from "./Modals/NewProjectModal";
 import {CompanyPageProject} from "../assets/styledComponents/styledComponents";

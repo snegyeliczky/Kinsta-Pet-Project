@@ -1,13 +1,13 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {useParams} from "react-router";
-import ProjectService from "../services/ProjectService";
+import ProjectService from "../localServices/ProjectService";
 import "../assets/ProjectStyle.css"
 import NewUserStoryModal from "../components/Modals/NewUserStoryModal";
 import {Collapse} from "antd";
 import CollapsePanel from "antd/es/collapse/CollapsePanel";
 import {ProjectTitleContainer, UserStoryStyleComponent} from "../assets/styledComponents/styledComponents";
 import UserStory from "../components/UserStory";
-import UserStoryService from "../services/UserStoryService";
+import UserStoryService from "../localServices/UserStoryService";
 import TaskTable from "../components/TaskTable";
 import ProjectContext from "../context/ProjectContext";
 

@@ -1,7 +1,7 @@
 import React, {createContext, Dispatch, SetStateAction, useState} from 'react';
 import {useHistory} from "react-router-dom";
 import {UserModel} from "../interfaces/UserModel";
-import UserService from "../services/userService";
+import UserService from "../localServices/userService";
 
 
 interface applicationContextProps{

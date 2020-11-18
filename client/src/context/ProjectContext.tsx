@@ -1,7 +1,7 @@
 import React, {createContext, useState} from 'react';
-import ProjectService from "../services/ProjectService";
+import ProjectService from "../localServices/ProjectService";
 import {UserModel} from "../interfaces/UserModel";
-import UserService from "../services/userService";
+import UserService from "../localServices/userService";
 
 type projectContextProps = {
     participants:UserModel[]
@@ -32,7 +32,7 @@ export const ProjectProvider = (props:any) => {
     };
 
     const getUser = (userId: string): UserModel | undefined => {
-
+        console.log(participants)
         let user = participants.find(user =>{
             return user.id===userId
         });

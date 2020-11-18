@@ -2,7 +2,7 @@ import React, {Dispatch, SetStateAction, useContext, useState} from 'react';
 import {Button, Input, Modal,message} from 'antd';
 import {PlusOutlined, ProjectOutlined} from '@ant-design/icons';
 import {UserStoryModel} from "../../interfaces/UserStoryModel";
-import TaskService from "../../services/UserStoryService";
+import TaskService from "../../localServices/UserStoryService";
 import {ModalContainer} from "../../assets/styledComponents/styledComponents";
 import {UserModel} from "../../interfaces/UserModel";
 import UserDropdown from "../userDropdown";

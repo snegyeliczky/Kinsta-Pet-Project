@@ -4,7 +4,7 @@ import {Input} from "antd";
 import AlertModal from "./Modals/AlertModal";
 import {TaskModel} from "../interfaces/TaskModel";
 import {DeleteOutlined, SettingOutlined} from '@ant-design/icons';
-import TaskService from "../services/TaskService";
+import TaskService from "../localServices/TaskService";
 import {ApplicationContext} from "../context/ApplicationContext";
 import UserDropdown from './userDropdown';
 import ProjectContext from "../context/ProjectContext";
@@ -83,7 +83,7 @@ const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready, setT
 
     return (
         <TaskStyledComponent className={"TaskComponent"} ready={ready} onKeyDown={event => handleKeyBoard(event)}>
-            <div className={"task-id"}>{Task.id.substring(0, 5)}</div>
+            <div className={"task-id"}>{Task.id}</div>
             <div className={"task-title"}><Input
                 defaultValue={Task.title} onChange={(e) => updateTitle(e.target.value)}/></div>
             <div className={"task-description"}><Input.TextArea

@@ -3,7 +3,7 @@ import { UserStoryStyleComponent} from "../assets/styledComponents/styledCompone
 import {UserStoryModel} from "../interfaces/UserStoryModel";
 import {SettingOutlined, DeleteOutlined} from '@ant-design/icons';
 import {Input} from "antd";
-import UserStoryService from "../services/UserStoryService";
+import UserStoryService from "../localServices/UserStoryService";
 import AlertModal from "./Modals/AlertModal";
 import EstimationModal from "./Modals/EstimationModal";
 import {ApplicationContext} from "../context/ApplicationContext";

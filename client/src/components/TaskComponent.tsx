@@ -3,7 +3,7 @@ import {TaskModel} from "../interfaces/TaskModel";
 import {TaskStyledComponent} from "../assets/styledComponents/styledComponents";
 import { SettingOutlined } from '@ant-design/icons';
 import { Checkbox } from 'antd';
-import TaskService from "../services/TaskService";
+import TaskService from "../localServices/TaskService";
 import EditTask from "./EditTask";
 import ProjectContext from "../context/ProjectContext";
 import {ApplicationContext} from "../context/ApplicationContext";
@@ -40,12 +40,12 @@ const TaskComponent:React.FC<Props> = ({Task,removeTask,setTasks}) => {
             edit?<EditTask Task={Task} removeTask={removeTask} edit={edit}
                            setEdit={setEdit} ready={Task.ready} setTasks={setTasks}/>
             :<TaskStyledComponent className={"TaskComponent"} ready={Task.ready}>
-                    <div className={"task-id"}>{Task.id.substring(0,5)}</div>
+                    <div className={"task-id"}>{Task.id}</div>
                     <div className={"task-title"}>{Task.title}</div>
                     <div className={"task-description"}>{Task.description}</div>
                     <div>{Task.time}</div>
-                    <div>{projectContext.getUserName(Task.ownerId)}</div>
-                    <div>{showCheckBox(Task.ownerId)}</div>
+                    <div>{projectContext.getUserName("d448b8bb-3df5-4683-9507-3648e6d98b67")}</div>
+                    <div>{showCheckBox("d448b8bb-3df5-4683-9507-3648e6d98b67")}</div>
                     <div><SettingOutlined spin={edit} onClick={()=>setEdit(true)} className={"userStory-edit"}/></div>
                 </TaskStyledComponent>
         }

@@ -3,7 +3,7 @@ import {Button, Input, Modal,message} from "antd";
 import {ModalContainer} from "../../assets/styledComponents/styledComponents";
 import {PlusOutlined, ProjectOutlined} from '@ant-design/icons';
 import {TaskModel} from "../../interfaces/TaskModel";
-import TaskService from "../../services/TaskService";
+import TaskService from "../../localServices/TaskService";
 import UserDropdown from "../userDropdown";
 import ProjectContext from "../../context/ProjectContext";
 import {ApplicationContext} from "../../context/ApplicationContext";

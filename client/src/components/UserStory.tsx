@@ -24,12 +24,10 @@ const UserStory: React.FC<Props> = ({UserStory, removeUserStory}) => {
     function handleChangeToEdit(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
         e.stopPropagation();
         setEdit(!edit);
-
     }
 
     function checkEstimation():boolean {
         return userStory.estimatedUsers[appContext.getUserId()] !== undefined;
-
     }
 
     function getEstimatedAverage() {
