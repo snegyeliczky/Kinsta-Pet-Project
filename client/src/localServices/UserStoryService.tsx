@@ -33,7 +33,7 @@ let task3:UserStoryModel ={
     userStory:"As a user I want to transfer money to my friends",
     businessValue:500,
     estimation:8,
-    ownerId:"6f0050a8-f799-49ad-b71d-9372744ce063",
+    ownerId:"1",
     status:false,
     estimatedUsers:{"1":2,"2":3}
 };
@@ -45,7 +45,7 @@ let task4:UserStoryModel ={
     userStory:"As a user I want to transfer money to my friends",
     businessValue:500,
     estimation:8,
-    ownerId:"6f0050a8-f799-49ad-b71d-9372744ce063",
+    ownerId:"3",
     status:false,
     estimatedUsers:{"2":5,"3":3}
 };

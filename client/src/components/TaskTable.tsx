@@ -18,7 +18,6 @@ const TaskTable: React.FC<props> = ({userStory}) => {
     const [tasks, setTasks] = useState(TaskService.getTasksByUserStory(userStory.id));
     const{loading,error,data} =useQuery(getTaskForUserStory,{variables:{id:userStory.id}});
 
-    if (data)console.log(data.userStory.tasks,userStory.id);
 
     const removeTask = (taskId: string) => {
         let refreshedTasks = TaskService.removeTask(taskId);

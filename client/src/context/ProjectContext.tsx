@@ -26,7 +26,9 @@ export const ProjectProvider = (props:any) => {
         let project = ProjectService.getProject(parseInt(id));
         let participantList: UserModel[] = [];
         project.participants.forEach(id => {
-            participantList.push(UserService.getUserById(id))
+            let userById = UserService.getUserById(id);
+            console.log(userById)
+            participantList.push(userById)
         });
         setParticipants(participantList)
     };

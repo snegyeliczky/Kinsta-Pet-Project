@@ -22,12 +22,10 @@ const UserDropdown:React.FC<props> = ({userData,onChange,base}) => {
         message.info(`Owner changed to ${name}`);
         onChange(key)
     };
-console.log(userData)
     const menu = (
         <Menu >
             <Menu.Item key={"0"} onClick={(e)=>onClick('',"no owner")}> ---</Menu.Item>
             {userData.map( user =>{
-                if (user) // refactor if !!!!!!!
                 return <Menu.Item key={user.id} onClick={(e)=>onClick(user.id,user.firstName)}> {user.firstName}</Menu.Item>
                 })
             }
