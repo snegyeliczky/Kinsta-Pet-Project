@@ -1,19 +1,16 @@
-import React, {Dispatch, SetStateAction, useContext, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Button, Input, Modal,message} from "antd";
 import {ModalContainer} from "../../assets/styledComponents/styledComponents";
 import {PlusOutlined, ProjectOutlined} from '@ant-design/icons';
-import {TaskModel} from "../../interfaces/TaskModel";
-import TaskService from "../../localServices/TaskService";
 import UserDropdown from "../userDropdown";
 import ProjectContext from "../../context/ProjectContext";
 import {ApplicationContext} from "../../context/ApplicationContext";
 
 type Props = {
     UserStoryId: number
-    setTasks: Dispatch<SetStateAction<TaskModel[]>>
 }
 
-const NewTaskModal: React.FC<Props> = ({UserStoryId, setTasks}) => {
+const NewTaskModal: React.FC<Props> = ({UserStoryId}) => {
 
     const appContext = useContext(ApplicationContext);
     const projectContext = useContext(ProjectContext);
@@ -27,16 +24,8 @@ const NewTaskModal: React.FC<Props> = ({UserStoryId, setTasks}) => {
         setVisible(true)
     }
 
-    function creatNewTask(): TaskModel {
-        return {
-            id: "",
-            userStoryId: UserStoryId,
-            title: taskTitle,
-            description: taskDescription,
-            ownerId: OwnerId,
-            time: time,
-            ready: false
-        }
+    function creatNewTask() {
+
     }
 
     function handleCancel(e: React.MouseEvent<HTMLElement>) {
@@ -45,9 +34,7 @@ const NewTaskModal: React.FC<Props> = ({UserStoryId, setTasks}) => {
 
     function handleSave(e: React.MouseEvent<HTMLElement>) {
         if (taskTitle.length>2) {
-            let newTask = creatNewTask();
-            let tasks = TaskService.saveNewTask(newTask);
-            setTasks(tasks);
+            creatNewTask();
             setVisible(false);
         }else message.error("Task title must be minimum 3 character long!",5)
     }

@@ -1,6 +1,6 @@
 import {v4 as uuid} from "uuid";
 import {TaskModel} from "../interfaces/TaskModel";
-
+/*
 let TaskList:TaskModel[] = [];
 
 let Task1:TaskModel={
@@ -55,6 +55,7 @@ let Task5:TaskModel={
     ready:false,
 };
 TaskList.push(Task5);
+
 
 export default {
 
@@ -116,3 +117,5 @@ export default {
         });
     }
 }
+
+ */

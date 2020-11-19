@@ -4,10 +4,11 @@ import {Input} from "antd";
 import AlertModal from "./Modals/AlertModal";
 import {TaskModel} from "../interfaces/TaskModel";
 import {DeleteOutlined, SettingOutlined} from '@ant-design/icons';
-import TaskService from "../localServices/TaskService";
 import {ApplicationContext} from "../context/ApplicationContext";
 import UserDropdown from './userDropdown';
 import ProjectContext from "../context/ProjectContext";
+import {useMutation} from "@apollo/client";
+import {mutateTaskQuery } from "../queries/taskQueries";
 
 type props = {
     Task: TaskModel,
@@ -15,15 +16,15 @@ type props = {
     edit: boolean,
     setEdit: Dispatch<SetStateAction<boolean>>,
     ready: boolean,
-    setTasks: Dispatch<SetStateAction<TaskModel[]>>,
 }
 
 
-const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready, setTasks}) => {
+const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready}) => {
 
     const appContext = useContext(ApplicationContext);
     const projectContext = useContext(ProjectContext);
     const [updatedTask, updateTask] = useState({...Task});
+    const [mutateTask ] = useMutation(mutateTaskQuery);
 
 
     const removeTaskAndCloseEditing = () => {
@@ -42,8 +43,7 @@ const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready, setT
     }
 
     function updateOwner(userId: string) {
-        updatedTask.ownerId = userId;
-        updateTask(updatedTask);
+
     }
 
     function updateTime(time: string) {
@@ -53,8 +53,14 @@ const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready, setT
 
     function handleKeyBoard(event: React.KeyboardEvent<HTMLDivElement>) {
         if (event.key === 'Enter') {
-            let updatedUserStoryTasks = TaskService.updateTask(updatedTask);
-            setTasks([...updatedUserStoryTasks]);
+            mutateTask({
+                variables:{
+                    taskId:updatedTask.id,
+                    title:updatedTask.title,
+                    description:updatedTask.description,
+                    time:updatedTask.time
+                }
+            });
             setEdit(false);
         }if (event.key === 'Escape'){
             setEdit(false);
@@ -62,13 +68,19 @@ const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready, setT
     }
 
     const handleStopEdit = () => {
-        let updatedUserStoryTasks = TaskService.updateTask(updatedTask);
-        setTasks(updatedUserStoryTasks);
+        mutateTask({
+            variables:{
+                taskId:updatedTask.id,
+                title:updatedTask.title,
+                description:updatedTask.description,
+                time:updatedTask.time
+            }
+        });
         setEdit(false);
     };
 
     const editTime = () => {
-        if (appContext.getUserId() === updatedTask.ownerId) {
+        if (appContext.getUserId() === updatedTask.owner?.id.toString()) {
             return (
                 <Input
                     type={"time"} defaultValue={Task.time ? Task.time : "set time"}
@@ -90,7 +102,7 @@ const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready, setT
                 defaultValue={Task.description} onChange={(e) => updateDescription(e.target.value)}/></div>
             <div>{editTime()}</div>
             <div><UserDropdown userData={projectContext.participants}
-                               onChange={updateOwner} base={projectContext.getUserName(Task.ownerId)}/></div>
+                               onChange={updateOwner} base={projectContext.getUserName(Task.owner?.id)}/></div>
             <AlertModal text={"Are you sure to delete this task ?"} buttonText={<DeleteOutlined/>}
                         OkFunction={() => removeTaskAndCloseEditing()}/>
             <div><SettingOutlined spin={edit} onClick={handleStopEdit} className={"userStory-edit"}/></div>

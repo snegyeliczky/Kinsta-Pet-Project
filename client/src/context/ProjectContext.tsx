@@ -35,7 +35,7 @@ export const ProjectProvider = (props:any) => {
 
     const getUser = (userId: string): UserModel | undefined => {
         let user = participants.find(user =>{
-            if (user) // refactor if !!!!!!!
+            if(user) // undefined users somehow
             return user.id===userId
         });
         if(user)return user;
