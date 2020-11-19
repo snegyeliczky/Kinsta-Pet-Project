@@ -4,7 +4,6 @@ import {UserStoryStyleComponent} from "../assets/styledComponents/styledComponen
 import {SettingOutlined} from '@ant-design/icons';
 import EditUserStory from "./EditUserStory";
 import {ApplicationContext} from "../context/ApplicationContext";
-import ProjectContext from "../context/ProjectContext";
 
 
 interface Props {
@@ -16,7 +15,6 @@ interface Props {
 const UserStory: React.FC<Props> = ({UserStory, removeUserStory}) => {
 
     const appContext = useContext(ApplicationContext);
-    const projectContext = useContext(ProjectContext);
     const [edit, setEdit] = useState(false);
     const [userStory,setUserStory] =useState(UserStory);
 

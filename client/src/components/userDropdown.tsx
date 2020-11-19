@@ -26,7 +26,6 @@ const UserDropdown:React.FC<props> = ({userData,onChange,base}) => {
         <Menu >
             <Menu.Item key={"0"} onClick={(e)=>onClick('',"no owner")}> ---</Menu.Item>
             {userData.map( user =>{
-                if (user) // undefined users somehow
                 return <Menu.Item key={user.id} onClick={(e)=>onClick(user.id,user.firstName)}> {user.firstName}</Menu.Item>
                 })
             }

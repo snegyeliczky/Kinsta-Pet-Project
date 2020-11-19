@@ -1,5 +1,4 @@
 import React, {createContext, useState} from 'react';
-import ProjectService from "../localServices/ProjectService";
 import {UserModel} from "../interfaces/UserModel";
 import UserService from "../localServices/userService";
 import {useQuery} from "@apollo/client";
@@ -35,7 +34,6 @@ export const ProjectProvider = (props:any) => {
 
     const getUser = (userId: string): UserModel | undefined => {
         let user = participants.find(user =>{
-            if(user) // undefined users somehow
             return user.id.toString()===userId
         });
         if(user)return user;
