@@ -2,6 +2,8 @@ import React, {createContext, useState} from 'react';
 import ProjectService from "../localServices/ProjectService";
 import {UserModel} from "../interfaces/UserModel";
 import UserService from "../localServices/userService";
+import {useQuery} from "@apollo/client";
+import {getProjectParticipants} from "../queries/projectQueries";
 
 type projectContextProps = {
     participants:UserModel[]
@@ -19,24 +21,22 @@ export const ProjectContext = createContext<projectContextProps>(
 
 export const ProjectProvider = (props:any) => {
 
+
     const [participants,setParticipants] = useState<UserModel[]>([]);
+    const {refetch} = useQuery(getProjectParticipants,{variables:{id:0}})
 
 
-    const loadParticipantUsersById= (id:string)=> {
-        let project = ProjectService.getProject(parseInt(id));
-        let participantList: UserModel[] = [];
-        project.participants.forEach(id => {
-            let userById = UserService.getUserById(id);
-            console.log(userById)
-            participantList.push(userById)
-        });
-        setParticipants(participantList)
+    const loadParticipantUsersById= async (id:string)=> {
+        let {data} = await refetch({id:parseInt(id)});
+        console.log(data.project.participants);
+        setParticipants(data.project.participants);
+
     };
 
     const getUser = (userId: string): UserModel | undefined => {
         let user = participants.find(user =>{
             if(user) // undefined users somehow
-            return user.id===userId
+            return user.id.toString()===userId
         });
         if(user)return user;
         let otherUser = UserService.getUserById(userId);
@@ -64,3 +64,17 @@ export const ProjectProvider = (props:any) => {
 };
 
 export default ProjectContext;
+
+/*
+
+    const loadParticipantUsersById= (id:string)=> {
+        let project = ProjectService.getProject(parseInt(id));
+        let participantList: UserModel[] = [];
+        project.participants.forEach(id => {
+            let userById = UserService.getUserById(id);
+            console.log(userById)
+            participantList.push(userById)
+        });
+        setParticipants(participantList)
+    };
+ */

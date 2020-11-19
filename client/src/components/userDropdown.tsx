@@ -7,7 +7,7 @@ import {UserModel} from "../interfaces/UserModel";
 type props = {
     userData:UserModel[],
     onChange:Function,
-    base:string
+    base:string|undefined
 }
 
 

@@ -8,7 +8,7 @@ import {ApplicationContext} from "../context/ApplicationContext";
 import UserDropdown from './userDropdown';
 import ProjectContext from "../context/ProjectContext";
 import {useMutation} from "@apollo/client";
-import {mutateTaskQuery } from "../queries/taskQueries";
+import {getTaskForUserStory, mutateTaskOwner, mutateTaskQuery} from "../queries/taskQueries";
 
 type props = {
     Task: TaskModel,
@@ -24,7 +24,8 @@ const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready}) => 
     const appContext = useContext(ApplicationContext);
     const projectContext = useContext(ProjectContext);
     const [updatedTask, updateTask] = useState({...Task});
-    const [mutateTask ] = useMutation(mutateTaskQuery);
+    const [mutateTask] = useMutation(mutateTaskQuery);
+    const [changeOwner] = useMutation(mutateTaskOwner);
 
 
     const removeTaskAndCloseEditing = () => {
@@ -43,6 +44,13 @@ const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready}) => 
     }
 
     function updateOwner(userId: string) {
+        changeOwner({
+            variables:{
+                userId:userId,
+                taskId:Task.id
+            },
+            refetchQueries:[{query:getTaskForUserStory, variables:{id:Task.userStory.id}}]
+        })
 
     }
 
@@ -102,7 +110,7 @@ const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready}) => 
                 defaultValue={Task.description} onChange={(e) => updateDescription(e.target.value)}/></div>
             <div>{editTime()}</div>
             <div><UserDropdown userData={projectContext.participants}
-                               onChange={updateOwner} base={projectContext.getUserName(Task.owner?.id)}/></div>
+                               onChange={updateOwner} base={Task.owner?.firstName}/></div>
             <AlertModal text={"Are you sure to delete this task ?"} buttonText={<DeleteOutlined/>}
                         OkFunction={() => removeTaskAndCloseEditing()}/>
             <div><SettingOutlined spin={edit} onClick={handleStopEdit} className={"userStory-edit"}/></div>

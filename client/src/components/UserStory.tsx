@@ -50,7 +50,7 @@ const UserStory: React.FC<Props> = ({UserStory, removeUserStory}) => {
                     <div className={"userStory-id UserStory-part"}>{userStory.id}</div>
                     <div className={"userStory-userStory UserStory-part"}>{userStory.userStory}</div>
                     <div className={"userStory-businessValue UserStory-part"}>{userStory.businessValue}</div>
-                    <div className={"userStory-ownerId UserStory-part"}>{projectContext.getUserName(userStory.ownerId)}</div>
+                    <div className={"userStory-ownerId UserStory-part"}>{userStory.ownerId}</div>
                     <div className={"userStory-estimation UserStory-part"}>
                         {checkEstimation()?getEstimatedAverage()+"-SP":"Please Estimate"}</div>
                     <div className={"UserStory-part"} onClick={e => handleChangeToEdit(e)}><SettingOutlined

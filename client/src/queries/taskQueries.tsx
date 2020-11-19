@@ -4,7 +4,7 @@ const getTaskForUserStory = gql`
     query($id:ID!){
         userStory(id:$id){tasks{id,title,description,owner{id,firstName},time,ready,userStory{id}}}
     }
-`
+`;
 
 const updateTaskStatus = gql`
     mutation($taskId:Int!,$taskStatus:Boolean!){
@@ -14,7 +14,7 @@ const updateTaskStatus = gql`
             status
         }
     }
-`
+`;
 
 const mutateTaskQuery = gql`
     mutation ($taskId:Int,$title:String,$description:String,$time:String){
@@ -32,8 +32,13 @@ const mutateTaskQuery = gql`
             }
         }
     }
-`
+`;
 
+const mutateTaskOwner = gql`
+    mutation ($userId:Int,$taskId:Int){
+        addOwnerToTask(userId:$userId,taskId:$taskId)
+    }
+    
+`;
 
-
-export {getTaskForUserStory, updateTaskStatus,mutateTaskQuery}
+export {getTaskForUserStory, updateTaskStatus,mutateTaskQuery,mutateTaskOwner}
