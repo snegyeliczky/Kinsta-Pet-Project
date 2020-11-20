@@ -5,6 +5,8 @@ import {PlusOutlined, ProjectOutlined} from '@ant-design/icons';
 import UserDropdown from "../userDropdown";
 import ProjectContext from "../../context/ProjectContext";
 import {ApplicationContext} from "../../context/ApplicationContext";
+import {useMutation} from "@apollo/client";
+import {addNewTask, getTaskForUserStory} from "../../queries/taskQueries";
 
 type Props = {
     UserStoryId: number
@@ -17,14 +19,26 @@ const NewTaskModal: React.FC<Props> = ({UserStoryId}) => {
     const [visible, setVisible] = useState(false);
     const [taskTitle, setTaskTitle] = useState("");
     const [taskDescription, setTaskDescription] = useState("");
-    const [OwnerId, setOwnerId] = useState<string | null>(null);
-    const [time, setTime] = useState<string>();
+    const [ownerId, setOwnerId] = useState<number | null>(appContext.getUserIdAsNumber());
+    const [time, setTime] = useState<string>("00:00");
+    const [addNewTaskMutation] = useMutation(addNewTask)
 
     function showModal(event: React.MouseEvent<HTMLElement>) {
         setVisible(true)
     }
 
-    function creatNewTask() {
+    function saveNewTask() {
+        console.log(UserStoryId,taskTitle,taskDescription,ownerId,time);
+        addNewTaskMutation({
+            variables:{
+                userStoryId:UserStoryId,
+                taskTitle:taskTitle,
+                taskDescription:taskDescription,
+                ownerId:ownerId,
+                time:time
+            },
+            refetchQueries:[{query:getTaskForUserStory, variables:{id:UserStoryId}}]
+        })
 
     }
 
@@ -34,7 +48,7 @@ const NewTaskModal: React.FC<Props> = ({UserStoryId}) => {
 
     function handleSave(e: React.MouseEvent<HTMLElement>) {
         if (taskTitle.length>2) {
-            creatNewTask();
+            saveNewTask();
             setVisible(false);
         }else message.error("Task title must be minimum 3 character long!",5)
     }

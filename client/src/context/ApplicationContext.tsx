@@ -8,6 +8,7 @@ interface applicationContextProps{
     username:string,
     setUserName:Dispatch<SetStateAction<string>>,
     getUserId: ()=>string;
+    getUserIdAsNumber: ()=>number;
     getLoggedInUser: ()=>UserModel;
     getLoggedInUserName: ()=>string;
 }
@@ -29,6 +30,10 @@ export const ApplicationProvider = (props:any) => {
         return "";
     };
 
+    const getUserIdAsNumber = ():number =>{
+        return parseInt(getUserId());
+    };
+
     const getLoggedInUser = ():UserModel =>{
         return UserService.getUserById(getUserId())
     };
@@ -41,6 +46,7 @@ export const ApplicationProvider = (props:any) => {
         username:username,
         setUserName:setUserName,
         getUserId:getUserId,
+        getUserIdAsNumber:getUserIdAsNumber,
         getLoggedInUser:getLoggedInUser,
         getLoggedInUserName:getLoggedInUserName
     };

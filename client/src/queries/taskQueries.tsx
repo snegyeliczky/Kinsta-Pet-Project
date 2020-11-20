@@ -41,4 +41,18 @@ const mutateTaskOwner = gql`
     
 `;
 
-export {getTaskForUserStory, updateTaskStatus,mutateTaskQuery,mutateTaskOwner}
+const addNewTask = gql`
+    mutation($userStoryId:Int!,$taskTitle:String!,$taskDescription:String,$ownerId:Int,$time:String){
+        addNewTask(
+            userStoryId:$userStoryId,
+            taskTitle:$taskTitle,
+            taskDescription:$taskDescription, 
+            ownerId:$ownerId
+            time:$time){
+                id,
+                title
+            }
+    }
+`
+
+export {getTaskForUserStory, updateTaskStatus,mutateTaskQuery,mutateTaskOwner,addNewTask}

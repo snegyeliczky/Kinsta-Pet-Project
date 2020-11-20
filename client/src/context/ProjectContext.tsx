@@ -27,17 +27,15 @@ export const ProjectProvider = (props:any) => {
 
     const loadParticipantUsersById= async (id:string)=> {
         let {data} = await refetch({id:parseInt(id)});
-        console.log(data.project.participants);
         setParticipants(data.project.participants);
-
     };
 
     const getUser = (userId: string): UserModel | undefined => {
         let user = participants.find(user =>{
-            return user.id.toString()===userId
+            return user.id===userId
         });
         if(user)return user;
-        let otherUser = UserService.getUserById(userId);
+        let otherUser = UserService.getUserById(userId); // chang with a query from backend
         participants.push(otherUser);
         return otherUser;
     };
