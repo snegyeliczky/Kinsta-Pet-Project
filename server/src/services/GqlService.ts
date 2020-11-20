@@ -3,8 +3,6 @@ import UserStory from "../model/UserStory";
 import Task from "../model/Task";
 import Project from "../model/Project";
 import Company from "../model/Company";
-import ParticipateInvite from "../model/ParticipateInvite";
-import {userInfo} from "os";
 import {MySqlService} from "./MySqlService";
 import {GqlUtil} from "../util/GqlUtil";
 
@@ -49,10 +47,11 @@ export const GqlService = {
     },
 
     updateUserStory: async (ownerId: number, userStory: string,
-                            userStoryId: number) => {
+                            userStoryId: number, businessValue:number) => {
         await UserStory.relatedQuery("owner").for(userStoryId).relate(ownerId);
         await UserStory.query().findById(userStoryId).patch({
             userStory: userStory,
+            businessValue:businessValue
         });
         return UserStory.query().findById(userStoryId);
     },
