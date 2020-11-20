@@ -7,32 +7,39 @@ import {Collapse} from "antd";
 import CollapsePanel from "antd/es/collapse/CollapsePanel";
 import {ProjectTitleContainer, UserStoryStyleComponent} from "../assets/styledComponents/styledComponents";
 import UserStory from "../components/UserStory";
-import UserStoryService from "../localServices/UserStoryService";
 import TaskTable from "../components/TaskTable";
 import ProjectContext from "../context/ProjectContext";
+import {useQuery} from "@apollo/client";
+import {getUserStories} from "../queries/projectQueries";
+import {UserStoryModel} from "../interfaces/UserStoryModel";
 
 const ProjectPage = () => {
 
-    const projectContext=useContext(ProjectContext);
+    const projectContext = useContext(ProjectContext);
     const {id} = useParams();
-    const [userStories, setUserStories] = useState(UserStoryService.getUserStoresByProjectId(parseInt(id)));
     const [sortDir, setSortDir] = useState(true);
+    const {loading, error, data} = useQuery(getUserStories, {
+        variables: {
+            id: parseInt(id)
+        }
+    });
 
-
-    useEffect(()=>{
+    useEffect(() => {
         projectContext.loadParticipantUsersById(id);
-    },[id]);
+    }, [id]);
 
+    const sortByBusinessValue = () => {
+        //logic
 
-    const sortByUserBusinessValueStory = () => {
+        /*
         let userStoryModels = userStories.sort((a, b) => {
             if (sortDir) return (a.businessValue > b.businessValue) ? -1 : 1;
             return (a.businessValue > b.businessValue) ? 1 : -1
         });
         setSortDir(!sortDir);
         setUserStories([...userStoryModels])
+         */
     };
-
 
     const getProjectData = () => {
         let project = ProjectService.getProject(parseInt(id));
@@ -50,21 +57,30 @@ const ProjectPage = () => {
 
 
     const removeUSerStoryById = (storyId: number) => {
+        /*
         let userStories = UserStoryService.removeUserStory(storyId);
         setUserStories(userStories);
+
+         */
     };
 
-
-    const getUserStores = () => {
-        return (<Collapse>{userStories.map(userStory => {
+    const renderUserStories = (storyList: UserStoryModel[]) => {
+        return (<Collapse>{storyList.map((userStory: UserStoryModel) => {
             return (
                 <CollapsePanel key={userStory.id}
                                header={<UserStory UserStory={userStory} removeUserStory={removeUSerStoryById}/>}>
-                    <TaskTable userStory={userStory} />
+                    <TaskTable userStory={userStory}/>
                 </CollapsePanel>
             )
         })}
         </Collapse>)
+    };
+
+    const loadUserStories = () => {
+        if (loading) return <div>Loading...</div>;
+        if (error) return <div>Error van</div>;
+        let storyList = data.project.userStories;
+        return renderUserStories(storyList);
     };
 
 
@@ -75,18 +91,18 @@ const ProjectPage = () => {
             </div>
 
             <div className={"userStory-container"}>
-                <NewUserStoryModal projectId={parseInt(id)} setTasks={setUserStories} participants={projectContext.participants}/>
+                <NewUserStoryModal projectId={parseInt(id)} participants={projectContext.participants}/>
                 <UserStoryStyleComponent id={"userStory-names"} className={"userStory-component"} hover={false}>
                     <div className={"userStory-id UserStory-part"}>Story ID</div>
                     <div className={"userStory-userStory UserStory-part userStory-title"}>User Story</div>
                     <div className={"userStory-businessValue-title UserStory-part"} onClick={
-                        sortByUserBusinessValueStory
+                        sortByBusinessValue
                     }>Business value
                     </div>
                     <div className={"userStory-ownerId UserStory-part"}>Owner</div>
                     <div className={"userStory-estimation UserStory-part"}>Estimation Avg. (Story Point)</div>
                 </UserStoryStyleComponent>
-                {getUserStores()}
+                {loadUserStories()}
             </div>
         </div>
     );

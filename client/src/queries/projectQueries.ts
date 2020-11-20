@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import {gql} from '@apollo/client';
 
 const getProjectParticipants = gql`
     query($id:ID!){
@@ -13,4 +13,28 @@ const getProjectParticipants = gql`
     }
 `;
 
-export {getProjectParticipants}
+const getUserStories = gql`
+    query ($id:ID!){
+        project(id:$id){
+            userStories{
+                id,
+                userStory,
+                project{id},
+                status,
+                businessValue,
+                owner{
+                    id,
+                    firstName
+                },
+                estimatedUsers{
+                    owner{
+                        id,
+                        firstName
+                    },
+                    estimation}
+            }
+        }
+    }
+`
+
+export {getProjectParticipants,getUserStories}

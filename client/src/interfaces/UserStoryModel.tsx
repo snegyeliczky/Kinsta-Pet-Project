@@ -1,10 +1,13 @@
+import {UserEstimation} from "./UserEstimation";
+import {UserModel} from "./UserModel";
+import {Project} from "./Project";
+
 export interface UserStoryModel {
     id:number,
-    projectId:number,
     userStory:string,
     businessValue:number,
-    estimation:number,
-    ownerId:string|null,
-    status:boolean
-    estimatedUsers:{[key:string]:number}
+    status:boolean,
+    estimatedUsers:UserEstimation[]|null,
+    owner:UserModel,
+    project:Project,
 }
