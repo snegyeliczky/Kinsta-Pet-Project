@@ -8,7 +8,7 @@ import {ApplicationContext} from "../context/ApplicationContext";
 import UserDropdown from './userDropdown';
 import ProjectContext from "../context/ProjectContext";
 import {useMutation} from "@apollo/client";
-import {getTaskForUserStory, mutateTaskOwner, mutateTaskQuery} from "../queries/taskQueries";
+import {getTaskForUserStory, mutateTaskOwner, mutateTaskQuery,deleteTaskMutation} from "../queries/taskQueries";
 
 type props = {
     Task: TaskModel,
@@ -26,9 +26,16 @@ const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready}) => 
     const [updatedTask, updateTask] = useState({...Task});
     const [mutateTask] = useMutation(mutateTaskQuery);
     const [changeOwner] = useMutation(mutateTaskOwner);
+    const [deleteTask] = useMutation(deleteTaskMutation);
 
 
     const removeTaskAndCloseEditing = () => {
+        deleteTask({
+            variables:{
+                taskId:Task.id
+            },
+            refetchQueries:[{query:getTaskForUserStory, variables:{id:Task.userStory.id}}]
+        });
         setEdit(false);
         removeTask(Task.id);
     };

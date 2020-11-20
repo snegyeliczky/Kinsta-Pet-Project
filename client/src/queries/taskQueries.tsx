@@ -53,6 +53,12 @@ const addNewTask = gql`
                 title
             }
     }
+`;
+
+const deleteTaskMutation= gql`
+    mutation ($taskId:Int){
+        deleteTask(taskId:$taskId)
+    }
 `
 
-export {getTaskForUserStory, updateTaskStatus,mutateTaskQuery,mutateTaskOwner,addNewTask}
+export {getTaskForUserStory, updateTaskStatus,mutateTaskQuery,mutateTaskOwner,addNewTask,deleteTaskMutation}
