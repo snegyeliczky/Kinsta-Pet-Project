@@ -4,7 +4,7 @@ import {UserModel} from "../interfaces/UserModel";
 const UserList:UserModel[] = [];
 
 let user1:UserModel = {
-    id:"d448b8bb-3df5-4683-9507-3648e6d98b67",
+    id:"1",
     firstName:"Sándi",
     lastName:"Negyó",
     email:"sandor.negyeliczky@gmail.com",
@@ -13,7 +13,7 @@ let user1:UserModel = {
 UserList.push(user1);
 
 let user2:UserModel = {
-    id:"6f0050a8-f799-49ad-b71d-9372744ce063",
+    id:"2",
     firstName:"Béla",
     lastName:"Kovács",
     email:"b.k@gmail.com",
@@ -22,7 +22,7 @@ let user2:UserModel = {
 UserList.push(user2);
 
 let user3:UserModel = {
-    id:"b581a269-5e24-4079-82a6-16a5854a9bdc",
+    id:"3",
     firstName:"Mari",
     lastName:"Faragó",
     email:"f.m@gmail.com",

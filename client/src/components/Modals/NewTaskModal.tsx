@@ -1,42 +1,45 @@
-import React, {Dispatch, SetStateAction, useContext, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Button, Input, Modal,message} from "antd";
 import {ModalContainer} from "../../assets/styledComponents/styledComponents";
 import {PlusOutlined, ProjectOutlined} from '@ant-design/icons';
-import {TaskModel} from "../../interfaces/TaskModel";
-import TaskService from "../../services/TaskService";
 import UserDropdown from "../userDropdown";
 import ProjectContext from "../../context/ProjectContext";
 import {ApplicationContext} from "../../context/ApplicationContext";
+import {useMutation} from "@apollo/client";
+import {addNewTask, getTaskForUserStory} from "../../queries/taskQueries";
 
 type Props = {
     UserStoryId: number
-    setTasks: Dispatch<SetStateAction<TaskModel[]>>
 }
 
-const NewTaskModal: React.FC<Props> = ({UserStoryId, setTasks}) => {
+const NewTaskModal: React.FC<Props> = ({UserStoryId}) => {
 
     const appContext = useContext(ApplicationContext);
     const projectContext = useContext(ProjectContext);
     const [visible, setVisible] = useState(false);
     const [taskTitle, setTaskTitle] = useState("");
     const [taskDescription, setTaskDescription] = useState("");
-    const [OwnerId, setOwnerId] = useState<string | null>(null);
-    const [time, setTime] = useState<string>();
+    const [ownerId, setOwnerId] = useState<number | null>(appContext.getUserIdAsNumber());
+    const [time, setTime] = useState<string>("00:00");
+    const [addNewTaskMutation] = useMutation(addNewTask)
 
     function showModal(event: React.MouseEvent<HTMLElement>) {
         setVisible(true)
     }
 
-    function creatNewTask(): TaskModel {
-        return {
-            id: "",
-            userStoryId: UserStoryId,
-            title: taskTitle,
-            description: taskDescription,
-            ownerId: OwnerId,
-            time: time,
-            ready: false
-        }
+    function saveNewTask() {
+        console.log(UserStoryId,taskTitle,taskDescription,ownerId,time);
+        addNewTaskMutation({
+            variables:{
+                userStoryId:UserStoryId,
+                taskTitle:taskTitle,
+                taskDescription:taskDescription,
+                ownerId:ownerId,
+                time:time
+            },
+            refetchQueries:[{query:getTaskForUserStory, variables:{id:UserStoryId}}]
+        })
+
     }
 
     function handleCancel(e: React.MouseEvent<HTMLElement>) {
@@ -45,9 +48,7 @@ const NewTaskModal: React.FC<Props> = ({UserStoryId, setTasks}) => {
 
     function handleSave(e: React.MouseEvent<HTMLElement>) {
         if (taskTitle.length>2) {
-            let newTask = creatNewTask();
-            let tasks = TaskService.saveNewTask(newTask);
-            setTasks(tasks);
+            saveNewTask();
             setVisible(false);
         }else message.error("Task title must be minimum 3 character long!",5)
     }

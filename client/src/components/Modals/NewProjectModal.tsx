@@ -1,7 +1,7 @@
 import React, {Dispatch, SetStateAction, useContext, useState} from 'react';
 import {Modal, Button, Input} from 'antd';
 import {PlusOutlined, ProjectOutlined} from '@ant-design/icons';
-import ProjectService from "../../services/ProjectService";
+import ProjectService from "../../localServices/ProjectService";
 import {useHistory} from "react-router-dom";
 import {Project} from "../../interfaces/Project";
 import {ModalContainer} from "../../assets/styledComponents/styledComponents";
