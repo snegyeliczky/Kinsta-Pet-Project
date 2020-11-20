@@ -26,8 +26,8 @@ type Mutation{
     addNewUser(newFirstName:String!,newLastName:String!,email:String!,password:String!):User!
     addNewCompany(userId:Int!,CompanyName:String!):Company!
     addNewProject(userId:Int,companyId:Int!,projectName:String):Project!
-    addNewUserStory(userId:Int,projectId:Int!,userStory:String):UserStory!
-    addNewTask(userStoryId:Int!,taskTitle:String!,taskDescription:String,ownerId:Int):Task!
+    addNewUserStory(userId:Int,projectId:Int!,userStory:String,businessValue:Int):UserStory!
+    addNewTask(userStoryId:Int!,taskTitle:String!,taskDescription:String,ownerId:Int,time:String):Task!
 
 
     addUserToCompany(userId:Int,companyId:Int):String
@@ -43,7 +43,7 @@ type Mutation{
 
     updateCompany(companyId:Int, projectName:String):Company!
     updateProject(projectId:Int, projectName:String):Project!
-    updateUserStory(ownerId:Int,userStory:String, userStoryId:Int):UserStory!
+    updateUserStory(ownerId:Int,userStory:String, userStoryId:Int,businessValue:Int):UserStory!
     updateTaskStatus(taskId:Int,taskStatus:Boolean):UserStory
     updateTask( taskId:Int, title:String, description: String, time:String):Task!
 

@@ -111,7 +111,8 @@ export const MySqlService = {
                 ownerId: 1,
                 name: 'New test project'
             }
-        } if (inviteId===undefined) {
+        }
+        if (inviteId === undefined) {
             throw new TypeError("Invitation doesn't exist")
         }
     },
