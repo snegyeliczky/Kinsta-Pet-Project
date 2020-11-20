@@ -3,7 +3,7 @@ import {ApplicationContext} from "../context/ApplicationContext";
 import CompanyComponent from "../components/CompanyComponent";
 import "../../src/assets/MainStyle.css"
 import {Collapse} from 'antd';
-import CompanyService from "../services/CompanyService";
+import CompanyService from "../localServices/CompanyService";
 import CompanyHeader from "../components/CompanyHeader";
 
 

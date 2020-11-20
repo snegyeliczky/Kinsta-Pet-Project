@@ -7,7 +7,7 @@ import {UserModel} from "../interfaces/UserModel";
 type props = {
     userData:UserModel[],
     onChange:Function,
-    base:string
+    base:string|undefined
 }
 
 
@@ -16,12 +16,12 @@ const UserDropdown:React.FC<props> = ({userData,onChange,base}) => {
     const [OwnerUser,setUser]= useState(base);
 
 
+
     const onClick = (key:string, name:string) => {
         setUser(name);
         message.info(`Owner changed to ${name}`);
         onChange(key)
     };
-
     const menu = (
         <Menu >
             <Menu.Item key={"0"} onClick={(e)=>onClick('',"no owner")}> ---</Menu.Item>

@@ -1,12 +1,10 @@
 import React, {Dispatch, SetStateAction, useContext} from 'react';
-import { UserStoryStyleComponent} from "../assets/styledComponents/styledComponents";
+import {UserStoryStyleComponent} from "../assets/styledComponents/styledComponents";
 import {UserStoryModel} from "../interfaces/UserStoryModel";
 import {SettingOutlined, DeleteOutlined} from '@ant-design/icons';
 import {Input} from "antd";
-import UserStoryService from "../services/UserStoryService";
 import AlertModal from "./Modals/AlertModal";
 import EstimationModal from "./Modals/EstimationModal";
-import {ApplicationContext} from "../context/ApplicationContext";
 import UserDropdown from "./userDropdown";
 import ProjectContext from "../context/ProjectContext";
 
@@ -21,7 +19,6 @@ type Props = {
 
 const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory, removeUserStory}) => {
 
-    const appContext = useContext(ApplicationContext);
     const projectContext = useContext(ProjectContext);
     const editedUserStory = {...userStory};
 
@@ -37,21 +34,19 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
     };
 
     const EditUserStoryOwner = (owner: string) => {
-        editedUserStory.ownerId = owner;
+
 
     };
 
     const EditUserStoryEstimation = (point: number) => {
-        let userId = appContext.getUserId();
-        userStory.estimatedUsers[userId]=point;
-        setUserStory(userStory);
+
     };
 
     function handleKeyBoard(event: React.KeyboardEvent<HTMLDivElement>) {
         if (event.key === 'Enter') {
             event.preventDefault();
             setUserStory(editedUserStory);
-            UserStoryService.updateUserStory(userStory);
+            //UserStoryService.updateUserStory(userStory);
             setEdit(false);
         }
         if (event.key === 'Escape') {
@@ -61,14 +56,15 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
     }
 
     function handleStopEditing() {
-        UserStoryService.updateUserStory(editedUserStory);
+        //UserStoryService.updateUserStory(editedUserStory);
         setUserStory(editedUserStory);
         setEdit(false)
     }
 
 
     return (
-        <UserStoryStyleComponent onClick={event => event.stopPropagation()} onKeyDown={event => handleKeyBoard(event)} hover={true}>
+        <UserStoryStyleComponent onClick={event => event.stopPropagation()} onKeyDown={event => handleKeyBoard(event)}
+                                 hover={true}>
             <div className={"userStory-id UserStory-part"}>
                 {userStory.id}
             </div>
@@ -84,11 +80,12 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
                        }}/>
             </div>
             <div className={"userStory-ownerId UserStory-part"}>
-               <UserDropdown userData={projectContext.participants} onChange={EditUserStoryOwner} base={projectContext.getUserName(userStory.ownerId)}/>
+                <UserDropdown userData={projectContext.participants} onChange={EditUserStoryOwner}
+                              base={userStory.owner.firstName}/>
             </div>
             <div className={"userStory-estimation UserStory-part"}>
                 <EstimationModal editUserStoryEstimation={EditUserStoryEstimation}
-                                 estimatedUsers={userStory.estimatedUsers} />
+                                 estimatedUsers={userStory.estimatedUsers}/>
             </div>
             <div className={"UserStory-part"}>
 
