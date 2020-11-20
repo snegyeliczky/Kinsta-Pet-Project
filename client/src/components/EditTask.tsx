@@ -100,6 +100,18 @@ const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready}) => 
         )
     };
 
+    const showDelete = () =>{
+        if (appContext.getUserId() === updatedTask.owner?.id.toString()) {
+            return (
+                <AlertModal text={"Are you sure to delete this task ?"} buttonText={<DeleteOutlined/>}
+                            OkFunction={() => removeTaskAndCloseEditing()}/>
+
+            )
+        } else return (
+            <div></div>
+        )
+    };
+
 
     return (
         <TaskStyledComponent className={"TaskComponent"} ready={ready} onKeyDown={event => handleKeyBoard(event)}>
@@ -111,8 +123,7 @@ const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready}) => 
             <div>{editTime()}</div>
             <div><UserDropdown userData={projectContext.participants}
                                onChange={updateOwner} base={Task.owner?.firstName}/></div>
-            <AlertModal text={"Are you sure to delete this task ?"} buttonText={<DeleteOutlined/>}
-                        OkFunction={() => removeTaskAndCloseEditing()}/>
+            {showDelete()}
             <div><SettingOutlined spin={edit} onClick={handleStopEdit} className={"userStory-edit"}/></div>
         </TaskStyledComponent>
     );
