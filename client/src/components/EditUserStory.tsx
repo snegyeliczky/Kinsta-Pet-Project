@@ -9,7 +9,6 @@ import UserDropdown from "./userDropdown";
 import ProjectContext from "../context/ProjectContext";
 import {useMutation} from "@apollo/client";
 import {editUserStoryQuery, updateUserStoryUser} from "../queries/userStoryQueries";
-import {getUserStories} from "../queries/projectQueries";
 
 type Props = {
     userStory: UserStoryModel,
@@ -46,7 +45,6 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
             }
         });
         editedUserStory.owner = fetchResult.data.addOwnerToUserStory;
-        console.log(editedUserStory.owner)
     };
 
     const EditUserStoryEstimation = (point: number) => {
@@ -54,14 +52,13 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
     };
 
     const saveUserStoryToDb = async () =>{
-        console.log(editedUserStory)
         let editedUSFromDb =  await mutateUserStory({variables:{
                 userStoryId:editedUserStory.id,
                 businessValue:editedUserStory.businessValue,
                 userStory:editedUserStory.userStory
             }});
         return editedUSFromDb.data.updateUserStory
-    }
+    };
 
     async function handleKeyBoard(event: React.KeyboardEvent<HTMLDivElement>) {
         if (event.key === 'Enter') {

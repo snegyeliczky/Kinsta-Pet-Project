@@ -1,54 +1,40 @@
 import React, {createContext, Dispatch, SetStateAction, useState} from 'react';
 import {useHistory} from "react-router-dom";
-import {UserModel} from "../interfaces/UserModel";
-import UserService from "../localServices/userService";
 
 
-interface applicationContextProps{
-    username:string,
-    setUserName:Dispatch<SetStateAction<string>>,
-    getUserId: ()=>string;
-    getUserIdAsNumber: ()=>number;
-    getLoggedInUser: ()=>UserModel;
-    getLoggedInUserName: ()=>string;
+interface applicationContextProps {
+    username: string,
+    setUserName: Dispatch<SetStateAction<string>>,
+    getUserId: () => string;
+    getUserIdAsNumber: () => number;
+
 }
 
 
-export const ApplicationContext = createContext({username:""} as applicationContextProps);
+export const ApplicationContext = createContext({username: ""} as applicationContextProps);
 
 
-export const ApplicationProvider = (props:any) => {
+export const ApplicationProvider = (props: any) => {
 
     const history = useHistory();
-    const [username,setUserName] = useState<string>("");
+    const [username, setUserName] = useState<string>("");
 
-
-    const getUserId=():string=>{
+    const getUserId = (): string => {
         let userId = localStorage.getItem("userId");
         if (userId) return userId;
         history.push("/auth");
         return "";
     };
 
-    const getUserIdAsNumber = ():number =>{
+    const getUserIdAsNumber = (): number => {
         return parseInt(getUserId());
     };
 
-    const getLoggedInUser = ():UserModel =>{
-        return UserService.getUserById(getUserId())
-    };
-
-    const getLoggedInUserName = ():string =>{
-        return getLoggedInUser().firstName;
-    };
-
-    const sampleAppContext: applicationContextProps ={
-        username:username,
-        setUserName:setUserName,
-        getUserId:getUserId,
-        getUserIdAsNumber:getUserIdAsNumber,
-        getLoggedInUser:getLoggedInUser,
-        getLoggedInUserName:getLoggedInUserName
+    const sampleAppContext: applicationContextProps = {
+        username: username,
+        setUserName: setUserName,
+        getUserId: getUserId,
+        getUserIdAsNumber: getUserIdAsNumber,
     };
 
 
