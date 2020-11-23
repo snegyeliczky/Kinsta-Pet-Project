@@ -7,6 +7,7 @@ import UserEstimation from "../model/UserEstimation";
 import {GqlService} from "../services/GqlService";
 import {GqlUtil} from "../util/GqlUtil";
 import ParticipateInvite from "../model/ParticipateInvite";
+import {MySqlService} from "../services/MySqlService";
 
 export const resolvers = {
     Query: {
@@ -125,7 +126,7 @@ export const resolvers = {
             return Project.relatedQuery('owner').for(args.projectId).relate(args.userId);
         },
         addOwnerToUserStory: (parent: UserStory, args: { userId: number, userStoryId: number }) => {
-            return UserStory.relatedQuery('owner').for(args.userStoryId).relate(args.userId);
+            return MySqlService.addOwnerToUserStory(args.userId,args.userStoryId);
         },
         addOwnerToTask: (parent: Task, args: { userId: number, taskId: number }) => {
             return Task.relatedQuery('owner').for(args.taskId).relate(args.userId);
@@ -156,10 +157,10 @@ export const resolvers = {
         updateUserStory: async (
             parent: UserStory,
             args: {
-                ownerId: number; userStory: string;
+                userStory: string;
                 userStoryId: number; businessValue:number
             }) => {
-            return GqlService.updateUserStory(args.ownerId, args.userStory, args.userStoryId, args.businessValue);
+            return GqlService.updateUserStory( args.userStory, args.userStoryId, args.businessValue);
         },
 
         // update the task status and return the userStory status

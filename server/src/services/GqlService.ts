@@ -46,9 +46,8 @@ export const GqlService = {
         return MySqlService.updateUserStory(Story.userStoryId, {status: Story.status});
     },
 
-    updateUserStory: async (ownerId: number, userStory: string,
+    updateUserStory: async (userStory: string,
                             userStoryId: number, businessValue:number) => {
-        await UserStory.relatedQuery("owner").for(userStoryId).relate(ownerId);
         await UserStory.query().findById(userStoryId).patch({
             userStory: userStory,
             businessValue:businessValue

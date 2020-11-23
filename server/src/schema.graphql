@@ -32,7 +32,7 @@ type Mutation{
 
     addUserToCompany(userId:Int,companyId:Int):String
     addOwnerToProject(userId:Int,projectId:Int):Int
-    addOwnerToUserStory(userId:Int,userStoryId:Int):Int
+    addOwnerToUserStory(userId:Int,userStoryId:Int):User!
     addOwnerToTask(userId:Int,taskId:Int):Int
 
     deleteUser(userId:Int):Int
@@ -43,7 +43,7 @@ type Mutation{
 
     updateCompany(companyId:Int, projectName:String):Company!
     updateProject(projectId:Int, projectName:String):Project!
-    updateUserStory(ownerId:Int,userStory:String, userStoryId:Int,businessValue:Int):UserStory!
+    updateUserStory(userStory:String, userStoryId:Int,businessValue:Int):UserStory!
     updateTaskStatus(taskId:Int,taskStatus:Boolean):UserStory
     updateTask( taskId:Int, title:String, description: String, time:String):Task!
 
