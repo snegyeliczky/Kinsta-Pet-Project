@@ -28,7 +28,7 @@ export const GqlUtil = {
     },
 
     unFinishedTasksForUser: async (userId: number) => {
-        let userTasks = await MySqlService.getTasksForUser(userId)
+        let userTasks = await MySqlService.getTasksForUser(userId);
         return userTasks.filter(task => {
             if (!task.ready) {
                 return task;

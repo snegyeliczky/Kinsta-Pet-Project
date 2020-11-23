@@ -61,7 +61,11 @@ export const MySqlService = {
 
     deleteInvite: async (inviteId: number) => {
         await ParticipateInvite.query().deleteById(inviteId);
-    }
+    },
 
+    addOwnerToUserStory: async (userId:number, userStoryId: number) =>{
+        await UserStory.relatedQuery('owner').for(userStoryId).relate(userId);
+        return User.query().findById(userId);
+    },
 
 }

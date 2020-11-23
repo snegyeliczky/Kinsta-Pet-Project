@@ -7,6 +7,7 @@ import UserEstimation from "../model/UserEstimation";
 import {GqlService} from "../services/GqlService";
 import {GqlUtil} from "../util/GqlUtil";
 import ParticipateInvite from "../model/ParticipateInvite";
+import {MySqlService} from "../services/MySqlService";
 
 export const resolvers = {
     Query: {
@@ -30,8 +31,8 @@ export const resolvers = {
         project: (parent: Project, args: { id: number }) => {
             return Project.query().findById(args.id);
         },
-        projectsForCompanyByUser:async (parent: Project,args:{userId:number,companyId:number})=>{
-            return GqlService.getProjectForUserByCompanyId(args.userId,args.companyId);
+        projectsForCompanyByUser: async (parent: Project, args: { userId: number, companyId: number }) => {
+            return GqlService.getProjectForUserByCompanyId(args.userId, args.companyId);
         },
 
         userStories: () => UserStory.query(),
@@ -49,7 +50,7 @@ export const resolvers = {
         unFinishedTasks: (parent: Task, args: { userId: number }) => {
             return GqlUtil.unFinishedTasksForUser(args.userId);
         },
-        geTasksDistributionForProject:(parent:Task, args:{projectId:number})=>{
+        geTasksDistributionForProject: (parent: Task, args: { projectId: number }) => {
             return GqlUtil.geTasksDistributionForProject(args.projectId);
         }
     },
@@ -92,11 +93,11 @@ export const resolvers = {
         },
         addNewUserStory: async (
             parent: UserStory,
-            args: { userId: number; projectId: number; userStory: string }
+            args: { userId: number; projectId: number; userStory: string, businessValue:number }
         ) => {
             let newUserStory = await Project.relatedQuery("userStories")
                 .for(args.projectId)
-                .insert({userStory: args.userStory, status: false});
+                .insert({userStory: args.userStory, status: false, businessValue:args.businessValue});
             console.log(newUserStory);
             await newUserStory.$relatedQuery("owner").relate(args.userId);
             console.log(newUserStory);
@@ -106,10 +107,11 @@ export const resolvers = {
             parent: Task,
             args: {
                 userStoryId: number, taskTitle: string,
-                taskDescription: string, ownerId: number
+                taskDescription: string, ownerId: number,
+                time: string
             }) => {
             let newTask = await UserStory.relatedQuery('tasks').for(args.userStoryId)
-                .insert({title: args.taskTitle, description: args.taskDescription, ready: false});
+                .insert({title: args.taskTitle, description: args.taskDescription, ready: false, time: args.time});
             if (args.ownerId) await Task.relatedQuery('owner').for(newTask.id).relate(args.ownerId);
             return newTask
         },
@@ -118,13 +120,13 @@ export const resolvers = {
             parent: Company,
             args: { userId: number; companyId: number }
         ) => {
-            return GqlService.addUserToCompany(args.userId,args.companyId);
+            return GqlService.addUserToCompany(args.userId, args.companyId);
         },
         addOwnerToProject: (parent: Project, args: { userId: number, projectId: number }) => {
             return Project.relatedQuery('owner').for(args.projectId).relate(args.userId);
         },
         addOwnerToUserStory: (parent: UserStory, args: { userId: number, userStoryId: number }) => {
-            return UserStory.relatedQuery('owner').for(args.userStoryId).relate(args.userId);
+            return MySqlService.addOwnerToUserStory(args.userId,args.userStoryId);
         },
         addOwnerToTask: (parent: Task, args: { userId: number, taskId: number }) => {
             return Task.relatedQuery('owner').for(args.taskId).relate(args.userId);
@@ -155,10 +157,10 @@ export const resolvers = {
         updateUserStory: async (
             parent: UserStory,
             args: {
-                ownerId: number; userStory: string;
-                userStoryId: number;
+                userStory: string;
+                userStoryId: number; businessValue:number
             }) => {
-            return GqlService.updateUserStory(args.ownerId, args.userStory, args.userStoryId);
+            return GqlService.updateUserStory( args.userStory, args.userStoryId, args.businessValue);
         },
 
         // update the task status and return the userStory status
@@ -196,16 +198,16 @@ export const resolvers = {
         companies: (parent: User) => {
             return User.relatedQuery("companies").for(parent.id);
         },
-        participate:(parent:User) =>{
+        participate: (parent: User) => {
             return User.relatedQuery('participate').for(parent.id)
         },
         userStoryEstimations: (parent: User) => {
             return User.relatedQuery('userStoryEstimations').for(parent.id)
         },
-        invites: (parent:User) =>{
+        invites: (parent: User) => {
             return User.relatedQuery('receivedInvites').for(parent.id)
         },
-        sentInviter: (parent:User) =>{
+        sentInviter: (parent: User) => {
             return User.relatedQuery('sandedInvites').for(parent.id)
         }
     },
@@ -291,10 +293,10 @@ export const resolvers = {
     ParticipateInvite: {
         id: (parent: ParticipateInvite) => parent.id,
         sander: async (parent: ParticipateInvite) => {
-             let su = await ParticipateInvite.relatedQuery('sander').for(parent.id);
-             return su[0];
+            let su = await ParticipateInvite.relatedQuery('sander').for(parent.id);
+            return su[0];
         },
-        receiver:async (parent: ParticipateInvite) => {
+        receiver: async (parent: ParticipateInvite) => {
             let ru = await ParticipateInvite.relatedQuery('receiver').for(parent.id);
             return ru[0]
         },
@@ -303,8 +305,8 @@ export const resolvers = {
             return pl[0];
         }
     },
-    TaskDistribution:{
-        finishedTasks:(parent:{finishedTasks:number, allTasks:number }) => parent.finishedTasks,
-        allTasks:(parent:{finishedTasks:number, allTasks:number }) => parent.allTasks
+    TaskDistribution: {
+        finishedTasks: (parent: { finishedTasks: number, allTasks: number }) => parent.finishedTasks,
+        allTasks: (parent: { finishedTasks: number, allTasks: number }) => parent.allTasks
     }
 };
