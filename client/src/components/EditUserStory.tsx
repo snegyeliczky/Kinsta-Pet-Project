@@ -7,6 +7,9 @@ import AlertModal from "./Modals/AlertModal";
 import EstimationModal from "./Modals/EstimationModal";
 import UserDropdown from "./userDropdown";
 import ProjectContext from "../context/ProjectContext";
+import {useMutation} from "@apollo/client";
+import {editUserStoryQuery, updateUserStoryUser} from "../queries/userStoryQueries";
+import {getUserStories} from "../queries/projectQueries";
 
 type Props = {
     userStory: UserStoryModel,
@@ -21,6 +24,8 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
 
     const projectContext = useContext(ProjectContext);
     const editedUserStory = {...userStory};
+    const [mutateUserStory] = useMutation(editUserStoryQuery);
+    const [mutateUser] = useMutation(updateUserStoryUser);
 
 
     const EditUserStory = (story: string) => {
@@ -33,20 +38,36 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
 
     };
 
-    const EditUserStoryOwner = (owner: string) => {
-
-
+    const EditUserStoryOwner = async (owner: string) => {
+        let fetchResult = await mutateUser({
+            variables:{
+                userStoryId: userStory.id,
+                userId: owner
+            }
+        });
+        editedUserStory.owner = fetchResult.data.addOwnerToUserStory;
+        console.log(editedUserStory.owner)
     };
 
     const EditUserStoryEstimation = (point: number) => {
 
     };
 
-    function handleKeyBoard(event: React.KeyboardEvent<HTMLDivElement>) {
+    const saveUserStoryToDb = async () =>{
+        console.log(editedUserStory)
+        let editedUSFromDb =  await mutateUserStory({variables:{
+                userStoryId:editedUserStory.id,
+                businessValue:editedUserStory.businessValue,
+                userStory:editedUserStory.userStory
+            }});
+        return editedUSFromDb.data.updateUserStory
+    }
+
+    async function handleKeyBoard(event: React.KeyboardEvent<HTMLDivElement>) {
         if (event.key === 'Enter') {
             event.preventDefault();
-            setUserStory(editedUserStory);
-            //UserStoryService.updateUserStory(userStory);
+            let updatedUS = await saveUserStoryToDb();
+            setUserStory(updatedUS);
             setEdit(false);
         }
         if (event.key === 'Escape') {
@@ -55,9 +76,9 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
         }
     }
 
-    function handleStopEditing() {
-        //UserStoryService.updateUserStory(editedUserStory);
-        setUserStory(editedUserStory);
+    async function handleStopEditing() {
+        let updatedUS = await saveUserStoryToDb();
+        setUserStory(updatedUS);
         setEdit(false)
     }
 
