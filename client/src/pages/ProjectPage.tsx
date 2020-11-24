@@ -32,16 +32,14 @@ const ProjectPage = () => {
     }, [id]);
 
     const sortByBusinessValue = () => {
-        //logic
+        setSortDir(!sortDir)
+    };
 
-        /*
-        let userStoryModels = userStories.sort((a, b) => {
-            if (sortDir) return (a.businessValue > b.businessValue) ? -1 : 1;
+    const sortUserStories = (storyList:UserStoryModel[]) =>{
+        return storyList.sort((a,b) =>{
+            if (sortDir) return (a.businessValue>b.businessValue) ? -1 :1;
             return (a.businessValue > b.businessValue) ? 1 : -1
         });
-        setSortDir(!sortDir);
-        setUserStories([...userStoryModels])
-         */
     };
 
     const getProjectData = () => {
@@ -64,11 +62,6 @@ const ProjectPage = () => {
                 userStoryId:storyId
             }});
         await refetch();
-        /*
-        let userStories = UserStoryService.removeUserStory(storyId);
-        setUserStories(userStories);
-
-         */
     };
 
     const renderUserStories = (storyList: UserStoryModel[]) => {
@@ -87,7 +80,8 @@ const ProjectPage = () => {
         if (loading) return <div>Loading...</div>;
         if (error) return <div>Error van</div>;
         let storyList = data.project.userStories;
-        return renderUserStories(storyList);
+        let sortedStoryList = sortUserStories([...storyList]);
+        return renderUserStories(sortedStoryList);
     };
 
 
