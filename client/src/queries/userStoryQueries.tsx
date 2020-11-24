@@ -2,30 +2,30 @@ import {gql} from "@apollo/client";
 
 const editUserStoryQuery = gql`
     mutation(
-    $userStoryId:Int,
-    $businessValue:Int,
-    $userStory:String
+        $userStoryId:Int,
+        $businessValue:Int,
+        $userStory:String
     ){
-    updateUserStory(
-    userStoryId:$userStoryId,
-    businessValue:$businessValue,
-    userStory:$userStory
-    ){      id,
-        userStory,
-        project{id},
-        status,
-        businessValue,
-        owner{
-            id,
-            firstName
-        },
-        estimatedUsers{
-            id,
+        updateUserStory(
+            userStoryId:$userStoryId,
+            businessValue:$businessValue,
+            userStory:$userStory
+        ){      id,
+            userStory,
+            project{id},
+            status,
+            businessValue,
             owner{
                 id,
                 firstName
             },
-            estimation}}
+            estimatedUsers{
+                id,
+                owner{
+                    id,
+                    firstName
+                },
+                estimation}}
     }`;
 
 const updateUserStoryUser = gql`
@@ -61,4 +61,23 @@ const estimationsForUserStory = gql`
     }
 `
 
-export {editUserStoryQuery,updateUserStoryUser,estimateUserStory,estimationsForUserStory}
+const addNewUserStoryMutation = gql`
+    mutation( 
+        $userId:Int,
+        $projectId:Int!,
+        $userStory:String,
+        $businessValue:Int
+        ){
+            addNewUserStory(
+                userId:$userId,
+                projectId:$projectId,
+                userStory:$userStory,
+                businessValue:$businessValue
+            ){
+                id,
+                userStory
+        }
+    }
+`
+
+export {editUserStoryQuery, updateUserStoryUser, estimateUserStory, estimationsForUserStory, addNewUserStoryMutation}

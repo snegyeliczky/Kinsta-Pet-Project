@@ -25,21 +25,21 @@ const UserStory: React.FC<Props> = ({UserStory, removeUserStory}) => {
 
     function checkEstimation(): boolean {
         if (UserStory.estimatedUsers)
-        return UserStory.estimatedUsers?.some((estimation) => {
-            return parseInt(estimation.owner.id) === appContext.getUserIdAsNumber()
-        });
+            return UserStory.estimatedUsers?.some((estimation) => {
+                return parseInt(estimation.owner.id) === appContext.getUserIdAsNumber()
+            });
         return false
     }
 
     function getEstimatedAverage() {
         let estimatedUsers = userStory.estimatedUsers;
         if (!estimatedUsers) return 0;
-        let reduce = estimatedUsers?.reduce((re,e) =>{
-            re.sum+=e.estimation;
+        let reduce = estimatedUsers?.reduce((re, e) => {
+            re.sum += e.estimation;
             re.length++;
             return re
-        },{sum:0,length:0});
-        return (reduce.sum/reduce.length).toFixed(1);
+        }, {sum: 0, length: 0});
+        return (reduce.sum / reduce.length).toFixed(1);
     }
 
 
