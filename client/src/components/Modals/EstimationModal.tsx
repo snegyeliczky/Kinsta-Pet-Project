@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Button, Input, Modal} from "antd";
 import {EstimationUsersStyledComponent, ModalContainer} from "../../assets/styledComponents/styledComponents";
 import {ProjectOutlined} from '@ant-design/icons';
 import {UserEstimation} from "../../interfaces/UserEstimation";
+import {ApplicationContext} from "../../context/ApplicationContext";
 
 
 type Props = {
@@ -14,6 +15,7 @@ const EstimationModal: React.FC<Props> = ({editUserStoryEstimation, estimatedUse
 
     const [visible, setVisible] = useState(false);
     const [showEstimationValues, setShowEstimationValues] = useState<boolean>(false);
+    const appContext = useContext(ApplicationContext);
 
     const estimationModalFooter = (<div>
         <Button onClick={e => handleCancel(e)}> Close </Button>
@@ -23,8 +25,9 @@ const EstimationModal: React.FC<Props> = ({editUserStoryEstimation, estimatedUse
     </div>);
 
     function isEstimated() {
-        //return estimatedUsers[appContext.getUserId()] !== undefined;
-        return true
+        return estimatedUsers?.some((estimation) =>{
+            return parseInt(estimation.owner.id) === appContext.getUserIdAsNumber()
+        });
     }
 
     function showModal(event: React.MouseEvent<HTMLElement>) {

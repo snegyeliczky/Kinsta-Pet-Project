@@ -8,7 +8,8 @@ import EstimationModal from "./Modals/EstimationModal";
 import UserDropdown from "./userDropdown";
 import ProjectContext from "../context/ProjectContext";
 import {useMutation} from "@apollo/client";
-import {editUserStoryQuery, updateUserStoryUser} from "../queries/userStoryQueries";
+import {editUserStoryQuery, estimateUserStory, updateUserStoryUser} from "../queries/userStoryQueries";
+import {ApplicationContext} from "../context/ApplicationContext";
 
 type Props = {
     userStory: UserStoryModel,
@@ -22,19 +23,19 @@ type Props = {
 const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory, removeUserStory}) => {
 
     const projectContext = useContext(ProjectContext);
+    const appContext = useContext(ApplicationContext);
     const editedUserStory = {...userStory};
     const [mutateUserStory] = useMutation(editUserStoryQuery);
     const [mutateUser] = useMutation(updateUserStoryUser);
+    const [estimate] = useMutation(estimateUserStory)
 
 
     const EditUserStory = (story: string) => {
         editedUserStory.userStory = story;
-
     };
 
     const EditUserStoryValue = (value: number) => {
         editedUserStory.businessValue = value;
-
     };
 
     const EditUserStoryOwner = async (owner: string) => {
@@ -48,7 +49,13 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
     };
 
     const EditUserStoryEstimation = (point: number) => {
-
+        estimate({
+            variables:{
+                userId:appContext.getUserIdAsNumber(),
+                userStoryId:userStory.id,
+                estimation:point
+            }
+        });
     };
 
     const saveUserStoryToDb = async () =>{

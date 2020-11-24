@@ -38,4 +38,12 @@ const updateUserStoryUser = gql`
     }
 `
 
-export {editUserStoryQuery,updateUserStoryUser}
+const estimateUserStory = gql`
+    mutation($userId:Int,$userStoryId:Int,$estimation:Int){
+        estimateUserStory(userId:$userId,
+            userStoryId:$userStoryId,
+            estimation:$estimation)
+    }
+`
+
+export {editUserStoryQuery,updateUserStoryUser,estimateUserStory}
