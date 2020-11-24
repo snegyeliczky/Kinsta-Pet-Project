@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useContext} from 'react';
+import React, {Dispatch, SetStateAction, useContext, useState} from 'react';
 import {UserStoryStyleComponent} from "../assets/styledComponents/styledComponents";
 import {UserStoryModel} from "../interfaces/UserStoryModel";
 import {SettingOutlined, DeleteOutlined} from '@ant-design/icons';
@@ -7,8 +7,13 @@ import AlertModal from "./Modals/AlertModal";
 import EstimationModal from "./Modals/EstimationModal";
 import UserDropdown from "./userDropdown";
 import ProjectContext from "../context/ProjectContext";
-import {useMutation} from "@apollo/client";
-import {editUserStoryQuery, estimateUserStory, updateUserStoryUser} from "../queries/userStoryQueries";
+import {useMutation, useQuery} from "@apollo/client";
+import {
+    editUserStoryQuery,
+    estimateUserStory,
+    estimationsForUserStory,
+    updateUserStoryUser
+} from "../queries/userStoryQueries";
 import {ApplicationContext} from "../context/ApplicationContext";
 
 type Props = {
@@ -25,9 +30,11 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
     const projectContext = useContext(ProjectContext);
     const appContext = useContext(ApplicationContext);
     const editedUserStory = {...userStory};
+    const[estimations, setEstimations] = useState(userStory.estimatedUsers);
     const [mutateUserStory] = useMutation(editUserStoryQuery);
     const [mutateUser] = useMutation(updateUserStoryUser);
-    const [estimate] = useMutation(estimateUserStory)
+    const [estimate] = useMutation(estimateUserStory);
+    const {refetch} = useQuery(estimationsForUserStory,{variables:{id:userStory.id}});
 
 
     const EditUserStory = (story: string) => {
@@ -48,14 +55,16 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
         editedUserStory.owner = fetchResult.data.addOwnerToUserStory;
     };
 
-    const EditUserStoryEstimation = (point: number) => {
-        estimate({
+    const EditUserStoryEstimation = async (point: number) => {
+        await estimate({
             variables:{
                 userId:appContext.getUserIdAsNumber(),
                 userStoryId:userStory.id,
                 estimation:point
             }
         });
+        let estimations = await refetch();
+        setEstimations(estimations.data.userStory.estimatedUsers);
     };
 
     const saveUserStoryToDb = async () =>{
@@ -110,7 +119,7 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
             </div>
             <div className={"userStory-estimation UserStory-part"}>
                 <EstimationModal editUserStoryEstimation={EditUserStoryEstimation}
-                                 estimatedUsers={userStory.estimatedUsers}/>
+                                 estimatedUsers={estimations}/>
             </div>
             <div className={"UserStory-part"}>
 

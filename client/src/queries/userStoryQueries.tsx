@@ -20,6 +20,7 @@ const editUserStoryQuery = gql`
             firstName
         },
         estimatedUsers{
+            id,
             owner{
                 id,
                 firstName
@@ -46,4 +47,18 @@ const estimateUserStory = gql`
     }
 `
 
-export {editUserStoryQuery,updateUserStoryUser,estimateUserStory}
+const estimationsForUserStory = gql`
+    query($id:ID!){
+        userStory(id:$id){
+            estimatedUsers{
+                id,
+                owner{
+                    id,
+                    firstName
+                },
+                estimation}
+        }
+    }
+`
+
+export {editUserStoryQuery,updateUserStoryUser,estimateUserStory,estimationsForUserStory}

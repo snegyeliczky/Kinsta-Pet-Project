@@ -27,6 +27,7 @@ const getUserStories = gql`
                     firstName
                 },
                 estimatedUsers{
+                    id,
                     owner{
                         id,
                         firstName
