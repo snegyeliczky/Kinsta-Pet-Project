@@ -14,18 +14,18 @@ type Props = {
 const EstimationModal: React.FC<Props> = ({editUserStoryEstimation, estimatedUsers}) => {
 
     const [visible, setVisible] = useState(false);
-    const [showEstimationValues, setShowEstimationValues] = useState<boolean>(false);
     const appContext = useContext(ApplicationContext);
+    const [newEstimation, setNewEstimation] = useState<number>();
 
     const estimationModalFooter = (<div>
         <Button onClick={e => handleCancel(e)}> Close </Button>
         <Button type={"primary"} onClick={e => {
             handleOk(e)
-        }}> Save </Button>
+        }}> ok </Button>
     </div>);
 
     function isEstimated() {
-        return estimatedUsers?.some((estimation) =>{
+        return estimatedUsers?.some((estimation) => {
             return parseInt(estimation.owner.id) === appContext.getUserIdAsNumber()
         });
     }
@@ -35,7 +35,11 @@ const EstimationModal: React.FC<Props> = ({editUserStoryEstimation, estimatedUse
     }
 
     function handleOk(e: React.MouseEvent<HTMLElement>) {
-        setShowEstimationValues(!showEstimationValues);
+        if (isEstimated()) {
+            setVisible(false)
+        } else {
+            editUserStoryEstimation(newEstimation);
+        }
     }
 
     function handleCancel(e: React.MouseEvent<HTMLElement>) {
@@ -43,8 +47,12 @@ const EstimationModal: React.FC<Props> = ({editUserStoryEstimation, estimatedUse
     }
 
     function setEstimation(valueAsNumber: number) {
-        if (valueAsNumber > 0) {
-            editUserStoryEstimation(valueAsNumber);
+        if (isEstimated()) {
+            if (valueAsNumber > 0) {
+                editUserStoryEstimation(valueAsNumber);
+            } else {
+                setNewEstimation(valueAsNumber)
+            }
         }
     }
 
@@ -77,12 +85,12 @@ const EstimationModal: React.FC<Props> = ({editUserStoryEstimation, estimatedUse
                         <div className={"estimation-estimation"}>Estimation</div>
                         {
                             estimatedUsers ? estimatedUsers.map((k) => {
-                                return <>
-                                    <div className={"estimation-user"}>{k.owner.firstName}</div>
-                                    <div className={"estimation-estimation"}>{k.estimation}-SP</div>
-                                </>
-                            })
-                        :""
+                                    return <>
+                                        <div className={"estimation-user"}>{k.owner.firstName}</div>
+                                        <div className={"estimation-estimation"}>{k.estimation}-SP</div>
+                                    </>
+                                })
+                                : ""
                         }
                     </EstimationUsersStyledComponent>
                     : ""}
