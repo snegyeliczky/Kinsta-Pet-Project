@@ -45,7 +45,6 @@ const UserStory: React.FC<Props> = ({UserStory, removeUserStory}) => {
 
     return (
         <>
-
             {
                 edit ? <EditUserStory userStory={userStory} edit={edit} setEdit={setEdit}
                                       setUserStory={setUserStory} removeUserStory={removeUserStory}/>

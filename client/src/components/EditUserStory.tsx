@@ -30,7 +30,7 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
     const projectContext = useContext(ProjectContext);
     const appContext = useContext(ApplicationContext);
     const editedUserStory = {...userStory};
-    const[estimations, setEstimations] = useState(userStory.estimatedUsers);
+    const [estimations, setEstimations] = useState(userStory.estimatedUsers);
     const [mutateUserStory] = useMutation(editUserStoryQuery);
     const [mutateUser] = useMutation(updateUserStoryUser);
     const [estimate] = useMutation(estimateUserStory);
@@ -63,8 +63,11 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
                 estimation:point
             }
         });
-        let estimations = await refetch();
-        setEstimations(estimations.data.userStory.estimatedUsers);
+        let estimationObject = await refetch();
+        let estimations = estimationObject.data.userStory.estimatedUsers;
+        setEstimations(estimations);
+        editedUserStory.estimatedUsers=estimations;
+        setUserStory(editedUserStory)
     };
 
     const saveUserStoryToDb = async () =>{

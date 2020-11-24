@@ -50,9 +50,10 @@ const EstimationModal: React.FC<Props> = ({editUserStoryEstimation, estimatedUse
         if (isEstimated()) {
             if (valueAsNumber > 0) {
                 editUserStoryEstimation(valueAsNumber);
-            } else {
-                setNewEstimation(valueAsNumber)
             }
+        }
+        else {
+            setNewEstimation(valueAsNumber)
         }
     }
 
@@ -86,8 +87,8 @@ const EstimationModal: React.FC<Props> = ({editUserStoryEstimation, estimatedUse
                         {
                             estimatedUsers ? estimatedUsers.map((k) => {
                                     return <>
-                                        <div className={"estimation-user"}>{k.owner.firstName}</div>
-                                        <div className={"estimation-estimation"}>{k.estimation}-SP</div>
+                                        <div key={k.id} className={"estimation-user"}>{k.owner.firstName}</div>
+                                        <div key={k.id} className={"estimation-estimation"}>{k.estimation}-SP</div>
                                     </>
                                 })
                                 : ""
