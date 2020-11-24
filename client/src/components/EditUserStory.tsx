@@ -34,7 +34,7 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
     const [mutateUserStory] = useMutation(editUserStoryQuery);
     const [mutateUser] = useMutation(updateUserStoryUser);
     const [estimate] = useMutation(estimateUserStory);
-    const {refetch} = useQuery(estimationsForUserStory,{variables:{id:userStory.id}});
+    const {refetch} = useQuery(estimationsForUserStory, {variables: {id: userStory.id}});
 
 
     const EditUserStory = (story: string) => {
@@ -47,7 +47,7 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
 
     const EditUserStoryOwner = async (owner: string) => {
         let fetchResult = await mutateUser({
-            variables:{
+            variables: {
                 userStoryId: userStory.id,
                 userId: owner
             }
@@ -57,25 +57,27 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
 
     const EditUserStoryEstimation = async (point: number) => {
         await estimate({
-            variables:{
-                userId:appContext.getUserIdAsNumber(),
-                userStoryId:userStory.id,
-                estimation:point
+            variables: {
+                userId: appContext.getUserIdAsNumber(),
+                userStoryId: userStory.id,
+                estimation: point
             }
         });
         let estimationObject = await refetch();
         let estimations = estimationObject.data.userStory.estimatedUsers;
         setEstimations(estimations);
-        editedUserStory.estimatedUsers=estimations;
+        editedUserStory.estimatedUsers = estimations;
         setUserStory(editedUserStory)
     };
 
-    const saveUserStoryToDb = async () =>{
-        let editedUSFromDb =  await mutateUserStory({variables:{
-                userStoryId:editedUserStory.id,
-                businessValue:editedUserStory.businessValue,
-                userStory:editedUserStory.userStory
-            }});
+    const saveUserStoryToDb = async () => {
+        let editedUSFromDb = await mutateUserStory({
+            variables: {
+                userStoryId: editedUserStory.id,
+                businessValue: editedUserStory.businessValue,
+                userStory: editedUserStory.userStory
+            }
+        });
         return editedUSFromDb.data.updateUserStory
     };
 

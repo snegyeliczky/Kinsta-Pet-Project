@@ -62,22 +62,31 @@ const estimationsForUserStory = gql`
 `
 
 const addNewUserStoryMutation = gql`
-    mutation( 
+    mutation(
         $userId:Int,
         $projectId:Int!,
         $userStory:String,
         $businessValue:Int
+    ){
+        addNewUserStory(
+            userId:$userId,
+            projectId:$projectId,
+            userStory:$userStory,
+            businessValue:$businessValue
         ){
-            addNewUserStory(
-                userId:$userId,
-                projectId:$projectId,
-                userStory:$userStory,
-                businessValue:$businessValue
-            ){
-                id,
-                userStory
+            id,
+            userStory
         }
     }
 `
 
-export {editUserStoryQuery, updateUserStoryUser, estimateUserStory, estimationsForUserStory, addNewUserStoryMutation}
+const deleteUserStoryMutation = gql`
+    mutation ($userStoryId:Int){
+        deleteUserStory(userStoryId:$userStoryId)
+    }
+`
+
+export {
+    editUserStoryQuery, updateUserStoryUser, estimateUserStory, estimationsForUserStory, addNewUserStoryMutation,
+    deleteUserStoryMutation
+}

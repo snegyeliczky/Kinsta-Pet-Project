@@ -9,20 +9,23 @@ import {ProjectTitleContainer, UserStoryStyleComponent} from "../assets/styledCo
 import UserStory from "../components/UserStory";
 import TaskTable from "../components/TaskTable";
 import ProjectContext from "../context/ProjectContext";
-import {useQuery} from "@apollo/client";
+import {useMutation, useQuery} from "@apollo/client";
 import {getUserStories} from "../queries/projectQueries";
 import {UserStoryModel} from "../interfaces/UserStoryModel";
+import {deleteUserStoryMutation} from "../queries/userStoryQueries";
 
 const ProjectPage = () => {
 
     const projectContext = useContext(ProjectContext);
     const {id} = useParams();
     const [sortDir, setSortDir] = useState(true);
-    const {loading, error, data} = useQuery(getUserStories, {
+    const {loading, error, data, refetch} = useQuery(getUserStories, {
         variables: {
             id: parseInt(id)
         }
     });
+
+    const [deleteUserStory] = useMutation(deleteUserStoryMutation)
 
     useEffect(() => {
         projectContext.loadParticipantUsersById(id);
@@ -56,7 +59,11 @@ const ProjectPage = () => {
     };
 
 
-    const removeUSerStoryById = (storyId: number) => {
+    const removeUSerStoryById = async (storyId: number) => {
+       await deleteUserStory({variables:{
+                userStoryId:storyId
+            }});
+        await refetch();
         /*
         let userStories = UserStoryService.removeUserStory(storyId);
         setUserStories(userStories);
