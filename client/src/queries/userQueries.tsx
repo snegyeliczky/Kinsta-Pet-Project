@@ -11,4 +11,21 @@ const getUserById = gql`
     }
 `;
 
-export {getUserById};
+const getUsersCompanies = gql`
+    query($id:ID!){
+        user(id:$id){
+            companies{
+                id,
+                name,
+                users{
+                    id,
+                    firstName,
+                    lastName,
+                    email
+                }
+            }
+        }
+    }
+`;
+
+export {getUserById,getUsersCompanies};

@@ -36,6 +36,21 @@ const getUserStories = gql`
             }
         }
     }
-`
+`;
 
-export {getProjectParticipants,getUserStories}
+const addNewProject =  gql`
+    mutation ($userId:Int,
+        $companyId:Int!,
+        $projectName:String){
+            addNewProject(
+                userId:$userId,
+                companyId:$companyId,
+                projectName:$projectName
+            ){
+                id,
+                name
+            }
+    }
+`;
+
+export {getProjectParticipants,getUserStories,addNewProject}

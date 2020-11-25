@@ -2,37 +2,6 @@ import {Project} from "../interfaces/Project";
 
 let projectList:Project[] = [];
 
-let project1 = {
-    id:1,
-    companyId:1,
-    name:"New Bank Accont system",
-    participants:["1","2","3"]
-};
-projectList.push(project1);
-
-let project2 = {
-    id:2,
-    companyId:1,
-    name:"Bank analise system ",
-    participants:["1","2"]
-};
-projectList.push(project2);
-
-let project3 = {
-    id:3,
-    companyId:2,
-    name:"New cash machine frontend",
-    participants:["1"]
-};
-projectList.push(project3);
-
-let project4 = {
-    id:4,
-    companyId:1,
-    name:"Hr management system",
-    participants:["2"]
-};
-projectList.push(project4);
 
 
 
@@ -50,21 +19,21 @@ export default {
     getProjectForCompany:(companyId:number):Project[]=>{
 
         return projectList.filter((project)=>{
-            return project.companyId===companyId;
+            return project.id===companyId;
         })
 
     },
 
     saveNewProject:(name:string,companyId:number,creatorId:string):Project[]=>{
-        let newProject:Project = {
+        let newProject = {
             id:projectList.length+1,
-            companyId:companyId,
+
             name:name,
-            participants:[creatorId]
+
         };
-        projectList.push(newProject);
+        projectList.push();
         return projectList.filter((project)=>{
-            return project.companyId===companyId;
+            return project.id===companyId;
         }) ;
     }
 
