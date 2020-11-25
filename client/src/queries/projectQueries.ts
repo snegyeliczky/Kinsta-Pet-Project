@@ -61,6 +61,10 @@ const getProject = gql`
             company{
                 id,
                 name
+            },
+            owner{
+                id,
+                firstName
             }
         }
     }
