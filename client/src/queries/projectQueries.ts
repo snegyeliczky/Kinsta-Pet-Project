@@ -57,10 +57,20 @@ const getProject = gql`
     query($id:ID!){
         project(id:$id){
             id,
-            name
+            name,
+            company{
+                id,
+                name
+            }
         }
     }
 
-`
+`;
 
-export {getProjectParticipants,getUserStories,addNewProject,getProject}
+const deleteProjectMutation = gql`
+    mutation ($projectId:Int){
+        deleteProject(projectId:$projectId)
+    }
+`;
+
+export {getProjectParticipants,getUserStories,addNewProject,getProject,deleteProjectMutation}

@@ -170,15 +170,19 @@ export const ProjectTitleContainer = styled("div")(
         gridTemplateColumns: "repeat(3,1fr)",
         gridAutoRows: "minmax(10px,auto)",
         "> h2": {
-            gridColumn: "1/3",
+            gridColumn: "1/4",
             color: "white"
         },
         "> h3": {
             gridRow: "2/3",
-            gridColumn: "3/4",
+            gridColumn: "1/2",
             justifySelf: "end",
             alignSelf: "center",
             color: "white"
+        },
+        "> .alert_modal":{
+            gridRow: "2/3",
+            gridColumn:"3/4"
         }
     }
 );

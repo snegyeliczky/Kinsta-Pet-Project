@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {useParams} from "react-router";
-import ProjectService from "../localServices/ProjectService";
+import {useHistory, useParams} from "react-router";
 import "../assets/ProjectStyle.css"
 import NewUserStoryModal from "../components/Modals/NewUserStoryModal";
 import {Collapse} from "antd";
@@ -10,13 +9,18 @@ import UserStory from "../components/UserStory";
 import TaskTable from "../components/TaskTable";
 import ProjectContext from "../context/ProjectContext";
 import {useMutation, useQuery} from "@apollo/client";
-import {getProject, getUserStories} from "../queries/projectQueries";
+import {deleteProjectMutation, getProject, getUserStories} from "../queries/projectQueries";
 import {UserStoryModel} from "../interfaces/UserStoryModel";
 import {deleteUserStoryMutation} from "../queries/userStoryQueries";
+import AlertModal from "../components/Modals/AlertModal";
+import {DeleteOutlined} from '@ant-design/icons';
+import {getProjectsForCompanyByUser} from "../queries/companyQueries";
+import {ApplicationContext} from "../context/ApplicationContext";
 
 const ProjectPage = () => {
 
     const projectContext = useContext(ProjectContext);
+    const appContext = useContext(ApplicationContext);
     const {id} = useParams();
     const [sortDir, setSortDir] = useState(true);
     const {loading: load_userStory, error: error_userStory, data: userStory_data, refetch: refetch_userStory} =
@@ -32,9 +36,9 @@ const ProjectPage = () => {
                 id: id
             }
         });
-
-
     const [deleteUserStory] = useMutation(deleteUserStoryMutation);
+    const [deleteProject] = useMutation(deleteProjectMutation);
+    const history = useHistory();
 
     useEffect(() => {
         projectContext.loadParticipantUsersById(id);
@@ -42,6 +46,22 @@ const ProjectPage = () => {
 
     const sortByBusinessValue = () => {
         setSortDir(!sortDir)
+    };
+
+    const deleteAndHome = async () => {
+        await deleteProject({
+            variables: {
+                projectId: parseInt(id)
+            },
+            refetchQueries: [{
+                query: getProjectsForCompanyByUser,
+                variables: {
+                    userId: appContext.getUserIdAsNumber(),
+                    companyId: project_data.project.company.id
+                }
+            }]
+        });
+        history.push("/app");
     };
 
     const sortUserStories = (storyList: UserStoryModel[]) => {
@@ -61,10 +81,11 @@ const ProjectPage = () => {
         if (error_project) return <div>Error..</div>;
         return (
             <ProjectTitleContainer className={"project-title-container"}>
-                {
-                    <h2>{project_data.project.name}</h2>
-                }
+                <h2>{project_data.project.name}</h2>
                 <h3>projectID: {project_data.project.id}</h3>
+                <AlertModal text={"shure to delete?"} buttonText={<DeleteOutlined/>}
+                            OkFunction={deleteAndHome}
+                />
             </ProjectTitleContainer>
         );
 
