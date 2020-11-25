@@ -80,7 +80,6 @@ const ProjectPage = () => {
             );
         if (error_project) return <div>Error..</div>;
 
-        console.log(project_data.project)
         return (
             <ProjectTitleContainer className={"project-title-container"}>
                 <h2>{project_data.project.name}</h2>
@@ -89,7 +88,7 @@ const ProjectPage = () => {
                     appContext.isUserIsOwner(project_data.project.owner.id) ?
                         <AlertModal text={"shure to delete?"} buttonText={<DeleteOutlined/>}
                                     OkFunction={deleteAndHome}/>
-                                    : ""}
+                        : ""}
             </ProjectTitleContainer>
         );
 
