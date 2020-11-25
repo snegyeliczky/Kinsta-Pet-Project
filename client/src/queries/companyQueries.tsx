@@ -60,4 +60,10 @@ const createNewCompany = gql`
     }
 `;
 
-export {getProjectsForCompany,getProjectsForCompanyByUser,createNewCompany}
+const deleteCompany = gql`
+    mutation($companyId:Int){
+        deleteCompany(companyId:$companyId)
+    }
+`;
+
+export {getProjectsForCompany,getProjectsForCompanyByUser,createNewCompany,deleteCompany}
