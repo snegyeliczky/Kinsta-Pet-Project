@@ -51,4 +51,13 @@ const getProjectsForCompanyByUser = gql`
         }
     }`;
 
-export {getProjectsForCompany,getProjectsForCompanyByUser}
+const createNewCompany = gql`
+    mutation ($userId:Int!,$CompanyName:String!){
+        addNewCompany(userId:$userId,CompanyName:$CompanyName){
+            id,
+            name
+        }
+    }
+`;
+
+export {getProjectsForCompany,getProjectsForCompanyByUser,createNewCompany}

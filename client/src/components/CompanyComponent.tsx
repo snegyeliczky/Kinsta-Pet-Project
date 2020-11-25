@@ -1,6 +1,5 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import {Company} from "../interfaces/Company";
-import ProjectService from "../localServices/ProjectService";
 import {useHistory} from "react-router-dom";
 import NewProjectModal from "./Modals/NewProjectModal";
 import {CompanyPageProject} from "../assets/styledComponents/styledComponents";
