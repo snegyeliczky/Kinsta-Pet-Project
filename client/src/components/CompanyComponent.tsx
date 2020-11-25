@@ -20,7 +20,6 @@ const CompanyComponent: React.FC<Props> = ({company}) => {
 
     const history = useHistory();
     const appContext = useContext(ApplicationContext);
-    const [projects, setProjects] = useState(ProjectService.getProjectForCompany(company.id));
     const{error,loading,data} = useQuery(getProjectsForCompanyByUser, {variables:{userId:appContext.getUserIdAsNumber(),companyId:company.id}});
 
 
@@ -51,7 +50,7 @@ const CompanyComponent: React.FC<Props> = ({company}) => {
     return (
         <div className={"projects"}>
             {getProjects()}
-            <NewProjectModal companyId={company.id}  setProjects={setProjects}/>
+            <NewProjectModal companyId={company.id}/>
         </div>
 
 

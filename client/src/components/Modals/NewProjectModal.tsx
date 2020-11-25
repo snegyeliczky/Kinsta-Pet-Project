@@ -1,22 +1,18 @@
 import React, {Dispatch, SetStateAction, useContext, useState} from 'react';
 import {Modal, Button, Input} from 'antd';
 import {PlusOutlined, ProjectOutlined} from '@ant-design/icons';
-import ProjectService from "../../localServices/ProjectService";
 import {useHistory} from "react-router-dom";
-import {Project} from "../../interfaces/Project";
 import {ModalContainer} from "../../assets/styledComponents/styledComponents";
 import {ApplicationContext} from "../../context/ApplicationContext";
 import {useMutation} from "@apollo/client";
 import {addNewProject} from "../../queries/projectQueries";
-import {getProjectsForCompany} from "../../queries/companyQueries";
+import { getProjectsForCompanyByUser} from "../../queries/companyQueries";
 
 interface Props {
     companyId: number
-    setDisplay?: Dispatch<SetStateAction<boolean>>
-    setProjects: Dispatch<SetStateAction<Project[]>>
 }
 
-const NewProjectModal: React.FC<Props> = ({companyId, setDisplay, setProjects}) => {
+const NewProjectModal: React.FC<Props> = ({companyId}) => {
 
     const [visible, setVisible] = useState(false);
     const [projectName, setProjectName] = useState("");
@@ -42,7 +38,7 @@ const NewProjectModal: React.FC<Props> = ({companyId, setDisplay, setProjects}) 
                         projectName: projectName
                     },
                     refetchQueries: [{
-                        query: getProjectsForCompany,
+                        query: getProjectsForCompanyByUser,
                         variables: {
                             userId: appContext.getUserIdAsNumber(),
                             companyId: companyId
