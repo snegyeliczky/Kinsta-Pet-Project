@@ -53,4 +53,14 @@ const addNewProject =  gql`
     }
 `;
 
-export {getProjectParticipants,getUserStories,addNewProject}
+const getProject = gql`
+    query($id:ID!){
+        project(id:$id){
+            id,
+            name
+        }
+    }
+
+`
+
+export {getProjectParticipants,getUserStories,addNewProject,getProject}

@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useContext, useState} from 'react';
+import React, { useContext, useState} from 'react';
 import {Modal, Button, Input} from 'antd';
 import {PlusOutlined, ProjectOutlined} from '@ant-design/icons';
 import {useHistory} from "react-router-dom";

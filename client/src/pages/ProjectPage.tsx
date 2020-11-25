@@ -10,7 +10,7 @@ import UserStory from "../components/UserStory";
 import TaskTable from "../components/TaskTable";
 import ProjectContext from "../context/ProjectContext";
 import {useMutation, useQuery} from "@apollo/client";
-import {getUserStories} from "../queries/projectQueries";
+import {getProject, getUserStories} from "../queries/projectQueries";
 import {UserStoryModel} from "../interfaces/UserStoryModel";
 import {deleteUserStoryMutation} from "../queries/userStoryQueries";
 
@@ -19,13 +19,22 @@ const ProjectPage = () => {
     const projectContext = useContext(ProjectContext);
     const {id} = useParams();
     const [sortDir, setSortDir] = useState(true);
-    const {loading, error, data, refetch} = useQuery(getUserStories, {
-        variables: {
-            id: parseInt(id)
-        }
-    });
+    const {loading: load_userStory, error: error_userStory, data: userStory_data, refetch: refetch_userStory} =
+        useQuery(getUserStories,
+            {
+                variables: {
+                    id: parseInt(id)
+                }
+            });
+    const {loading: load_project, error: error_project, data: project_data} =
+        useQuery(getProject, {
+            variables: {
+                id: id
+            }
+        });
 
-    const [deleteUserStory] = useMutation(deleteUserStoryMutation)
+
+    const [deleteUserStory] = useMutation(deleteUserStoryMutation);
 
     useEffect(() => {
         projectContext.loadParticipantUsersById(id);
@@ -35,33 +44,40 @@ const ProjectPage = () => {
         setSortDir(!sortDir)
     };
 
-    const sortUserStories = (storyList:UserStoryModel[]) =>{
-        return storyList.sort((a,b) =>{
-            if (sortDir) return (a.businessValue>b.businessValue) ? -1 :1;
+    const sortUserStories = (storyList: UserStoryModel[]) => {
+        return storyList.sort((a, b) => {
+            if (sortDir) return (a.businessValue > b.businessValue) ? -1 : 1;
             return (a.businessValue > b.businessValue) ? 1 : -1
         });
     };
 
     const getProjectData = () => {
-        let project = ProjectService.getProject(parseInt(id));
-        if (project) {
+        if (load_project)
             return (
-                <ProjectTitleContainer className={"project-title-container"}>
-                    <h2>{project.name}</h2>
-                    <h3>projectID: {project.id}</h3>
+                <ProjectTitleContainer>
+                    <h2>Loading...</h2>
                 </ProjectTitleContainer>
             );
-        } else return (
-            <h2>No project found wit this id </h2>
-        )
+        if (error_project) return <div>Error..</div>;
+        return (
+            <ProjectTitleContainer className={"project-title-container"}>
+                {
+                    <h2>{project_data.project.name}</h2>
+                }
+                <h3>projectID: {project_data.project.id}</h3>
+            </ProjectTitleContainer>
+        );
+
     };
 
 
     const removeUSerStoryById = async (storyId: number) => {
-       await deleteUserStory({variables:{
-                userStoryId:storyId
-            }});
-        await refetch();
+        await deleteUserStory({
+            variables: {
+                userStoryId: storyId
+            }
+        });
+        await refetch_userStory();
     };
 
     const renderUserStories = (storyList: UserStoryModel[]) => {
@@ -77,9 +93,9 @@ const ProjectPage = () => {
     };
 
     const loadUserStories = () => {
-        if (loading) return <div>Loading...</div>;
-        if (error) return <div>Error van</div>;
-        let storyList = data.project.userStories;
+        if (load_userStory) return <div>Loading...</div>;
+        if (error_userStory) return <div>Error van</div>;
+        let storyList = userStory_data.project.userStories;
         let sortedStoryList = sortUserStories([...storyList]);
         return renderUserStories(sortedStoryList);
     };
