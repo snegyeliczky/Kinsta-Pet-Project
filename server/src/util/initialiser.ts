@@ -14,9 +14,13 @@ export async function DbInit() {
     await User.relatedQuery('companies')
         .for(1)
         .insert({name: 'Morgen Stanly'});
+    await User.relatedQuery('ownedCompanies')
+        .for(1).relate(1);
     await User.relatedQuery('companies')
         .for(1)
         .insert({name: 'JP morgen'});
+    await User.relatedQuery('ownedCompanies')
+        .for(1).relate(2);
     await User.relatedQuery('companies')
         .for(2)
         .relate(2);

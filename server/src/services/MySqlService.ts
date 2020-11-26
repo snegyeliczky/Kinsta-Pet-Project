@@ -63,9 +63,18 @@ export const MySqlService = {
         await ParticipateInvite.query().deleteById(inviteId);
     },
 
-    addOwnerToUserStory: async (userId:number, userStoryId: number) =>{
+    addOwnerToUserStory: async (userId: number, userStoryId: number) => {
         await UserStory.relatedQuery('owner').for(userStoryId).relate(userId);
         return User.query().findById(userId);
     },
+
+    addNewCompany: async (userId: number, companyName: string) => {
+        let newCompany = await User.relatedQuery("companies")
+            .for(userId)
+            .insert({name: companyName});
+        await newCompany.$relatedQuery('ownerUser').relate(userId);
+        return newCompany
+
+    }
 
 }

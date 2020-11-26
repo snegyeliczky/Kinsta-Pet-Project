@@ -6,6 +6,7 @@ import {resolvers} from "./resolvers/resolver";
 import {DbInit} from "./util/initialiser";
 import {GqlUtil} from "./util/GqlUtil";
 import {GqlService} from "./services/GqlService";
+import Company from "./model/Company";
 
 
 async function insertBaseUsersToDb() {
@@ -13,7 +14,7 @@ async function insertBaseUsersToDb() {
     if (users.length < 1) {
         await DbInit();
     }
-    let testData =   await User.relatedQuery('ownedCompanies').for(1);
+    let testData = await Company.relatedQuery("ownerUser").for(3);
     console.log(testData);
 
 };
