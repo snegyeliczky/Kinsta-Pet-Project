@@ -17,6 +17,12 @@ const getUsersCompanies = gql`
             companies{
                 id,
                 name,
+                ownerUser{
+                    id,
+                    firstName,
+                    lastName,
+                    email
+                },
                 users{
                     id,
                     firstName,

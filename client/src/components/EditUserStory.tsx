@@ -45,7 +45,7 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
         editedUserStory.businessValue = value;
     };
 
-    const EditUserStoryOwner = async (owner: string) => {
+    const EditUserStoryOwner = async (owner: string|null) => {
         let fetchResult = await mutateUser({
             variables: {
                 userStoryId: userStory.id,
@@ -120,7 +120,7 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
             </div>
             <div className={"userStory-ownerId UserStory-part"}>
                 <UserDropdown userData={projectContext.participants} onChange={EditUserStoryOwner}
-                              base={userStory.owner.firstName}/>
+                              base={userStory.owner? userStory.owner.firstName : "- - -"}/>
             </div>
             <div className={"userStory-estimation UserStory-part"}>
                 <EstimationModal editUserStoryEstimation={EditUserStoryEstimation}
