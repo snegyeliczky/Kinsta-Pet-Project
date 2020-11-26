@@ -65,6 +65,9 @@ export const MySqlService = {
 
     addOwnerToUserStory: async (userId: number, userStoryId: number) => {
         await UserStory.relatedQuery('owner').for(userStoryId).relate(userId);
+        if (userId===null){
+            return null
+        }
         return User.query().findById(userId);
     },
 
