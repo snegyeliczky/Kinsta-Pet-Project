@@ -91,11 +91,11 @@ export const resolvers = {
         },
         addNewUserStory: async (
             parent: UserStory,
-            args: { userId: number; projectId: number; userStory: string, businessValue:number }
+            args: { userId: number; projectId: number; userStory: string, businessValue: number }
         ) => {
             let newUserStory = await Project.relatedQuery("userStories")
                 .for(args.projectId)
-                .insert({userStory: args.userStory, status: false, businessValue:args.businessValue});
+                .insert({userStory: args.userStory, status: false, businessValue: args.businessValue});
             console.log(newUserStory);
             await newUserStory.$relatedQuery("owner").relate(args.userId);
             console.log(newUserStory);
@@ -124,7 +124,7 @@ export const resolvers = {
             return Project.relatedQuery('owner').for(args.projectId).relate(args.userId);
         },
         addOwnerToUserStory: (parent: UserStory, args: { userId: number, userStoryId: number }) => {
-            return MySqlService.addOwnerToUserStory(args.userId,args.userStoryId);
+            return MySqlService.addOwnerToUserStory(args.userId, args.userStoryId);
         },
         addOwnerToTask: (parent: Task, args: { userId: number, taskId: number }) => {
             return Task.relatedQuery('owner').for(args.taskId).relate(args.userId);
@@ -156,9 +156,9 @@ export const resolvers = {
             parent: UserStory,
             args: {
                 userStory: string;
-                userStoryId: number; businessValue:number
+                userStoryId: number; businessValue: number
             }) => {
-            return GqlService.updateUserStory( args.userStory, args.userStoryId, args.businessValue);
+            return GqlService.updateUserStory(args.userStory, args.userStoryId, args.businessValue);
         },
 
         // update the task status and return the userStory status
@@ -213,9 +213,9 @@ export const resolvers = {
     Company: {
         id: (parent: Company) => parent.id,
         name: (parent: Company) => parent.name,
-        ownerUser:async (parent: Company) => {
-             let userInList = await Company.relatedQuery("ownerUser").for(parent.id);
-             return userInList[0]
+        ownerUser: async (parent: Company) => {
+            let userInList = await Company.relatedQuery("ownerUser").for(parent.id);
+            return userInList[0]
         },
         users: (parent: Company) => {
             return Company.relatedQuery("users").for(parent.id);

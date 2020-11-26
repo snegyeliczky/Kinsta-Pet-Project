@@ -42,9 +42,9 @@ export async function DbInit() {
         .relate(1);
     await User.relatedQuery('userStories').for(2)
         .relate(2);
-    let estimation = await User.relatedQuery('userStoryEstimations').for(1).insert({estimation:1});
+    let estimation = await User.relatedQuery('userStoryEstimations').for(1).insert({estimation: 1});
     await estimation.$relatedQuery('userStory').relate(1);
-    let estimation2 = await User.relatedQuery('userStoryEstimations').for(2).insert({estimation:2});
+    let estimation2 = await User.relatedQuery('userStoryEstimations').for(2).insert({estimation: 2});
     await estimation2.$relatedQuery('userStory').relate(1);
     await UserStory.relatedQuery('tasks').for(1)
         .insert({title: "creat security", description: "hash password", ready: false});

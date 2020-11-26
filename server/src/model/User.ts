@@ -129,11 +129,11 @@ export default class User extends Model {
                     to: 'participate_invites.receiverId'
                 }
             },
-            ownedCompanies:{
+            ownedCompanies: {
                 relation: Model.HasManyRelation,
                 modelClass: Company,
-                join:{
-                    from:'users.id',
+                join: {
+                    from: 'users.id',
                     to: 'companies.owner'
                 }
             }

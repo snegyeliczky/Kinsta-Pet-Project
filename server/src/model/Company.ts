@@ -9,7 +9,7 @@ export default class Company extends Model {
 
     id!: number;
     name!: string;
-    ownerUser!:User;
+    ownerUser!: User;
     users?: User[];
     projects?: Project[];
 
@@ -54,7 +54,7 @@ export default class Company extends Model {
                     to: 'projects.companyId'
                 }
             },
-            ownerUser:{
+            ownerUser: {
                 relation: Model.BelongsToOneRelation,
                 modelClass: User,
                 join: {
