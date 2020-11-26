@@ -1,7 +1,10 @@
+import {UserModel} from "./UserModel";
+import {Company} from "./Company";
+
 export interface Project {
     id:number,
-    companyId:number,
+    company:Company,
     name:string,
-    owner?:string
-    participants:string[]
+    owner?:UserModel
+    participants:UserModel[]
 }

@@ -7,6 +7,7 @@ interface applicationContextProps {
     setUserName: Dispatch<SetStateAction<string>>,
     getUserId: () => string;
     getUserIdAsNumber: () => number;
+    isUserIsOwner: (ownerId:number) => boolean;
 
 }
 
@@ -30,11 +31,16 @@ export const ApplicationProvider = (props: any) => {
         return parseInt(getUserId());
     };
 
+    const isUserIsOwner = (ownerId:number):boolean =>{
+        return getUserIdAsNumber()===ownerId
+    };
+
     const sampleAppContext: applicationContextProps = {
         username: username,
         setUserName: setUserName,
         getUserId: getUserId,
         getUserIdAsNumber: getUserIdAsNumber,
+        isUserIsOwner:isUserIsOwner,
     };
 
 

@@ -1,45 +1,53 @@
-import React, {Dispatch, SetStateAction, useContext, useState} from 'react';
+import React, { useContext, useState} from 'react';
 import {Modal, Button, Input} from 'antd';
 import {PlusOutlined, ProjectOutlined} from '@ant-design/icons';
-import ProjectService from "../../localServices/ProjectService";
 import {useHistory} from "react-router-dom";
-import {Project} from "../../interfaces/Project";
 import {ModalContainer} from "../../assets/styledComponents/styledComponents";
 import {ApplicationContext} from "../../context/ApplicationContext";
+import {useMutation} from "@apollo/client";
+import {addNewProject} from "../../queries/projectQueries";
+import { getProjectsForCompanyByUser} from "../../queries/companyQueries";
 
 interface Props {
     companyId: number
-    setDisplay?: Dispatch<SetStateAction<boolean>>
-    setProjects: Dispatch<SetStateAction<Project[]>>
 }
 
-const NewProjectModal: React.FC<Props> = ({companyId, setDisplay, setProjects}) => {
+const NewProjectModal: React.FC<Props> = ({companyId}) => {
 
     const [visible, setVisible] = useState(false);
     const [projectName, setProjectName] = useState("");
     const history = useHistory();
     const appContext = useContext(ApplicationContext);
+    const [saveNewProject] = useMutation(addNewProject);
 
     const showModal = (event: React.MouseEvent<HTMLElement>) => {
         event.stopPropagation();
         setVisible(!visible);
     };
 
-
-    const handleSave = (e: React.MouseEvent<HTMLElement>, go:boolean) => {
+    const handleSave = async (e: React.MouseEvent<HTMLElement>, go: boolean) => {
         e.stopPropagation();
-        if (projectName.length > 2) {
-            let projects = ProjectService.saveNewProject(projectName, companyId,appContext.getUserId());
-            setProjects(projects);
-            let newProjectId = projects.reduce((re, project) => {
-                if (project.name === projectName) {
-                    re = project.id
-                }
-                return re;
-            }, 0);
+        if (projectName.length <= 2) {
+            alert("Project name must be 3 character long!")
+        } else {
+            let newProject = await saveNewProject(
+                {
+                    variables: {
+                        userId: appContext.getUserIdAsNumber(),
+                        companyId: companyId,
+                        projectName: projectName
+                    },
+                    refetchQueries: [{
+                        query: getProjectsForCompanyByUser,
+                        variables: {
+                            userId: appContext.getUserIdAsNumber(),
+                            companyId: companyId
+                        }
+                    }]
+                });
             setVisible(!visible);
-            if (go) history.push("/app/project/" + newProjectId);
-        } else alert("Project name must be 3 character long!")
+            if (go) history.push("/app/project/" + newProject.data.addNewProject.id);
+        }
 
     };
 
@@ -50,8 +58,12 @@ const NewProjectModal: React.FC<Props> = ({companyId, setDisplay, setProjects}) 
 
     const footer = (<div>
         <Button type={"primary"} danger onClick={e => handleCancel(e)}>cancel</Button>
-        <Button type={"primary"} onClick={e => { handleSave(e,false) }}>Save and stay </Button>
-        <Button type={"primary"} onClick={e => { handleSave(e,true) }}>Save and go</Button>
+        <Button type={"primary"} onClick={e => {
+            handleSave(e, false)
+        }}>Save and stay </Button>
+        <Button type={"primary"} onClick={e => {
+            handleSave(e, true)
+        }}>Save and go</Button>
     </div>);
 
 
@@ -67,7 +79,9 @@ const NewProjectModal: React.FC<Props> = ({companyId, setDisplay, setProjects}) 
             <Modal
                 title="Create new project"
                 visible={visible}
-                onCancel={e=>{handleCancel(e)}}
+                onCancel={e => {
+                    handleCancel(e)
+                }}
                 footer={footer}
 
             >

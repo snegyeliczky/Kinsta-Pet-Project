@@ -1,5 +1,11 @@
 import styled from '@emotion/styled'
 
+export const CenterDiv = styled("div")(
+    {
+        margin: "10px auto",
+        width: "fit-content"
+    }
+    );
 
 export const NewCompanyContainer = styled("div")(
     {
@@ -97,7 +103,7 @@ export const StyledCompanyHeader = styled("div")<StyledCompanyHeaderProps>(
 );
 
 type userStoryProps = {
-    hover:boolean
+    hover: boolean
 }
 
 export const UserStoryStyleComponent = styled("div")<userStoryProps>(
@@ -116,15 +122,15 @@ export const UserStoryStyleComponent = styled("div")<userStoryProps>(
             textAlign: "center",
             padding: "8px"
         },
-        "> .UserStory-part .userStory-edit":{
-            marginRight:"15px"
+        "> .UserStory-part .userStory-edit": {
+            marginRight: "15px"
         },
         "> .userStory-userStory": {
             gridColumn: "2/5",
 
         },
-        "> .userStory-title":{
-            justifySelf:"center"
+        "> .userStory-title": {
+            justifySelf: "center"
         },
         "> .userStory-estimation": {
             color: "black",
@@ -143,7 +149,7 @@ export const UserStoryStyleComponent = styled("div")<userStoryProps>(
             gridTemplateColumns: "repeat(2,1fr)",
             gridAutoRows: "minmax(10px,auto)",
             gridGap: "0px",
-            justifyItems:"center",
+            justifyItems: "center",
             "> .userStory-userStory": {
                 gridColumn: "auto"
 
@@ -153,8 +159,8 @@ export const UserStoryStyleComponent = styled("div")<userStoryProps>(
         }
     },
     props => ({
-        ":hover":{
-            transform: props.hover?"scale(1.03)":""
+        ":hover": {
+            transform: props.hover ? "scale(1.03)" : ""
         }
 
     })
@@ -170,15 +176,19 @@ export const ProjectTitleContainer = styled("div")(
         gridTemplateColumns: "repeat(3,1fr)",
         gridAutoRows: "minmax(10px,auto)",
         "> h2": {
-            gridColumn: "1/3",
+            gridColumn: "1/4",
             color: "white"
         },
         "> h3": {
             gridRow: "2/3",
-            gridColumn: "3/4",
+            gridColumn: "1/2",
             justifySelf: "end",
             alignSelf: "center",
             color: "white"
+        },
+        "> .alert_modal": {
+            gridRow: "2/3",
+            gridColumn: "3/4"
         }
     }
 );
@@ -210,7 +220,7 @@ export const TaskStyledComponent = styled("div")<TaskProps>(
             gridAutoRows: "minmax(10px,auto)",
             gridGap: "0px",
         },
-        ":hover":{
+        ":hover": {
             transform: "scale(1.03)"
         }
 
@@ -228,7 +238,7 @@ const TaskHeaderStyledComponent = styled("div")(
         width: "87%",
         backgroundColor: "rgba(138, 43, 226,0.4)",
         borderRadius: "20px",
-        ":hover":{
+        ":hover": {
             transform: "scale(1.00)"
         }
     }
@@ -241,7 +251,7 @@ export const EstimationUsersStyledComponent = styled("div")(
     {
         display: "grid",
         gridGap: "10px",
-        gridTemplateColumns:"repeat(2,1fr)",
+        gridTemplateColumns: "repeat(2,1fr)",
         justifyItems: "center",
     }
 )
