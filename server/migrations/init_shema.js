@@ -7,12 +7,23 @@ exports.up = knex => {
             table.string('firstName');
             table.string('lastName');
             table.string('password');
-            table.string('email');
+            table.string('email')
+                .unique();
             table.json('address');
         })
         .createTable('companies', table => {
             table.increments('id').primary();
-            table.string('name')
+            table.string('name');
+
+            table
+                .integer('owner')
+                .unsigned()
+                .references('id')
+                .inTable('users')
+                .onDelete('SET NULL')
+                .index()
+
+
         })
         .createTable('users_company', table => {
             table.increments('id').primary()

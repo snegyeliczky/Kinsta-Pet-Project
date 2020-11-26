@@ -6,6 +6,7 @@ import {resolvers} from "./resolvers/resolver";
 import {DbInit} from "./util/initialiser";
 import {GqlUtil} from "./util/GqlUtil";
 import {GqlService} from "./services/GqlService";
+import Company from "./model/Company";
 
 
 async function insertBaseUsersToDb() {
@@ -13,8 +14,9 @@ async function insertBaseUsersToDb() {
     if (users.length < 1) {
         await DbInit();
     }
-    let inv = "ready";
-    console.log(inv);
+    let testData = '';
+    console.log(testData);
+
 };
 
 export const startServer = () => {
