@@ -24,6 +24,7 @@ export default class User extends Model {
     tasks?: Task[];
     sandedInvites?: ParticipateInvite[];
     receivedInvites?: ParticipateInvite[];
+    ownedCompanies?: Company[];
 
     static idColumn = "id";
 
@@ -126,6 +127,14 @@ export default class User extends Model {
                 join: {
                     from: 'users.id',
                     to: 'participate_invites.receiverId'
+                }
+            },
+            ownedCompanies:{
+                relation: Model.HasManyRelation,
+                modelClass: Company,
+                join:{
+                    from:'users.id',
+                    to: 'companies.owner'
                 }
             }
 

@@ -13,8 +13,9 @@ async function insertBaseUsersToDb() {
     if (users.length < 1) {
         await DbInit();
     }
-    let inv = "ready";
-    console.log(inv);
+    let testData =   await User.relatedQuery('ownedCompanies').for(1);
+    console.log(testData);
+
 };
 
 export const startServer = () => {
