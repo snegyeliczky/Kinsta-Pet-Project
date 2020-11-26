@@ -78,6 +78,21 @@ export const MySqlService = {
         await newCompany.$relatedQuery('ownerUser').relate(userId);
         return newCompany
 
+    },
+
+    saveNewUser : async (FirstName:string,LastName:string,Email:string,Password:string) =>{
+        return User.query().insert({
+            firstName: FirstName,
+            lastName: LastName,
+            email: Email,
+            password: Password,
+        });
+    },
+
+    getUserByEmail : async (Email:string) =>{
+        return User.query().where('email', '=', Email);
     }
+
+
 
 };

@@ -3,14 +3,13 @@ import Company from "../model/Company";
 import Project from "../model/Project";
 import UserStory from "../model/UserStory";
 import Task from "../model/Task";
+import {GqlService} from "../services/GqlService";
 
 export async function DbInit() {
-    await User.query().insertGraph(
-        {firstName: "JhonLine", lastName: "Sylvester", email: "SJ@gmail.com", password: "1234"}
-    );
-    await User.query().insertGraph(
-        {firstName: "Jone", lastName: "Wick", email: "JW@gmail.com", password: "4321"}
-    );
+    await GqlService.registerUser("Sándi", "Negyeliczky",
+        "sandor.negyeliczky@gmail.com", "1234");
+    await GqlService.registerUser("Jone", "Wick",
+        "JW@gmail.com", "4321");
     await User.relatedQuery('companies')
         .for(1)
         .insert({name: 'Morgen Stanly'});

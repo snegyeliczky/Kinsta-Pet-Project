@@ -21,7 +21,9 @@ export const resolvers = {
         getInvitesForParticipation: (parent: User, args: { userId: number }) => {
             return GqlUtil.getProjectInvitationsForUser(args.userId);
         },
-
+        login: (parent:User, args:{email:string, password:string})=>{
+            return GqlService.loginUser(args.email,args.password)
+        },
         companies: () => Company.query(),
         company: (parent: Company, args: { id: number }) => {
             return Company.query().findById(args.id);
@@ -59,18 +61,13 @@ export const resolvers = {
         addNewUser: (
             parent: User,
             args: {
-                newFirstName: string;
-                newLastName: string;
-                email: string;
-                password: string;
+                FirstName: string;
+                LastName: string;
+                Email: string;
+                Password: string;
             }
         ) => {
-            return User.query().insert({
-                firstName: args.newFirstName,
-                lastName: args.newLastName,
-                email: args.email,
-                password: args.password,
-            });
+            return GqlService.registerUser(args.FirstName,args.LastName, args.Email, args.Password)
         },
         addNewCompany: (
             parent: Company,

@@ -14,7 +14,7 @@ async function insertBaseUsersToDb() {
     if (users.length < 1) {
         await DbInit();
     }
-    let testData = await Company.relatedQuery("ownerUser").for(3);
+    let testData = '';
     console.log(testData);
 
 };

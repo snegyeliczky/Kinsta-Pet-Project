@@ -7,7 +7,8 @@ exports.up = knex => {
             table.string('firstName');
             table.string('lastName');
             table.string('password');
-            table.string('email');
+            table.string('email')
+                .unique();
             table.json('address');
         })
         .createTable('companies', table => {
