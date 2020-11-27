@@ -3,7 +3,7 @@ type Query{
     user(id:ID!):User
     getCompaniesForUser(userId:ID!):[Company!]
     getInvitesForParticipation(userId:ID):[ParticipateInvite!]
-    login(email:String,password:String):Boolean
+    login(email:String,password:String):User
 
     companies:[Company!]
     company(id:ID!):Company

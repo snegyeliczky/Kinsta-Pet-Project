@@ -80,7 +80,7 @@ export const MySqlService = {
 
     },
 
-    saveNewUser : async (FirstName:string,LastName:string,Email:string,Password:string) =>{
+    saveNewUser: async (FirstName: string, LastName: string, Email: string, Password: string) => {
         return User.query().insert({
             firstName: FirstName,
             lastName: LastName,
@@ -89,10 +89,9 @@ export const MySqlService = {
         });
     },
 
-    getUserByEmail : async (Email:string) =>{
+    getUserByEmail: async (Email: string) => {
         return User.query().where('email', '=', Email);
     }
-
 
 
 };
