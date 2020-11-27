@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import {Input, Button} from 'antd';
+import {Input, Button, message} from 'antd';
 import {MailOutlined, UserOutlined, EyeInvisibleOutlined, EyeTwoTone, CheckOutlined} from '@ant-design/icons';
 import 'antd/dist/antd.css';
 import {useMutation} from "@apollo/client";
@@ -32,7 +32,7 @@ const Registration: React.FC<Props> = ({login}) => {
             console.log(newUser);
             login(newEmail, newPassword)
         } catch (e) {
-            alert(e.message)
+            message.error(" Invalid registration! This E-mail already belongs to a user!")
         }
     };
 
@@ -44,7 +44,7 @@ const Registration: React.FC<Props> = ({login}) => {
 
         newFirstName && newLastName && newEmail && newPassword ?
             registration(newFirstName, newLastName, newEmail, newPassword)
-            : alert("missing parameter");
+            : message.error("missing parameter!");
     };
 
     return (
