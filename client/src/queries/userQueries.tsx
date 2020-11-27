@@ -34,4 +34,20 @@ const getUsersCompanies = gql`
     }
 `;
 
-export {getUserById,getUsersCompanies};
+const loginUser = gql`
+    query(
+        $email:String,
+        $password:String){
+        login(
+            email:$email,
+            password:$password
+        ){
+            id,
+            firstName,
+            lastName,
+            email
+        }
+    }
+`
+
+export {getUserById,getUsersCompanies,loginUser};

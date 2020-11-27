@@ -1,26 +1,37 @@
 import React, {useContext, useState} from 'react';
 import Login from "../components/authComp/Login";
 import Registration from "../components/authComp/Registration";
-import { Switch } from 'antd';
+import {Switch} from 'antd';
 import {useHistory} from "react-router-dom";
 import "../assets/AuthStyle.css"
 import {ApplicationContext} from "../context/ApplicationContext";
+import {useLazyQuery} from "@apollo/client";
+import {loginUser} from "../queries/userQueries";
 
 const AuthPage = () => {
 
     const [isReg, setReg] = useState<boolean>(true);
-    const history= useHistory();
+    const history = useHistory();
     const appContext = useContext(ApplicationContext);
+    const [getLogin, {data}] = useLazyQuery(loginUser);
 
-    const login=(username:string,password:string|number)=> {
+
+    if (data) {
+        localStorage.setItem("username", data.login.firstName);
+        localStorage.setItem("userId", data.login.id);
+        appContext.setUserName(data.login.firstName);
+        history.push("/app")
+    }
+
+    const login = (username: string, password: string) => {
         try {
-            //here comes the backend login
-
-            localStorage.setItem("username",username);
-            localStorage.setItem("userId","1");
-            appContext.setUserName(username);
-            history.push("/app")
-        }catch (e) {
+            getLogin({
+                variables: {
+                    email: username,
+                    password: password
+                },
+            })
+        } catch (e) {
             console.log(e);
             alert(e.message)
         }
@@ -29,11 +40,12 @@ const AuthPage = () => {
     return (
         <div className={"auth-page"}>
             <h2 className={"welcome-text"}>Welcome</h2>
-            <Switch className={"switch"} checkedChildren="Registration" unCheckedChildren="Login" defaultChecked onChange={e=>{
-                setReg(e)
-            }}/>
+            <Switch className={"switch"} checkedChildren="Registration" unCheckedChildren="Login" defaultChecked
+                    onChange={e => {
+                        setReg(e)
+                    }}/>
             <div className={"auth-component-container"}>
-            {isReg?<Login login={login}/>:<Registration login={login}/>}
+                {isReg ? <Login login={login}/> : <Registration login={login}/>}
             </div>
 
         </div>

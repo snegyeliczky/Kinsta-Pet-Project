@@ -4,7 +4,7 @@ import { MailOutlined,UserOutlined, EyeInvisibleOutlined, EyeTwoTone, CheckOutli
 import 'antd/dist/antd.css';
 
 interface Props {
-    login:(username:string,password:string|number)=>void;
+    login:(username:string,password:string)=>void;
 }
 
 
@@ -15,7 +15,7 @@ const Registration:React.FC<Props> = ({login}) => {
     let password = useRef<Input>(null);
 
 
-    const registration =(newUsername:string,newEmail:string,newPassword:string|number):boolean=>{
+    const registration =(newUsername:string,newEmail:string,newPassword:string):boolean=>{
         try {
             //backEnd registration comes here
             console.log(newUsername,newPassword,newEmail);
