@@ -62,14 +62,23 @@ const CompanyComponent: React.FC<Props> = ({company}) => {
         });
     };
 
+    const renderDeleteButton = () =>{
+        if (appContext.isUserIsOwner(parseInt(company.ownerUser.id))){
+            return(
+                <CenterDiv>
+                    <AlertModal text={"Delete ?"} buttonText={"Delete Company"} OkFunction={deleteCompanyAndRefetch}/>
+                </CenterDiv>
+            )
+        }
+        return
+    };
+
 
     return (
         <div className={"projects"}>
             {getProjects()}
             <NewProjectModal companyId={company.id}/>
-            <CenterDiv>
-                <AlertModal text={"Delete ?"} buttonText={"Delete Company"} OkFunction={deleteCompanyAndRefetch}/>
-            </CenterDiv>
+            {renderDeleteButton()}
         </div>
 
 

@@ -86,7 +86,7 @@ const ProjectPage = () => {
                 <h3>projectID: {project_data.project.id}</h3>
                 {
                     appContext.isUserIsOwner(project_data.project.owner.id) ?
-                        <AlertModal text={"shure to delete?"} buttonText={<DeleteOutlined/>}
+                        <AlertModal text={"Sure to delete?"} buttonText={<DeleteOutlined/>}
                                     OkFunction={deleteAndHome}/>
                         : ""}
             </ProjectTitleContainer>
