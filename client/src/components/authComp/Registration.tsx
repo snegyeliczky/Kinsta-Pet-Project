@@ -1,49 +1,62 @@
 import React, {useRef} from 'react';
-import {Input,Button} from 'antd';
-import { MailOutlined,UserOutlined, EyeInvisibleOutlined, EyeTwoTone, CheckOutlined } from '@ant-design/icons';
+import {Input, Button} from 'antd';
+import {MailOutlined, UserOutlined, EyeInvisibleOutlined, EyeTwoTone, CheckOutlined} from '@ant-design/icons';
 import 'antd/dist/antd.css';
+import {useMutation} from "@apollo/client";
+import {registerUser} from "../../queries/userQueries";
 
 interface Props {
-    login:(username:string,password:string)=>void;
+    login: (username: string, password: string) => void;
 }
 
 
-const Registration:React.FC<Props> = ({login}) => {
+const Registration: React.FC<Props> = ({login}) => {
 
-    let username = useRef<Input>(null);
+    const [addNewUser] = useMutation(registerUser);
+
+    let firstName = useRef<Input>(null);
+    let lastName = useRef<Input>(null);
     let email = useRef<Input>(null);
     let password = useRef<Input>(null);
 
 
-    const registration =(newUsername:string,newEmail:string,newPassword:string):boolean=>{
+    const registration = async (newFirstName: string, newLastName: string, newEmail: string, newPassword: string) => {
         try {
-            //backEnd registration comes here
-            console.log(newUsername,newPassword,newEmail);
-            return true;
-        }catch (e) {
-            return false;
+            let newUser = await addNewUser({variables:{
+                    FirstName:newFirstName,
+                    LastName:newLastName,
+                    Email:newEmail,
+                    Password:newPassword
+                }
+            });
+            console.log(newUser);
+            login(newEmail, newPassword)
+        } catch (e) {
+            alert(e.message)
         }
     };
 
-    const handleRegistration= ():void => {
-        let newUsername = username.current?username.current.state.value:undefined;
-        let newEmail = email.current?email.current.state.value:undefined;
-        let newPassword = password.current?password.current.state.value:undefined;
-        newUsername && newEmail && newPassword ?
-            registration(newUsername,newEmail,newPassword) ?
-            login(newUsername,newPassword) :
-                alert("registration failed")
-            : alert("missing parameter");
+    const handleRegistration = (): void => {
+        let newFirstName = firstName.current ? firstName.current.state.value : undefined;
+        let newLastName = lastName.current ? lastName.current.state.value : undefined;
+        let newEmail = email.current ? email.current.state.value : undefined;
+        let newPassword = password.current ? password.current.state.value : undefined;
 
+        newFirstName && newLastName && newEmail && newPassword ?
+            registration(newFirstName, newLastName, newEmail, newPassword)
+            : alert("missing parameter");
     };
 
     return (
         <div className={"auth-component"}>
             <h3>Registration</h3>
-            <Input  placeholder={"Username"} prefix={<UserOutlined />} ref={username}/>
-            <Input placeholder={"E-mail"} prefix={<MailOutlined />} ref={email}/>
-            <Input.Password ref={password} placeholder={"PassWord"} iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)} />
-            <Button className={"submit"} shape={"round"} icon={<CheckOutlined/>} type={"primary"} onClick={handleRegistration}>Registration</Button>
+            <Input placeholder={"First name"} prefix={<UserOutlined/>} ref={firstName}/>
+            <Input placeholder={"Last name"} prefix={<UserOutlined/>} ref={lastName}/>
+            <Input placeholder={"E-mail"} prefix={<MailOutlined/>} ref={email}/>
+            <Input.Password ref={password} placeholder={"Password"}
+                            iconRender={visible => (visible ? <EyeTwoTone/> : <EyeInvisibleOutlined/>)}/>
+            <Button className={"submit"} shape={"round"} icon={<CheckOutlined/>} type={"primary"}
+                    onClick={handleRegistration}>Registration</Button>
         </div>
     );
 };

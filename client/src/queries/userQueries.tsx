@@ -50,4 +50,25 @@ const loginUser = gql`
     }
 `
 
-export {getUserById,getUsersCompanies,loginUser};
+const registerUser = gql`
+    mutation(
+        $FirstName:String!,
+        $LastName:String!,
+        $Email:String!,
+        $Password:String!
+    ){
+        addNewUser(
+            FirstName:$FirstName,
+            LastName:$LastName,
+            Email:$Email,
+            Password:$Password
+        ){
+            id,
+            firstName,
+            lastName,
+            email
+        }
+    }
+`
+
+export {getUserById, getUsersCompanies, loginUser, registerUser};
