@@ -1,5 +1,8 @@
+import {UserModel} from "./UserModel";
+
 export interface Company {
     id: number;
     name: string;
-    employees: string[];
+    ownerUser:UserModel;
+    users:UserModel[];
 }

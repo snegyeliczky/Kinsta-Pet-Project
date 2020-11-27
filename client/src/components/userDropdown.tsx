@@ -16,15 +16,14 @@ const UserDropdown:React.FC<props> = ({userData,onChange,base}) => {
     const [OwnerUser,setUser]= useState(base);
 
 
-
-    const onClick = (key:string, name:string) => {
+    const onClick = (key:string|null, name:string) => {
         setUser(name);
         message.info(`Owner changed to ${name}`);
         onChange(key)
     };
     const menu = (
         <Menu >
-            <Menu.Item key={"0"} onClick={(e)=>onClick('',"no owner")}> ---</Menu.Item>
+            <Menu.Item key={"0"} onClick={(e)=>onClick(null,"no owner")}>---</Menu.Item>
             {userData.map( user =>{
                 return <Menu.Item key={user.id} onClick={(e)=>onClick(user.id,user.firstName)}> {user.firstName}</Menu.Item>
                 })

@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {UserStoryModel} from "../interfaces/UserStoryModel";
 import {UserStoryStyleComponent} from "../assets/styledComponents/styledComponents";
 import {SettingOutlined} from '@ant-design/icons';
 import EditUserStory from "./EditUserStory";
+import {ApplicationContext} from "../context/ApplicationContext";
 
 
 interface Props {
@@ -15,6 +16,7 @@ const UserStory: React.FC<Props> = ({UserStory, removeUserStory}) => {
 
     const [edit, setEdit] = useState(false);
     const [userStory, setUserStory] = useState(UserStory);
+    const appContext = useContext(ApplicationContext);
 
     function handleChangeToEdit(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
         e.stopPropagation();
@@ -22,28 +24,27 @@ const UserStory: React.FC<Props> = ({UserStory, removeUserStory}) => {
     }
 
     function checkEstimation(): boolean {
-        //return userStory.estimatedUsers[appContext.getUserId()] !== undefined;
-        return true
+        if (UserStory.estimatedUsers)
+            return UserStory.estimatedUsers?.some((estimation) => {
+                return parseInt(estimation.owner.id) === appContext.getUserIdAsNumber()
+            });
+        return false
     }
 
     function getEstimatedAverage() {
         let estimatedUsers = userStory.estimatedUsers;
-        /*
-        let reduce = Object.values(estimatedUsers).reduce((re, e)=> {
-            re.sum+=e;
-            re.length+=1;
+        if (!estimatedUsers) return 0;
+        let reduce = estimatedUsers?.reduce((re, e) => {
+            re.sum += e.estimation;
+            re.length++;
             return re
-        },{sum:0,length:0} );
-        return (reduce.sum/reduce.length).toFixed(1)
-         */
-
-        return 22
+        }, {sum: 0, length: 0});
+        return (reduce.sum / reduce.length).toFixed(1);
     }
 
 
     return (
         <>
-
             {
                 edit ? <EditUserStory userStory={userStory} edit={edit} setEdit={setEdit}
                                       setUserStory={setUserStory} removeUserStory={removeUserStory}/>
@@ -51,7 +52,7 @@ const UserStory: React.FC<Props> = ({UserStory, removeUserStory}) => {
                         <div className={"userStory-id UserStory-part"}>{userStory.id}</div>
                         <div className={"userStory-userStory UserStory-part"}>{userStory.userStory}</div>
                         <div className={"userStory-businessValue UserStory-part"}>{userStory.businessValue}</div>
-                        <div className={"userStory-ownerId UserStory-part"}>{userStory.owner.firstName}</div>
+                        <div className={"userStory-ownerId UserStory-part"}>{userStory.owner? userStory.owner.firstName : "_ _ _"}</div>
                         <div className={"userStory-estimation UserStory-part"}>
                             {checkEstimation() ? getEstimatedAverage() + "-SP" : "Please Estimate"}</div>
                         <div className={"UserStory-part"} onClick={e => handleChangeToEdit(e)}><SettingOutlined

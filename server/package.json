@@ -14,7 +14,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/bcrypt": "^3.0.0",
     "@types/mysql": "^2.15.15",
+    "bcrypt": "^5.0.0",
     "express": "^4.17.1",
     "graphql": "^15.4.0",
     "graphql-request": "^3.3.0",

@@ -21,6 +21,7 @@
 .switch{
     margin: 5%;
     grid-area: switch;
+    align-self: center;
 
 }
 
@@ -37,16 +38,14 @@
 }
 
 .submit{
-
-    grid-row: 5/6;
+    grid-row: 6/7;
 
 }
 
 @media screen and (min-width: 760px){
     .auth-page{
         grid-template-areas:
-                "welcome-text welcome-text . ."
-                ". . switch switch "
+                "welcome-text welcome-text switch switch"
                 ". . auth-component-container auth-component-container"
                 ". . auth-component-container auth-component-container";
 

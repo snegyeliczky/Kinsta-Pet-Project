@@ -7,6 +7,7 @@ import UserEstimation from "../model/UserEstimation";
 import {GqlService} from "../services/GqlService";
 import {GqlUtil} from "../util/GqlUtil";
 import ParticipateInvite from "../model/ParticipateInvite";
+import {MySqlService} from "../services/MySqlService";
 
 export const resolvers = {
     Query: {
@@ -20,7 +21,9 @@ export const resolvers = {
         getInvitesForParticipation: (parent: User, args: { userId: number }) => {
             return GqlUtil.getProjectInvitationsForUser(args.userId);
         },
-
+        login: (parent:User, args:{email:string, password:string})=>{
+            return GqlService.loginUser(args.email,args.password)
+        },
         companies: () => Company.query(),
         company: (parent: Company, args: { id: number }) => {
             return Company.query().findById(args.id);
@@ -58,26 +61,19 @@ export const resolvers = {
         addNewUser: (
             parent: User,
             args: {
-                newFirstName: string;
-                newLastName: string;
-                email: string;
-                password: string;
+                FirstName: string;
+                LastName: string;
+                Email: string;
+                Password: string;
             }
         ) => {
-            return User.query().insert({
-                firstName: args.newFirstName,
-                lastName: args.newLastName,
-                email: args.email,
-                password: args.password,
-            });
+            return GqlService.registerUser(args.FirstName,args.LastName, args.Email, args.Password)
         },
         addNewCompany: (
             parent: Company,
             args: { userId: number; CompanyName: string }
         ) => {
-            return User.relatedQuery("companies")
-                .for(args.userId)
-                .insert({name: args.CompanyName});
+            return MySqlService.addNewCompany(args.userId, args.CompanyName);
         },
         addNewProject: async (
             parent: Project,
@@ -92,11 +88,11 @@ export const resolvers = {
         },
         addNewUserStory: async (
             parent: UserStory,
-            args: { userId: number; projectId: number; userStory: string, businessValue:number }
+            args: { userId: number; projectId: number; userStory: string, businessValue: number }
         ) => {
             let newUserStory = await Project.relatedQuery("userStories")
                 .for(args.projectId)
-                .insert({userStory: args.userStory, status: false, businessValue:args.businessValue});
+                .insert({userStory: args.userStory, status: false, businessValue: args.businessValue});
             console.log(newUserStory);
             await newUserStory.$relatedQuery("owner").relate(args.userId);
             console.log(newUserStory);
@@ -125,7 +121,7 @@ export const resolvers = {
             return Project.relatedQuery('owner').for(args.projectId).relate(args.userId);
         },
         addOwnerToUserStory: (parent: UserStory, args: { userId: number, userStoryId: number }) => {
-            return UserStory.relatedQuery('owner').for(args.userStoryId).relate(args.userId);
+            return MySqlService.addOwnerToUserStory(args.userId, args.userStoryId);
         },
         addOwnerToTask: (parent: Task, args: { userId: number, taskId: number }) => {
             return Task.relatedQuery('owner').for(args.taskId).relate(args.userId);
@@ -156,10 +152,10 @@ export const resolvers = {
         updateUserStory: async (
             parent: UserStory,
             args: {
-                ownerId: number; userStory: string;
-                userStoryId: number; businessValue:number
+                userStory: string;
+                userStoryId: number; businessValue: number
             }) => {
-            return GqlService.updateUserStory(args.ownerId, args.userStory, args.userStoryId, args.businessValue);
+            return GqlService.updateUserStory(args.userStory, args.userStoryId, args.businessValue);
         },
 
         // update the task status and return the userStory status
@@ -214,6 +210,10 @@ export const resolvers = {
     Company: {
         id: (parent: Company) => parent.id,
         name: (parent: Company) => parent.name,
+        ownerUser: async (parent: Company) => {
+            let userInList = await Company.relatedQuery("ownerUser").for(parent.id);
+            return userInList[0]
+        },
         users: (parent: Company) => {
             return Company.relatedQuery("users").for(parent.id);
         },

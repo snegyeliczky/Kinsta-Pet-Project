@@ -1,22 +1,31 @@
 import React, {useContext, useState} from 'react';
 import {Button, Input} from "antd";
 import {ShopOutlined, CheckOutlined} from '@ant-design/icons';
-import CompanyService from "../localServices/CompanyService";
 import {useHistory} from "react-router-dom";
 import "../assets/CreatNewCompanyStyle.css"
 import {ApplicationContext} from "../context/ApplicationContext";
-import {NewCompanyContainer}from "../assets/styledComponents/styledComponents"
+import {NewCompanyContainer} from "../assets/styledComponents/styledComponents"
+import {useMutation} from "@apollo/client";
+import {createNewCompany} from "../queries/companyQueries";
+import {getUsersCompanies} from "../queries/userQueries";
 
 const NewCompany = () => {
 
-    const appContext =  useContext(ApplicationContext);
-    let userId:string = appContext.getUserId();
+    const appContext = useContext(ApplicationContext);
+    let userId: number = appContext.getUserIdAsNumber();
     const [newCompName, setNewCompName] = useState<string>("");
+    const [saveNewCompany] = useMutation(createNewCompany)
     const history = useHistory();
 
-    const handleCreatCompany = (): void => {
+    const handleCreatCompany = async () => {
         if (newCompName.length > 2) {
-            CompanyService.addNewCompany(newCompName, userId);
+            await saveNewCompany({
+                variables: {
+                    userId: userId,
+                    CompanyName: newCompName
+                },
+                refetchQueries:[{query:getUsersCompanies,variables:{id:userId}}]
+            });
             history.push("/app")
         } else {
             alert("Company name must be minimum 3 character!")
@@ -29,7 +38,8 @@ const NewCompany = () => {
         <NewCompanyContainer>
             <h1> Create new company </h1>
             <div id={"new-company-form"}>
-                <Input className={"company-name-input"} placeholder={"Company Name"} prefix={<ShopOutlined/>} type={"string"}
+                <Input className={"company-name-input"} placeholder={"Company Name"} prefix={<ShopOutlined/>}
+                       type={"string"}
                        onChange={event => {
                            setNewCompName(event.target.value)
                        }}

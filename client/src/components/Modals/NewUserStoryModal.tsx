@@ -5,6 +5,10 @@ import {ModalContainer} from "../../assets/styledComponents/styledComponents";
 import {UserModel} from "../../interfaces/UserModel";
 import UserDropdown from "../userDropdown";
 import {ApplicationContext} from "../../context/ApplicationContext";
+import {useMutation, useQuery} from "@apollo/client";
+import {getUserById} from "../../queries/userQueries";
+import {addNewUserStoryMutation} from "../../queries/userStoryQueries";
+import {getUserStories} from "../../queries/projectQueries";
 
 
 interface Props {
@@ -18,8 +22,10 @@ const NewUserStoryModal: React.FC<Props> = ({projectId, participants}) => {
     const [visible, setVisible] = useState(false);
     const [UserStory, setUserStory] = useState("");
     const [BusinessValue, setBusinessValue] = useState(0);
-    const [OwnerId, setOwnerId] = useState<string | null>(appContext.getUserId());
-    const [Estimation, setEstimation] = useState(0);
+    const [OwnerId, setOwnerId] = useState<number | null>(appContext.getUserIdAsNumber());
+    const [addNewUserStory] = useMutation(addNewUserStoryMutation);
+
+    const {loading, data} = useQuery(getUserById, {variables: {id: appContext.getUserIdAsNumber()}});
 
     const showModal = (event: React.MouseEvent<HTMLElement>) => {
         event.stopPropagation();
@@ -27,7 +33,15 @@ const NewUserStoryModal: React.FC<Props> = ({projectId, participants}) => {
     };
 
     const saveUserStory = () => {
-        // logic
+        addNewUserStory({
+            variables:{
+                userId:OwnerId,
+                projectId:projectId,
+                userStory:UserStory,
+                businessValue:BusinessValue
+            },
+            refetchQueries:[{query:getUserStories, variables:{id:projectId}}]
+        })
     };
 
     const handleSave = (e: React.MouseEvent<HTMLElement>) => {
@@ -73,13 +87,13 @@ const NewUserStoryModal: React.FC<Props> = ({projectId, participants}) => {
                                setBusinessValue(event.target.valueAsNumber)
                            }}
                     />
-                    <UserDropdown base={appContext.getLoggedInUserName()} onChange={setOwnerId}
-                                  userData={participants}/>
-                    <Input placeholder={"Estimation"} prefix={<ProjectOutlined/>} type={"number"}
-                           onChange={event => {
-                               setEstimation(event.target.valueAsNumber)
-                           }}
-                    />
+                    {
+                        loading ?
+                            <div></div>
+                            :
+                            <UserDropdown base={data.user.firstName} onChange={setOwnerId}
+                                          userData={participants}/>
+                    }
                 </div>
 
             </Modal>

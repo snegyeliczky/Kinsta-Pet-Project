@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {useParams} from "react-router";
-import ProjectService from "../localServices/ProjectService";
+import {useHistory, useParams} from "react-router";
 import "../assets/ProjectStyle.css"
 import NewUserStoryModal from "../components/Modals/NewUserStoryModal";
 import {Collapse} from "antd";
@@ -9,59 +8,100 @@ import {ProjectTitleContainer, UserStoryStyleComponent} from "../assets/styledCo
 import UserStory from "../components/UserStory";
 import TaskTable from "../components/TaskTable";
 import ProjectContext from "../context/ProjectContext";
-import {useQuery} from "@apollo/client";
-import {getUserStories} from "../queries/projectQueries";
+import {useMutation, useQuery} from "@apollo/client";
+import {deleteProjectMutation, getProject, getUserStories} from "../queries/projectQueries";
 import {UserStoryModel} from "../interfaces/UserStoryModel";
+import {deleteUserStoryMutation} from "../queries/userStoryQueries";
+import AlertModal from "../components/Modals/AlertModal";
+import {DeleteOutlined} from '@ant-design/icons';
+import {getProjectsForCompanyByUser} from "../queries/companyQueries";
+import {ApplicationContext} from "../context/ApplicationContext";
 
 const ProjectPage = () => {
 
     const projectContext = useContext(ProjectContext);
+    const appContext = useContext(ApplicationContext);
     const {id} = useParams();
     const [sortDir, setSortDir] = useState(true);
-    const {loading, error, data} = useQuery(getUserStories, {
-        variables: {
-            id: parseInt(id)
-        }
-    });
+    const {loading: load_userStory, error: error_userStory, data: userStory_data, refetch: refetch_userStory} =
+        useQuery(getUserStories,
+            {
+                variables: {
+                    id: parseInt(id)
+                }
+            });
+    const {loading: load_project, error: error_project, data: project_data} =
+        useQuery(getProject, {
+            variables: {
+                id: id
+            }
+        });
+    const [deleteUserStory] = useMutation(deleteUserStoryMutation);
+    const [deleteProject] = useMutation(deleteProjectMutation);
+    const history = useHistory();
 
     useEffect(() => {
         projectContext.loadParticipantUsersById(id);
     }, [id]);
 
     const sortByBusinessValue = () => {
-        //logic
+        setSortDir(!sortDir)
+    };
 
-        /*
-        let userStoryModels = userStories.sort((a, b) => {
+    const deleteAndHome = async () => {
+        await deleteProject({
+            variables: {
+                projectId: parseInt(id)
+            },
+            refetchQueries: [{
+                query: getProjectsForCompanyByUser,
+                variables: {
+                    userId: appContext.getUserIdAsNumber(),
+                    companyId: project_data.project.company.id
+                }
+            }]
+        });
+        history.push("/app");
+    };
+
+    const sortUserStories = (storyList: UserStoryModel[]) => {
+        return storyList.sort((a, b) => {
             if (sortDir) return (a.businessValue > b.businessValue) ? -1 : 1;
             return (a.businessValue > b.businessValue) ? 1 : -1
         });
-        setSortDir(!sortDir);
-        setUserStories([...userStoryModels])
-         */
     };
 
     const getProjectData = () => {
-        let project = ProjectService.getProject(parseInt(id));
-        if (project) {
+        if (load_project)
             return (
-                <ProjectTitleContainer className={"project-title-container"}>
-                    <h2>{project.name}</h2>
-                    <h3>projectID: {project.id}</h3>
+                <ProjectTitleContainer>
+                    <h2>Loading...</h2>
                 </ProjectTitleContainer>
             );
-        } else return (
-            <h2>No project found wit this id </h2>
-        )
+        if (error_project) return <div>Error..</div>;
+
+        return (
+            <ProjectTitleContainer className={"project-title-container"}>
+                <h2>{project_data.project.name}</h2>
+                <h3>projectID: {project_data.project.id}</h3>
+                {
+                    appContext.isUserIsOwner(project_data.project.owner.id) ?
+                        <AlertModal text={"Sure to delete?"} buttonText={<DeleteOutlined/>}
+                                    OkFunction={deleteAndHome}/>
+                        : ""}
+            </ProjectTitleContainer>
+        );
+
     };
 
 
-    const removeUSerStoryById = (storyId: number) => {
-        /*
-        let userStories = UserStoryService.removeUserStory(storyId);
-        setUserStories(userStories);
-
-         */
+    const removeUSerStoryById = async (storyId: number) => {
+        await deleteUserStory({
+            variables: {
+                userStoryId: storyId
+            }
+        });
+        await refetch_userStory();
     };
 
     const renderUserStories = (storyList: UserStoryModel[]) => {
@@ -77,10 +117,11 @@ const ProjectPage = () => {
     };
 
     const loadUserStories = () => {
-        if (loading) return <div>Loading...</div>;
-        if (error) return <div>Error van</div>;
-        let storyList = data.project.userStories;
-        return renderUserStories(storyList);
+        if (load_userStory) return <div>Loading...</div>;
+        if (error_userStory) return <div>Error van</div>;
+        let storyList = userStory_data.project.userStories;
+        let sortedStoryList = sortUserStories([...storyList]);
+        return renderUserStories(sortedStoryList);
     };
 
 

@@ -29,8 +29,8 @@ const AlertModal:React.FC<Props> = ({text,buttonText,OkFunction}) => {
 
 
     return (
-        <div>
-            <Button onClick={showModal} shape={"round"}>
+        <div className={"alert_modal"}>
+            <Button onClick={showModal} shape={"round"} type={"primary"} danger>
                 {buttonText}
             </Button>
             <Modal

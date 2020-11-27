@@ -5,6 +5,9 @@ import Project from "../model/Project";
 import Company from "../model/Company";
 import {MySqlService} from "./MySqlService";
 import {GqlUtil} from "../util/GqlUtil";
+import bcrypt from "bcrypt";
+import {response} from "express";
+import has = Reflect.has;
 
 export const GqlService = {
 
@@ -46,12 +49,11 @@ export const GqlService = {
         return MySqlService.updateUserStory(Story.userStoryId, {status: Story.status});
     },
 
-    updateUserStory: async (ownerId: number, userStory: string,
-                            userStoryId: number, businessValue:number) => {
-        await UserStory.relatedQuery("owner").for(userStoryId).relate(ownerId);
+    updateUserStory: async (userStory: string,
+                            userStoryId: number, businessValue: number) => {
         await UserStory.query().findById(userStoryId).patch({
             userStory: userStory,
-            businessValue:businessValue
+            businessValue: businessValue
         });
         return UserStory.query().findById(userStoryId);
     },
@@ -120,6 +122,19 @@ export const GqlService = {
             .where('companyId', companyId);
         return projects;
     },
+
+    registerUser: async (FirstName: string, LastName: string,
+                         Email: string, Password: string) => {
+        const saltRound = 10;
+        let hashedPsw = await bcrypt.hash(Password, saltRound);
+        return MySqlService.saveNewUser(FirstName, LastName, Email, hashedPsw);
+    },
+
+    loginUser: async (Email: string, Password: string) => {
+        let userByEmail = await MySqlService.getUserByEmail(Email);
+        let hash = userByEmail[0].password;
+        return bcrypt.compare(Password, hash)
+    }
 };
 
 
