@@ -137,7 +137,7 @@ export const GqlService = {
             let isLogin = await bcrypt.compare(Password, hash);
             if (isLogin) return userByEmail[0];
         }
-        return null
+        return new Error("Invalid username or password!")
     }
 };
 
