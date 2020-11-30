@@ -24,8 +24,7 @@ const NewTaskModal: React.FC<Props> = ({UserStoryId}) => {
     const [time, setTime] = useState<string>("00:00");
     const [addNewTaskMutation] = useMutation(addNewTask);
 
-    const {data} = useQuery(getUserById, {variables: {id: appContext.getUserIdAsNumber()}});
-
+    const {data, loading} = useQuery(getUserById, {variables: {id: appContext.getUserIdAsNumber()}});
 
     function showModal(event: React.MouseEvent<HTMLElement>) {
         setVisible(true)
@@ -56,6 +55,9 @@ const NewTaskModal: React.FC<Props> = ({UserStoryId}) => {
             setVisible(false);
         } else message.error("Task title must be minimum 3 character long!", 5)
     }
+
+
+    if (loading) return (<div>Loading...</div>);
 
 
     return (
