@@ -102,7 +102,7 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
 
     return (
         <UserStoryStyleComponent onClick={event => event.stopPropagation()} onKeyDown={event => handleKeyBoard(event)}
-                                 hover={true}>
+                                 hover={true} status={false}>
             <div className={"userStory-id UserStory-part"}>
                 {userStory.id}
             </div>

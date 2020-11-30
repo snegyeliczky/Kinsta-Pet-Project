@@ -133,7 +133,7 @@ const ProjectPage = () => {
 
             <div className={"userStory-container"}>
                 <NewUserStoryModal projectId={parseInt(id)} participants={projectContext.participants}/>
-                <UserStoryStyleComponent id={"userStory-names"} className={"userStory-component"} hover={false}>
+                <UserStoryStyleComponent id={"userStory-names"} className={"userStory-component"} hover={false} status={false}>
                     <div className={"userStory-id UserStory-part"}>Story ID</div>
                     <div className={"userStory-userStory UserStory-part userStory-title"}>User Story</div>
                     <div className={"userStory-businessValue-title UserStory-part"} onClick={

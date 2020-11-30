@@ -8,6 +8,8 @@ import {ApplicationContext} from "../context/ApplicationContext";
 import {UserModel} from "../interfaces/UserModel";
 import {useMutation} from "@apollo/client";
 import {getTaskForUserStory, updateTaskStatus} from "../queries/taskQueries";
+import {useParams} from "react-router";
+import {getUserStories} from "../queries/projectQueries";
 
 type Props ={
     Task:TaskModel,
@@ -18,18 +20,23 @@ const TaskComponent:React.FC<Props> = ({Task,removeTask}) => {
 
     const appContext = useContext(ApplicationContext);
     const[edit, setEdit] = useState(false);
+    const {id} = useParams();
 
     const [mutateTaskStatus] = useMutation(updateTaskStatus);
 
 
-    const handleCheck = ()=>{
-         mutateTaskStatus({
+    const handleCheck = async ()=>{
+        let userStoryStatusData = await mutateTaskStatus({
             variables:{
                 taskId:Task.id,
                 taskStatus:!Task.ready
             },
-            refetchQueries:[{query:getTaskForUserStory, variables:{id:Task.userStory.id}}]
+            refetchQueries:[
+                {query:getTaskForUserStory, variables:{id:Task.userStory.id}},
+                {query:getUserStories, variables:{id:parseInt(id)}}]
         });
+        let userStoryStatus=userStoryStatusData.data.updateTaskStatus.status
+        console.log(userStoryStatus)
     };
 
     function showCheckBox(owner:UserModel | null | undefined) {

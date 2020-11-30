@@ -104,6 +104,7 @@ export const StyledCompanyHeader = styled("div")<StyledCompanyHeaderProps>(
 
 type userStoryProps = {
     hover: boolean
+    status:boolean
 }
 
 export const UserStoryStyleComponent = styled("div")<userStoryProps>(
@@ -161,8 +162,9 @@ export const UserStoryStyleComponent = styled("div")<userStoryProps>(
     props => ({
         ":hover": {
             transform: props.hover ? "scale(1.03)" : ""
-        }
-
+        },
+        backgroundColor: props.status?"rgba(0, 128, 0,0.8)" :"",
+        borderRadius: props.status?"10px":""
     })
 );
 
