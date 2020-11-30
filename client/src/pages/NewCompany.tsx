@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {Button, Input} from "antd";
+import {Button, Input, message} from "antd";
 import {ShopOutlined, CheckOutlined} from '@ant-design/icons';
 import {useHistory} from "react-router-dom";
 import "../assets/CreatNewCompanyStyle.css"
@@ -28,7 +28,7 @@ const NewCompany = () => {
             });
             history.push("/app")
         } else {
-            alert("Company name must be minimum 3 character!")
+            message.warning("Company name must be minimum 3 character!")
         }
 
     };
