@@ -1,7 +1,7 @@
 import React, {useContext, useState} from 'react';
 import {UserStoryModel} from "../interfaces/UserStoryModel";
-import {UserStoryStyleComponent} from "../assets/styledComponents/styledComponents";
-import {SettingOutlined} from '@ant-design/icons';
+import {CenterDiv, UserStoryStyleComponent} from "../assets/styledComponents/styledComponents";
+import {SettingOutlined, CheckSquareFilled} from '@ant-design/icons';
 import EditUserStory from "./EditUserStory";
 import {ApplicationContext} from "../context/ApplicationContext";
 
@@ -47,15 +47,27 @@ const UserStory: React.FC<Props> = ({UserStory, removeUserStory}) => {
             {
                 edit ? <EditUserStory userStory={userStory} edit={edit} setEdit={setEdit}
                                       setUserStory={setUserStory} removeUserStory={removeUserStory}/>
-                    : <UserStoryStyleComponent key={userStory.id} className={"userStory-component"} hover={true} status={UserStory.status}>
+                    : <UserStoryStyleComponent key={userStory.id} className={"userStory-component"} hover={true}>
                         <div className={"userStory-id UserStory-part"}>{userStory.id}</div>
                         <div className={"userStory-userStory UserStory-part"}>{userStory.userStory}</div>
                         <div className={"userStory-businessValue UserStory-part"}>{userStory.businessValue}</div>
-                        <div className={"userStory-ownerId UserStory-part"}>{userStory.owner? userStory.owner.firstName : "_ _ _"}</div>
+                        <div
+                            className={"userStory-ownerId UserStory-part"}>{userStory.owner ? userStory.owner.firstName : "_ _ _"}</div>
                         <div className={"userStory-estimation UserStory-part"}>
                             {checkEstimation() ? getEstimatedAverage() + "-SP" : "Please Estimate"}</div>
-                        <div className={"UserStory-part"} onClick={e => handleChangeToEdit(e)}><SettingOutlined
-                            spin={edit}/></div>
+                        <div className={"UserStory-part"} onClick={e => handleChangeToEdit(e)}>
+                            <SettingOutlined spin={edit} style={{fontSize:"20px"}}/>
+                            {UserStory.status
+                                ?
+                                <CenterDiv>
+                                    <CheckSquareFilled style={{background: "green", fontSize:"20px"}}/>
+                                </CenterDiv>
+                                :
+                                ""
+                            }
+
+                        </div>
+
                     </UserStoryStyleComponent>
             }
         </>
