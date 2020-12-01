@@ -27,7 +27,7 @@ const ProjectPage = () => {
         useQuery(getUserStories,
             {
                 variables: {
-                    id: parseInt(id)
+                    id
                 }
             });
     const {loading: load_project, error: error_project, data: project_data} =

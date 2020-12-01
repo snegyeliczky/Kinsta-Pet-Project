@@ -33,9 +33,9 @@ const TaskComponent:React.FC<Props> = ({Task,removeTask}) => {
             },
             refetchQueries:[
                 {query:getTaskForUserStory, variables:{id:Task.userStory.id}},
-                {query:getUserStories, variables:{id:parseInt(id)}}]
+                {query:getUserStories, variables:{id}}]
         });
-        let userStoryStatus=userStoryStatusData.data.updateTaskStatus.status
+        let userStoryStatus=userStoryStatusData.data.updateTaskStatus.status;
         console.log(userStoryStatus)
     };
 

@@ -42,15 +42,12 @@ const UserStory: React.FC<Props> = ({UserStory, removeUserStory}) => {
         return (reduce.sum / reduce.length).toFixed(1);
     }
 
-    console.log(userStory.status)
-
-
     return (
         <>
             {
                 edit ? <EditUserStory userStory={userStory} edit={edit} setEdit={setEdit}
                                       setUserStory={setUserStory} removeUserStory={removeUserStory}/>
-                    : <UserStoryStyleComponent key={userStory.id} className={"userStory-component"} hover={true} status={userStory.status}>
+                    : <UserStoryStyleComponent key={userStory.id} className={"userStory-component"} hover={true} status={UserStory.status}>
                         <div className={"userStory-id UserStory-part"}>{userStory.id}</div>
                         <div className={"userStory-userStory UserStory-part"}>{userStory.userStory}</div>
                         <div className={"userStory-businessValue UserStory-part"}>{userStory.businessValue}</div>
