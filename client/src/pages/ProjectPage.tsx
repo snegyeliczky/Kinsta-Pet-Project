@@ -27,7 +27,7 @@ const ProjectPage = () => {
         useQuery(getUserStories,
             {
                 variables: {
-                    id: parseInt(id)
+                    id
                 }
             });
     const {loading: load_project, error: error_project, data: project_data} =
@@ -118,7 +118,7 @@ const ProjectPage = () => {
 
     const loadUserStories = () => {
         if (load_userStory) return <div>Loading...</div>;
-        if (error_userStory) return <div>Error van</div>;
+        if (error_userStory) return <div>Error </div>;
         let storyList = userStory_data.project.userStories;
         let sortedStoryList = sortUserStories([...storyList]);
         return renderUserStories(sortedStoryList);
