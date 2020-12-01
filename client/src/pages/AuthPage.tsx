@@ -13,7 +13,7 @@ const AuthPage = () => {
     const [isReg, setReg] = useState<boolean>(true);
     const history = useHistory();
     const appContext = useContext(ApplicationContext);
-    const [getLogin, {data, error}] =
+    const [getLogin, {data}] =
         useLazyQuery(loginUser, {
             onError: (e) => {
                 message.error(e.message)

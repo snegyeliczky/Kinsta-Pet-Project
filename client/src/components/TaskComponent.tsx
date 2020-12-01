@@ -26,7 +26,7 @@ const TaskComponent:React.FC<Props> = ({Task,removeTask}) => {
 
 
     const handleCheck = async ()=>{
-        let userStoryStatusData = await mutateTaskStatus({
+        await mutateTaskStatus({
             variables:{
                 taskId:Task.id,
                 taskStatus:!Task.ready
@@ -35,8 +35,6 @@ const TaskComponent:React.FC<Props> = ({Task,removeTask}) => {
                 {query:getTaskForUserStory, variables:{id:Task.userStory.id}},
                 {query:getUserStories, variables:{id}}]
         });
-        let userStoryStatus=userStoryStatusData.data.updateTaskStatus.status;
-        console.log(userStoryStatus)
     };
 
     function showCheckBox(owner:UserModel | null | undefined) {
