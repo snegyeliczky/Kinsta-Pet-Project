@@ -1,7 +1,7 @@
 import React, {useContext, useState} from 'react';
 import Login from "../components/authComp/Login";
 import Registration from "../components/authComp/Registration";
-import {Switch} from 'antd';
+import {message, Switch} from 'antd';
 import {useHistory} from "react-router-dom";
 import "../assets/AuthStyle.css"
 import {ApplicationContext} from "../context/ApplicationContext";
@@ -13,24 +13,32 @@ const AuthPage = () => {
     const [isReg, setReg] = useState<boolean>(true);
     const history = useHistory();
     const appContext = useContext(ApplicationContext);
-    const [getLogin, {data}] = useLazyQuery(loginUser);
+    const [getLogin, {data}] =
+        useLazyQuery(loginUser, {
+            onError: (e) => {
+                message.error(e.message)
+            }
+        });
 
 
     if (data) {
-        localStorage.setItem("username", data.login.firstName);
-        localStorage.setItem("userId", data.login.id);
-        appContext.setUserName(data.login.firstName);
-        history.push("/app")
+        console.log(data)
+        if (data.login) {
+            localStorage.setItem("username", data.login.firstName);
+            localStorage.setItem("userId", data.login.id);
+            appContext.setUserName(data.login.firstName);
+            history.push("/app")
+        }
     }
 
-    const login = (username: string, password: string) => {
+    const login = async (username: string, password: string) => {
         try {
-            getLogin({
+            await getLogin({
                 variables: {
                     email: username,
                     password: password
                 },
-            })
+            });
         } catch (e) {
             console.log(e);
             alert(e.message)

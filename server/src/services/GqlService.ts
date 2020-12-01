@@ -132,8 +132,12 @@ export const GqlService = {
 
     loginUser: async (Email: string, Password: string) => {
         let userByEmail = await MySqlService.getUserByEmail(Email);
-        let hash = userByEmail[0].password;
-        return bcrypt.compare(Password, hash)
+        if(userByEmail.length>0){
+            let hash = userByEmail[0].password;
+            let isLogin = await bcrypt.compare(Password, hash);
+            if (isLogin) return userByEmail[0];
+        }
+        return new Error("Invalid username or password!")
     }
 };
 

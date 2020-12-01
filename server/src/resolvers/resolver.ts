@@ -21,8 +21,8 @@ export const resolvers = {
         getInvitesForParticipation: (parent: User, args: { userId: number }) => {
             return GqlUtil.getProjectInvitationsForUser(args.userId);
         },
-        login: (parent:User, args:{email:string, password:string})=>{
-            return GqlService.loginUser(args.email,args.password)
+        login: (parent: User, args: { email: string, password: string }) => {
+            return GqlService.loginUser(args.email, args.password)
         },
         companies: () => Company.query(),
         company: (parent: Company, args: { id: number }) => {
@@ -67,7 +67,7 @@ export const resolvers = {
                 Password: string;
             }
         ) => {
-            return GqlService.registerUser(args.FirstName,args.LastName, args.Email, args.Password)
+            return GqlService.registerUser(args.FirstName, args.LastName, args.Email, args.Password)
         },
         addNewCompany: (
             parent: Company,
@@ -108,6 +108,7 @@ export const resolvers = {
             let newTask = await UserStory.relatedQuery('tasks').for(args.userStoryId)
                 .insert({title: args.taskTitle, description: args.taskDescription, ready: false, time: args.time});
             if (args.ownerId) await Task.relatedQuery('owner').for(newTask.id).relate(args.ownerId);
+            await GqlService.updateUserStoryStatusAfterTaskStatusRefresh(parseInt(newTask.id))
             return newTask
         },
 
@@ -139,8 +140,9 @@ export const resolvers = {
         deleteUserStory: (parent: UserStory, args: { userStoryId: number }) => {
             return UserStory.query().deleteById(args.userStoryId);
         },
-        deleteTask: (parent: Task, args: { taskId: number }) => {
-            return Task.query().deleteById(args.taskId);
+        deleteTask: async (parent: Task, args: { taskId: number }) => {
+            let number = await Task.query().deleteById(args.taskId);
+            return number;
         },
 
         updateCompany: (parent: Company, args: { companyId: number, companyName: string }) => {

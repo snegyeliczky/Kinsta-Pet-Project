@@ -8,6 +8,8 @@ import {ApplicationContext} from "../../context/ApplicationContext";
 import {useMutation, useQuery} from "@apollo/client";
 import {addNewTask, getTaskForUserStory} from "../../queries/taskQueries";
 import {getUserById} from "../../queries/userQueries";
+import {useParams} from "react-router";
+import {getUserStories} from "../../queries/projectQueries";
 
 type Props = {
     UserStoryId: number
@@ -23,9 +25,9 @@ const NewTaskModal: React.FC<Props> = ({UserStoryId}) => {
     const [ownerId, setOwnerId] = useState<number | null>(appContext.getUserIdAsNumber());
     const [time, setTime] = useState<string>("00:00");
     const [addNewTaskMutation] = useMutation(addNewTask);
+    const {id} = useParams();
 
-    const {data} = useQuery(getUserById, {variables: {id: appContext.getUserIdAsNumber()}});
-
+    const {data, loading} = useQuery(getUserById, {variables: {id: appContext.getUserIdAsNumber()}});
 
     function showModal(event: React.MouseEvent<HTMLElement>) {
         setVisible(true)
@@ -40,7 +42,10 @@ const NewTaskModal: React.FC<Props> = ({UserStoryId}) => {
                 ownerId: ownerId,
                 time: time
             },
-            refetchQueries: [{query: getTaskForUserStory, variables: {id: UserStoryId}}]
+            refetchQueries: [
+                {query: getTaskForUserStory, variables: {id: UserStoryId}},
+                {query:getUserStories, variables:{id}}
+                ]
         })
 
     }
@@ -57,6 +62,8 @@ const NewTaskModal: React.FC<Props> = ({UserStoryId}) => {
         } else message.error("Task title must be minimum 3 character long!", 5)
     }
 
+
+    if (loading) return (<div>Loading...</div>);
 
     return (
         <div>

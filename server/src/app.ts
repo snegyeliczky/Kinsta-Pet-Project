@@ -14,7 +14,7 @@ async function insertBaseUsersToDb() {
     if (users.length < 1) {
         await DbInit();
     }
-    let testData = '';
+    let testData = await GqlService.loginUser("sandor.negyeliczky@gmail.com","1234");
     console.log(testData);
 
 };

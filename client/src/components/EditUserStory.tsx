@@ -15,6 +15,7 @@ import {
     updateUserStoryUser
 } from "../queries/userStoryQueries";
 import {ApplicationContext} from "../context/ApplicationContext";
+import {getUserStories} from "../queries/projectQueries";
 
 type Props = {
     userStory: UserStoryModel,
@@ -36,7 +37,6 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
     const [estimate] = useMutation(estimateUserStory);
     const {refetch} = useQuery(estimationsForUserStory, {variables: {id: userStory.id}});
 
-
     const EditUserStory = (story: string) => {
         editedUserStory.userStory = story;
     };
@@ -45,7 +45,7 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
         editedUserStory.businessValue = value;
     };
 
-    const EditUserStoryOwner = async (owner: string|null) => {
+    const EditUserStoryOwner = async (owner: string | null) => {
         let fetchResult = await mutateUser({
             variables: {
                 userStoryId: userStory.id,
@@ -61,13 +61,12 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
                 userId: appContext.getUserIdAsNumber(),
                 userStoryId: userStory.id,
                 estimation: point
-            }
+            },
+            refetchQueries:[{query:getUserStories, variables:{id:userStory.project.id}}]
         });
         let estimationObject = await refetch();
         let estimations = estimationObject.data.userStory.estimatedUsers;
         setEstimations(estimations);
-        editedUserStory.estimatedUsers = estimations;
-        setUserStory(editedUserStory)
     };
 
     const saveUserStoryToDb = async () => {
@@ -120,7 +119,7 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
             </div>
             <div className={"userStory-ownerId UserStory-part"}>
                 <UserDropdown userData={projectContext.participants} onChange={EditUserStoryOwner}
-                              base={userStory.owner? userStory.owner.firstName : "- - -"}/>
+                              base={userStory.owner ? userStory.owner.firstName : "- - -"}/>
             </div>
             <div className={"userStory-estimation UserStory-part"}>
                 <EstimationModal editUserStoryEstimation={EditUserStoryEstimation}

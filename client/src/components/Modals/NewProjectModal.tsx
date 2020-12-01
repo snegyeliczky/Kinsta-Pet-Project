@@ -1,5 +1,5 @@
 import React, { useContext, useState} from 'react';
-import {Modal, Button, Input} from 'antd';
+import {Modal, Button, Input, message} from 'antd';
 import {PlusOutlined, ProjectOutlined} from '@ant-design/icons';
 import {useHistory} from "react-router-dom";
 import {ModalContainer} from "../../assets/styledComponents/styledComponents";
@@ -28,7 +28,7 @@ const NewProjectModal: React.FC<Props> = ({companyId}) => {
     const handleSave = async (e: React.MouseEvent<HTMLElement>, go: boolean) => {
         e.stopPropagation();
         if (projectName.length <= 2) {
-            alert("Project name must be 3 character long!")
+            message.warning("Project name must be 3 character long!")
         } else {
             let newProject = await saveNewProject(
                 {

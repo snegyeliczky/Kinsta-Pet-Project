@@ -53,7 +53,7 @@ const EstimationModal: React.FC<Props> = ({editUserStoryEstimation, estimatedUse
             }
         }
         else {
-            setNewEstimation(valueAsNumber)
+            if (valueAsNumber>0) setNewEstimation(valueAsNumber);
         }
     }
 

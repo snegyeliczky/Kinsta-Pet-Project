@@ -161,8 +161,7 @@ export const UserStoryStyleComponent = styled("div")<userStoryProps>(
     props => ({
         ":hover": {
             transform: props.hover ? "scale(1.03)" : ""
-        }
-
+        },
     })
 );
 
