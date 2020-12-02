@@ -9,6 +9,10 @@ export const MySqlService = {
         return Project.relatedQuery('userStories').for(projectId);
     },
 
+    getTasksByUserStoryId: async (storyId:number)=>{
+        return UserStory.relatedQuery('tasks').for(storyId)
+    },
+
     getTasksForUserStory: async (userStory: UserStory) => {
         return userStory.$relatedQuery('tasks').for(userStory.id)
     },
