@@ -9,6 +9,7 @@ import {GqlUtil} from "../util/GqlUtil";
 import ParticipateInvite from "../model/ParticipateInvite";
 import {MySqlService} from "../services/MySqlService";
 
+
 export const resolvers = {
     Query: {
         users: () => User.query(),
@@ -104,11 +105,14 @@ export const resolvers = {
                 userStoryId: number, taskTitle: string,
                 taskDescription: string, ownerId: number,
                 time: string
-            }) => {
+            },
+            context:any) => {
             let newTask = await UserStory.relatedQuery('tasks').for(args.userStoryId)
                 .insert({title: args.taskTitle, description: args.taskDescription, ready: false, time: args.time});
             if (args.ownerId) await Task.relatedQuery('owner').for(newTask.id).relate(args.ownerId);
-            await GqlService.updateUserStoryStatusAfterTaskStatusRefresh(parseInt(newTask.id))
+            await GqlService.updateUserStoryStatusAfterTaskStatusRefresh(parseInt(newTask.id));
+
+            context.pubSub.publish("NEW_TASK",{newTask:newTask});
             return newTask
         },
 
@@ -185,6 +189,15 @@ export const resolvers = {
         acceptParticipationInvite: (parent: any, args: { invitationId: number }) => {
             return GqlService.acceptParticipationInvitation(args.invitationId);
         },
+    },
+
+    Subscription:{
+        newTask: {
+            subscribe: (parent:any, args:any, Context:{pubSub:any}) =>{
+                 return Context.pubSub.asyncIterator("NEW_TASK")
+
+            }
+        }
     },
 
     User: {

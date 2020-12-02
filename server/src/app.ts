@@ -1,4 +1,4 @@
-import {GraphQLServer} from "graphql-yoga";
+import {GraphQLServer, PubSub} from "graphql-yoga";
 import knexConfig from "../knexfile"
 import User from "./model/User";
 import {Model} from "objection";
@@ -7,6 +7,7 @@ import {DbInit} from "./util/initialiser";
 import {GqlUtil} from "./util/GqlUtil";
 import {GqlService} from "./services/GqlService";
 import Company from "./model/Company";
+import {request} from "express";
 
 
 async function insertBaseUsersToDb() {
@@ -19,10 +20,14 @@ async function insertBaseUsersToDb() {
 
 };
 
+
+const pubSub = new PubSub();
+
 export const startServer = () => {
     const server = new GraphQLServer({
         typeDefs: './src/schema.graphql',
-        resolvers
+        resolvers,
+        context: ({request,response}) =>({request,response, pubSub})
     });
 
     let knex = require('knex')(knexConfig.production);
