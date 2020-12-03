@@ -6,6 +6,7 @@ import NewTaskModal from "./Modals/NewTaskModal";
 import {useQuery} from "@apollo/client";
 import {getTaskForUserStory} from "../queries/taskQueries";
 import {TaskModel} from "../interfaces/TaskModel";
+import {subscribeNewTask} from "../queries/subscriptions";
 
 type props = {
     userStory: UserStoryModel,
@@ -14,12 +15,23 @@ type props = {
 
 const TaskTable: React.FC<props> = ({userStory}) => {
 
-    const {loading, error, data} = useQuery(getTaskForUserStory, {variables: {id: userStory.id}});
+    const {loading, error, data, subscribeToMore} = useQuery(getTaskForUserStory, {
+        variables: {
+            id: userStory.id
+        }
+    });
 
+    subscribeToMore(
+        {
+            document:subscribeNewTask,
+            updateQuery:(prev, { subscriptionData }) => {
+                if (!subscriptionData.data) return prev;
+                return {
+                    userStory: {tasks:subscriptionData.data.tasksForUserStory}
+                };
+            }
+        });
 
-    const removeTask = (taskId: string) => {
-
-    };
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error! ${error.message}</div>;
@@ -28,7 +40,7 @@ const TaskTable: React.FC<props> = ({userStory}) => {
         if (data.userStory.tasks.length === 0) {
             return (
                 <CenterDiv>
-                    <h2 style={{color:"White"}}>No Tasks Yet !</h2>
+                    <h2 style={{color: "White"}}>No Tasks Yet !</h2>
                 </CenterDiv>
             )
         }
@@ -43,7 +55,7 @@ const TaskTable: React.FC<props> = ({userStory}) => {
                 </TaskHeaderTitleStyledComponent>
                 {
                     data.userStory.tasks.map((task: TaskModel) => {
-                        return <TaskComponent key={task.id} Task={task} removeTask={removeTask}/>
+                        return <TaskComponent key={task.id} Task={task}/>
                     })
                 }
             </>

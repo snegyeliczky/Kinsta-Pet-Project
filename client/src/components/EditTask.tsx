@@ -12,14 +12,13 @@ import {getTaskForUserStory, mutateTaskOwner, mutateTaskQuery,deleteTaskMutation
 
 type props = {
     Task: TaskModel,
-    removeTask: Function,
     edit: boolean,
     setEdit: Dispatch<SetStateAction<boolean>>,
     ready: boolean,
 }
 
 
-const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready}) => {
+const EditTask: React.FC<props> = ({Task, edit, setEdit, ready}) => {
 
     const appContext = useContext(ApplicationContext);
     const projectContext = useContext(ProjectContext);
@@ -37,7 +36,6 @@ const EditTask: React.FC<props> = ({Task, removeTask, edit, setEdit, ready}) => 
             refetchQueries:[{query:getTaskForUserStory, variables:{id:Task.userStory.id}}]
         });
         setEdit(false);
-        removeTask(Task.id);
     };
 
     function updateTitle(title: string) {
