@@ -54,6 +54,11 @@ type Mutation{
 
 }
 
+type Subscription {
+    newTask: Task
+    tasksForUserStory:[Task]
+}
+
 type User {
     id:Int!
     firstName:String!
