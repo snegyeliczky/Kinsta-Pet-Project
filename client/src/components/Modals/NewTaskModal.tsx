@@ -6,7 +6,7 @@ import UserDropdown from "../userDropdown";
 import ProjectContext from "../../context/ProjectContext";
 import {ApplicationContext} from "../../context/ApplicationContext";
 import {useMutation, useQuery} from "@apollo/client";
-import {addNewTask, getTaskForUserStory} from "../../queries/taskQueries";
+import {addNewTask} from "../../queries/taskQueries";
 import {getUserById} from "../../queries/userQueries";
 import {useParams} from "react-router";
 import {getUserStories} from "../../queries/projectQueries";
@@ -43,7 +43,6 @@ const NewTaskModal: React.FC<Props> = ({UserStoryId}) => {
                 time: time
             },
             refetchQueries: [
-                {query: getTaskForUserStory, variables: {id: UserStoryId}},
                 {query:getUserStories, variables:{id}}
                 ]
         })
