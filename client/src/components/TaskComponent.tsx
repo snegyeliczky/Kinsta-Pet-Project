@@ -31,8 +31,8 @@ const TaskComponent:React.FC<Props> = ({Task}) => {
                 taskStatus:!Task.ready
             },
             refetchQueries:[
-                {query:getTaskForUserStory, variables:{id:Task.userStory.id}},
-                {query:getUserStories, variables:{id}}]
+                {query:getUserStories, variables:{id}}
+                ]
         });
     };
 

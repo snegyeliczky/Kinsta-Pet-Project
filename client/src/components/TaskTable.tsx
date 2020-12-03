@@ -6,7 +6,7 @@ import NewTaskModal from "./Modals/NewTaskModal";
 import {useQuery} from "@apollo/client";
 import {getTaskForUserStory} from "../queries/taskQueries";
 import {TaskModel} from "../interfaces/TaskModel";
-import {subscribeNewTask} from "../queries/subscriptions";
+import {newTaskSubscription, subscribeNewTask} from "../queries/subscriptions";
 
 type props = {
     userStory: UserStoryModel,
@@ -23,14 +23,33 @@ const TaskTable: React.FC<props> = ({userStory}) => {
 
     subscribeToMore(
         {
+            document:newTaskSubscription,
+            updateQuery:(prev, { subscriptionData }) => {
+                if (!subscriptionData.data) return prev;
+                let taskList = prev.userStory.tasks;
+                let b = taskList.some((task:TaskModel)=>{
+                    return task.id === subscriptionData.data.newTask.id
+                });
+                if (!b){
+                    return Object.assign({}, prev,{
+                        userStory: {tasks:[...taskList,subscriptionData.data.newTask]}
+                    });
+                }
+            }
+        });
+
+    subscribeToMore(
+        {
             document:subscribeNewTask,
             updateQuery:(prev, { subscriptionData }) => {
                 if (!subscriptionData.data) return prev;
+                console.log(prev);
                 return {
                     userStory: {tasks:subscriptionData.data.tasksForUserStory}
                 };
             }
-        });
+        }
+    )
 
 
     if (loading) return <div>Loading...</div>;
