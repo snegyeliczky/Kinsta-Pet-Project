@@ -1,12 +1,12 @@
 import React, {useContext, useState} from 'react';
-import {Modal, Button} from 'antd';
+import {Modal, Button, Form, AutoComplete} from 'antd';
 import {UserOutlined} from '@ant-design/icons';
-import {useHistory} from "react-router-dom";
 import {CenterDiv, ModalContainer} from "../../assets/styledComponents/styledComponents";
 import {ApplicationContext} from "../../context/ApplicationContext";
-import {useQuery} from "@apollo/client";
+import {useLazyQuery, useQuery} from "@apollo/client";
 import {getProjectParticipants} from "../../queries/projectQueries";
 import {UserModel} from "../../interfaces/UserModel";
+import {getUsersByEmail} from "../../queries/userQueries";
 
 
 interface Props {
@@ -15,46 +15,77 @@ interface Props {
 
 const InviteModal: React.FC<Props> = ({projectId}) => {
 
+
         const [visible, setVisible] = useState(false);
-        const history = useHistory();
         const appContext = useContext(ApplicationContext);
-        const {error,loading,data} =useQuery(getProjectParticipants, {variables:{
-            id:projectId
-            }});
-        //const [] = useMutation();
+        const {error: participants_error, loading: participants_loading, data: participants_data} = useQuery(getProjectParticipants, {
+            variables: {
+                id: projectId
+            }
+        });
+        const [getUsers, {data}] = useLazyQuery(getUsersByEmail);
+        const {Option} = AutoComplete;
+
 
         const showModal = (event: React.MouseEvent<HTMLElement>) => {
             event.stopPropagation();
             setVisible(!visible);
         };
 
-        const sendInvite = async (e: React.MouseEvent<HTMLElement>) => {
-            e.stopPropagation();
-            setVisible(!visible);
+        const sendInvite = (e:{email:string}) => {
+            let email = e.email;
+            //invite business logic
+            console.log(email)
         };
 
 
         const handleCancel = (e: React.MouseEvent<HTMLElement>) => {
-            e.stopPropagation();
             setVisible(false);
         };
 
-        const loadParticipants = ()=>{
-            if (loading) return <h2>... Loading</h2>;
-            if(error) return <h2>...error {error?.message}</h2>;
+        const loadParticipants = () => {
+            if (participants_loading) return <h2>... Loading</h2>;
+            if (participants_error) return <h2>...error {participants_error?.message}</h2>;
             return (
-                data.project.participants.map((user:UserModel)=>{
-                    return <div>{user.firstName}</div>
+                participants_data.project.participants.map((user: UserModel) => {
+                    return (
+                        <CenterDiv>
+                            <UserOutlined/>
+                            {` ${user.firstName}`}
+                        </CenterDiv>
+                    )
                 })
             )
         };
 
+        const fetchUsersByEmail = (email: String) => {
+            if (email.length > 2)
+                getUsers({
+                    variables: {
+                        email: email
+                    }
+                });
+        };
+
+        const loadOptions = () => {
+            if (data)
+                return data.getUserByEmail.map((user: UserModel) => {
+                    return (
+                        <Option key={user.email} value={user.email} title={user.firstName}
+                                style={{borderBottom: "1px solid"}}>
+                            <p>{user.firstName}</p>
+                            <p>{user.email}</p>
+                        </Option>
+                    )
+                });
+        };
+
         const footer = (<div>
-            <Button type={"primary"} danger onClick={e => handleCancel(e)}>cancel</Button>
             <Button type={"primary"} onClick={e => {
-                return sendInvite(e)
-            }}>Invite</Button>
+                setVisible(false)
+            }}>Close</Button>
         </div>);
+
 
         return (
             <ModalContainer onClick={event => {
@@ -64,7 +95,7 @@ const InviteModal: React.FC<Props> = ({projectId}) => {
                     showModal(event)
                 }}> Participants </Button>
                 <Modal
-                    title="Invite Participant"
+                    title="Participants"
                     visible={visible}
                     onCancel={e => {
                         handleCancel(e)
@@ -72,9 +103,30 @@ const InviteModal: React.FC<Props> = ({projectId}) => {
                     footer={footer}
 
                 >
-                    <CenterDiv>
+                    <div style={{paddingBottom: "20px"}}>
                         {loadParticipants()}
-                    </CenterDiv>
+                    </div>
+                    <h3 style={{paddingBottom: "20px"}}>Invite Participants</h3>
+                    <Form name="dynamic_form_nest_item" onFinish={(e) => {
+                        sendInvite(e);
+                    }} autoComplete="off">
+                        <Form.Item name="email" label="E-mail:" rules={[{required: true, message: 'Missing area'}]}>
+                            <AutoComplete
+                                style={{width: 300}}
+                                placeholder="Typ user email"
+                                onChange={(inputValue) => {
+                                    fetchUsersByEmail(inputValue)
+                                }}
+                            >
+                                {loadOptions()}
+                            </AutoComplete>
+                        </Form.Item>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit">
+                                Invite
+                            </Button>
+                        </Form.Item>
+                    </Form>
 
                 </Modal>
             </ModalContainer>
