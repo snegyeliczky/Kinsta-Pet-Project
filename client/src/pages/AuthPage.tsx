@@ -22,7 +22,6 @@ const AuthPage = () => {
 
 
     if (data) {
-        console.log(data)
         if (data.login) {
             localStorage.setItem("username", data.login.firstName);
             localStorage.setItem("userId", data.login.id);

@@ -9,6 +9,10 @@ export const MySqlService = {
         return Project.relatedQuery('userStories').for(projectId);
     },
 
+    getTasksByUserStoryId: async (storyId:number)=>{
+        return UserStory.relatedQuery('tasks').for(storyId)
+    },
+
     getTasksForUserStory: async (userStory: UserStory) => {
         return userStory.$relatedQuery('tasks').for(userStory.id)
     },
@@ -91,7 +95,12 @@ export const MySqlService = {
 
     getUserByEmail: async (Email: string) => {
         return User.query().where('email', '=', Email);
+    },
+
+
+    getUserByEmailPart(email: String) {
+        return User.query().where(
+            "email", 'LIKE', `%${email}%`
+        )
     }
-
-
 };

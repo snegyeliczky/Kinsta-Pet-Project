@@ -21,6 +21,7 @@ type Query{
     task(id:ID!):Task
     unFinishedTasks(userId:ID):[Task]
     geTasksDistributionForProject(projectId:Int):TaskDistribution
+    getUserByEmail(email:String):[User]
 }
 
 type Mutation{
@@ -52,6 +53,11 @@ type Mutation{
     sendParticipateInviteToUser(senderId:Int,receiverId:Int,projectId:Int):String!
     acceptParticipationInvite(invitationId:Int):String
 
+}
+
+type Subscription {
+    newTask: Task
+    tasksForUserStory:[Task]
 }
 
 type User {

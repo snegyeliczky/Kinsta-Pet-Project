@@ -7,16 +7,15 @@ import EditTask from "./EditTask";
 import {ApplicationContext} from "../context/ApplicationContext";
 import {UserModel} from "../interfaces/UserModel";
 import {useMutation} from "@apollo/client";
-import {getTaskForUserStory, updateTaskStatus} from "../queries/taskQueries";
+import { updateTaskStatus} from "../queries/taskQueries";
 import {useParams} from "react-router";
 import {getUserStories} from "../queries/projectQueries";
 
 type Props ={
-    Task:TaskModel,
-    removeTask:Function,
+    Task:TaskModel
 }
 
-const TaskComponent:React.FC<Props> = ({Task,removeTask}) => {
+const TaskComponent:React.FC<Props> = ({Task}) => {
 
     const appContext = useContext(ApplicationContext);
     const[edit, setEdit] = useState(false);
@@ -32,8 +31,8 @@ const TaskComponent:React.FC<Props> = ({Task,removeTask}) => {
                 taskStatus:!Task.ready
             },
             refetchQueries:[
-                {query:getTaskForUserStory, variables:{id:Task.userStory.id}},
-                {query:getUserStories, variables:{id}}]
+                {query:getUserStories, variables:{id}}
+                ]
         });
     };
 
@@ -47,7 +46,7 @@ const TaskComponent:React.FC<Props> = ({Task,removeTask}) => {
     return (
         <>
         {
-            edit?<EditTask Task={Task} removeTask={removeTask} edit={edit}
+            edit?<EditTask Task={Task} edit={edit}
                            setEdit={setEdit} ready={Task.ready}/>
             :<TaskStyledComponent className={"TaskComponent"} ready={Task.ready}>
                     <div className={"task-id"}>{Task.id}</div>

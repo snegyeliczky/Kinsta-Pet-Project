@@ -71,4 +71,19 @@ const registerUser = gql`
     }
 `
 
-export {getUserById, getUsersCompanies, loginUser, registerUser};
+const getUsersByEmail = gql`
+    query(
+        $email:String
+    ){
+        getUserByEmail(
+            email:$email
+        ){
+            id,
+            firstName,
+            lastName,
+            email
+        }
+    }
+`;
+
+export {getUserById, getUsersCompanies, loginUser, registerUser, getUsersByEmail};
