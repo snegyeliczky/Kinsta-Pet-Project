@@ -27,7 +27,6 @@ const AlertModal:React.FC<Props> = ({text,buttonText,OkFunction}) => {
         setVisible(false);
     };
 
-
     return (
         <div className={"alert_modal"} style={{margin:"10px"}}>
             <Button onClick={showModal} shape={"round"} type={"primary"} danger>

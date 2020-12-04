@@ -141,12 +141,11 @@ const ProjectPage = () => {
     return (
         <div>
             <div className={"project-container"}>
-                {getProjectData()}
                 <CenterDiv>
                     <InviteModal projectId={id}/>
                     {loadDeleteProject()}
                 </CenterDiv>
-
+                {getProjectData()}
             </div>
 
             <div className={"userStory-container"}>
