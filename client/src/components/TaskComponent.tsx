@@ -7,7 +7,7 @@ import EditTask from "./EditTask";
 import {ApplicationContext} from "../context/ApplicationContext";
 import {UserModel} from "../interfaces/UserModel";
 import {useMutation} from "@apollo/client";
-import {getTaskForUserStory, updateTaskStatus} from "../queries/taskQueries";
+import { updateTaskStatus} from "../queries/taskQueries";
 import {useParams} from "react-router";
 import {getUserStories} from "../queries/projectQueries";
 

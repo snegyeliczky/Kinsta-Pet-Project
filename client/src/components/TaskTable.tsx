@@ -27,10 +27,11 @@ const TaskTable: React.FC<props> = ({userStory}) => {
             updateQuery:(prev, { subscriptionData }) => {
                 if (!subscriptionData.data) return prev;
                 let taskList = prev.userStory.tasks;
-                let b = taskList.some((task:TaskModel)=>{
+                //because of the state refreshes it runs multiple time...
+                let some = taskList.some((task:TaskModel)=>{
                     return task.id === subscriptionData.data.newTask.id
                 });
-                if (!b){
+                if (!some){
                     return Object.assign({}, prev,{
                         userStory: {tasks:[...taskList,subscriptionData.data.newTask]}
                     });
@@ -43,7 +44,6 @@ const TaskTable: React.FC<props> = ({userStory}) => {
             document:subscribeNewTask,
             updateQuery:(prev, { subscriptionData }) => {
                 if (!subscriptionData.data) return prev;
-                console.log(prev);
                 return {
                     userStory: {tasks:subscriptionData.data.tasksForUserStory}
                 };
