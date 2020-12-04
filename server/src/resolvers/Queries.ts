@@ -5,6 +5,7 @@ import Company from "../model/Company";
 import Project from "../model/Project";
 import UserStory from "../model/UserStory";
 import Task from "../model/Task";
+import {MySqlService} from "../services/MySqlService";
 
 export const queries = {
     users: () => User.query(),
@@ -60,5 +61,9 @@ export const queries = {
 
     geTasksDistributionForProject: (parent: Task, args: { projectId: number }) => {
         return GqlUtil.geTasksDistributionForProject(args.projectId);
+    },
+
+    getUserByEmail:(parent:User, args:{email:String}) =>{
+        return MySqlService.getUserByEmailPart(args.email);
     }
 };

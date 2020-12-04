@@ -95,7 +95,12 @@ export const MySqlService = {
 
     getUserByEmail: async (Email: string) => {
         return User.query().where('email', '=', Email);
+    },
+
+
+    getUserByEmailPart(email: String) {
+        return User.query().where(
+            "email", 'LIKE', `%${email}%`
+        )
     }
-
-
 };

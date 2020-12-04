@@ -21,6 +21,7 @@ type Query{
     task(id:ID!):Task
     unFinishedTasks(userId:ID):[Task]
     geTasksDistributionForProject(projectId:Int):TaskDistribution
+    getUserByEmail(email:String):[User]
 }
 
 type Mutation{
