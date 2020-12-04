@@ -4,7 +4,7 @@ import "../assets/ProjectStyle.css"
 import NewUserStoryModal from "../components/Modals/NewUserStoryModal";
 import {Collapse} from "antd";
 import CollapsePanel from "antd/es/collapse/CollapsePanel";
-import {ProjectTitleContainer, UserStoryStyleComponent} from "../assets/styledComponents/styledComponents";
+import {CenterDiv, ProjectTitleContainer, UserStoryStyleComponent} from "../assets/styledComponents/styledComponents";
 import UserStory from "../components/UserStory";
 import TaskTable from "../components/TaskTable";
 import ProjectContext from "../context/ProjectContext";
@@ -16,6 +16,7 @@ import AlertModal from "../components/Modals/AlertModal";
 import {DeleteOutlined} from '@ant-design/icons';
 import {getProjectsForCompanyByUser} from "../queries/companyQueries";
 import {ApplicationContext} from "../context/ApplicationContext";
+import InviteModal from "../components/Modals/InviteColaboratorModal";
 
 const ProjectPage = () => {
 
@@ -84,11 +85,6 @@ const ProjectPage = () => {
             <ProjectTitleContainer className={"project-title-container"}>
                 <h2>{project_data.project.name}</h2>
                 <h3>projectID: {project_data.project.id}</h3>
-                {
-                    appContext.isUserIsOwner(project_data.project.owner.id) ?
-                        <AlertModal text={"Sure to delete?"} buttonText={<DeleteOutlined/>}
-                                    OkFunction={deleteAndHome}/>
-                        : ""}
             </ProjectTitleContainer>
         );
 
@@ -124,11 +120,33 @@ const ProjectPage = () => {
         return renderUserStories(sortedStoryList);
     };
 
+    const loadDeleteProject = () => {
+        if (load_project)
+            return (
+                <ProjectTitleContainer>
+                    <h2>Loading...</h2>
+                </ProjectTitleContainer>
+            );
+        if (error_project) return <div>Error..</div>;
+        return (
+            appContext.isUserIsOwner(project_data.project.owner.id) ?
+                <AlertModal text={"Sure to delete?"} buttonText={`Delete project` }
+                            OkFunction={deleteAndHome}/> :
+                ""
+        );
+
+    };
+
 
     return (
         <div>
             <div className={"project-container"}>
                 {getProjectData()}
+                <CenterDiv>
+                    <InviteModal projectId={id}/>
+                    {loadDeleteProject()}
+                </CenterDiv>
+
             </div>
 
             <div className={"userStory-container"}>
