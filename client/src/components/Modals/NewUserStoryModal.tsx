@@ -2,7 +2,7 @@ import React, {useContext, useState} from 'react';
 import {Button, Input, Modal, message} from 'antd';
 import {PlusOutlined, ProjectOutlined} from '@ant-design/icons';
 import {ModalContainer} from "../../assets/styledComponents/styledComponents";
-import {UserModel} from "../../interfaces/UserModel";
+import {UserModel} from "../../Types/UserModel";
 import UserDropdown from "../userDropdown";
 import {ApplicationContext} from "../../context/ApplicationContext";
 import {useMutation, useQuery} from "@apollo/client";

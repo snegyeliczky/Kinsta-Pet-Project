@@ -1,11 +1,11 @@
 import React, {useContext, useState} from 'react';
-import {TaskModel} from "../interfaces/TaskModel";
+import {TaskModel} from "../Types/TaskModel";
 import {TaskStyledComponent} from "../assets/styledComponents/styledComponents";
 import { SettingOutlined } from '@ant-design/icons';
 import { Checkbox } from 'antd';
 import EditTask from "./EditTask";
 import {ApplicationContext} from "../context/ApplicationContext";
-import {UserModel} from "../interfaces/UserModel";
+import {UserModel} from "../Types/UserModel";
 import {useMutation} from "@apollo/client";
 import { updateTaskStatus} from "../queries/taskQueries";
 import {useParams} from "react-router";

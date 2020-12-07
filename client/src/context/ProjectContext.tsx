@@ -1,5 +1,5 @@
 import React, {createContext, useState} from 'react';
-import {UserModel} from "../interfaces/UserModel";
+import {UserModel} from "../Types/UserModel";
 import {useQuery} from "@apollo/client";
 import {getProjectParticipants} from "../queries/projectQueries";
 

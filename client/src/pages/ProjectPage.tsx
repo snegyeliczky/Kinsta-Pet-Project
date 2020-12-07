@@ -10,10 +10,9 @@ import TaskTable from "../components/TaskTable";
 import ProjectContext from "../context/ProjectContext";
 import {useMutation, useQuery} from "@apollo/client";
 import {deleteProjectMutation, getProject, getUserStories} from "../queries/projectQueries";
-import {UserStoryModel} from "../interfaces/UserStoryModel";
+import {UserStoryModel} from "../Types/UserStoryModel";
 import {deleteUserStoryMutation} from "../queries/userStoryQueries";
 import AlertModal from "../components/Modals/AlertModal";
-import {DeleteOutlined} from '@ant-design/icons';
 import {getProjectsForCompanyByUser} from "../queries/companyQueries";
 import {ApplicationContext} from "../context/ApplicationContext";
 import InviteModal from "../components/Modals/InviteColaboratorModal";
@@ -142,7 +141,7 @@ const ProjectPage = () => {
         <div>
             <div className={"project-container"}>
                 <CenterDiv>
-                    <InviteModal projectId={id}/>
+                    <InviteModal projectId={parseInt(id)}/>
                     {loadDeleteProject()}
                 </CenterDiv>
                 {getProjectData()}

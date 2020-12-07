@@ -11,7 +11,10 @@ import {getMainDefinition} from "@apollo/client/utilities";
 const wsLink = new WebSocketLink({
     uri: `ws://localhost:4001/`,
     options: {
-        reconnect: true
+        reconnect: true,
+        connectionParams:{
+            userId:localStorage.getItem("userId")
+        }
     }
 });
 
