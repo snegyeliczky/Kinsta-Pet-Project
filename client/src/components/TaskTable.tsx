@@ -1,11 +1,11 @@
 import React from 'react';
-import {UserStoryModel} from "../interfaces/UserStoryModel";
+import {UserStoryModel} from "../Types/UserStoryModel";
 import TaskComponent from "./TaskComponent";
 import {CenterDiv, TaskHeaderTitleStyledComponent} from "../assets/styledComponents/styledComponents";
 import NewTaskModal from "./Modals/NewTaskModal";
 import {useQuery} from "@apollo/client";
 import {getTaskForUserStory} from "../queries/taskQueries";
-import {TaskModel} from "../interfaces/TaskModel";
+import {TaskModel} from "../Types/TaskModel";
 import {newTaskSubscription, subscribeNewTask} from "../queries/subscriptions";
 
 type props = {

@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {UserStoryModel} from "../interfaces/UserStoryModel";
+import {UserStoryModel} from "../Types/UserStoryModel";
 import {CenterDiv, UserStoryStyleComponent} from "../assets/styledComponents/styledComponents";
 import {SettingOutlined, CheckSquareFilled} from '@ant-design/icons';
 import EditUserStory from "./EditUserStory";

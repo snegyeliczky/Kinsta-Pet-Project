@@ -6,7 +6,7 @@ import {Collapse} from 'antd';
 import CompanyHeader from "../components/CompanyHeader";
 import {useQuery} from "@apollo/client";
 import {getUsersCompanies} from "../queries/userQueries";
-import {Company} from "../interfaces/Company";
+import {Company} from "../Types/Company";
 
 
 const MainPage = () => {

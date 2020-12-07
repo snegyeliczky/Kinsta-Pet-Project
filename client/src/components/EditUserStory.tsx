@@ -1,6 +1,6 @@
 import React, {Dispatch, SetStateAction, useContext, useState} from 'react';
 import {UserStoryStyleComponent} from "../assets/styledComponents/styledComponents";
-import {UserStoryModel} from "../interfaces/UserStoryModel";
+import {UserStoryModel} from "../Types/UserStoryModel";
 import {SettingOutlined, DeleteOutlined} from '@ant-design/icons';
 import {Input} from "antd";
 import AlertModal from "./Modals/AlertModal";

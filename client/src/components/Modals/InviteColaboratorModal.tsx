@@ -5,7 +5,7 @@ import {CenterDiv, ModalContainer} from "../../assets/styledComponents/styledCom
 import {ApplicationContext} from "../../context/ApplicationContext";
 import {useLazyQuery, useMutation, useQuery} from "@apollo/client";
 import {getProjectParticipants} from "../../queries/projectQueries";
-import {UserModel} from "../../interfaces/UserModel";
+import {UserModel} from "../../Types/UserModel";
 import {getUsersByEmail, inviteUserToCollaborate} from "../../queries/userQueries";
 
 

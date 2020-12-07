@@ -2,7 +2,7 @@ import React, {Dispatch, SetStateAction, useContext, useState} from 'react';
 import {TaskStyledComponent} from "../assets/styledComponents/styledComponents";
 import {Input} from "antd";
 import AlertModal from "./Modals/AlertModal";
-import {TaskModel} from "../interfaces/TaskModel";
+import {TaskModel} from "../Types/TaskModel";
 import {DeleteOutlined, SettingOutlined} from '@ant-design/icons';
 import {ApplicationContext} from "../context/ApplicationContext";
 import UserDropdown from './userDropdown';

@@ -2,7 +2,7 @@ import React, {useContext, useState} from 'react';
 import {Button, Input, Modal} from "antd";
 import {EstimationUsersStyledComponent, ModalContainer} from "../../assets/styledComponents/styledComponents";
 import {ProjectOutlined} from '@ant-design/icons';
-import {UserEstimation} from "../../interfaces/UserEstimation";
+import {UserEstimation} from "../../Types/UserEstimation";
 import {ApplicationContext} from "../../context/ApplicationContext";
 
 

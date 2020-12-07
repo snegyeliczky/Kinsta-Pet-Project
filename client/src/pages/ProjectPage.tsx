@@ -10,7 +10,7 @@ import TaskTable from "../components/TaskTable";
 import ProjectContext from "../context/ProjectContext";
 import {useMutation, useQuery} from "@apollo/client";
 import {deleteProjectMutation, getProject, getUserStories} from "../queries/projectQueries";
-import {UserStoryModel} from "../interfaces/UserStoryModel";
+import {UserStoryModel} from "../Types/UserStoryModel";
 import {deleteUserStoryMutation} from "../queries/userStoryQueries";
 import AlertModal from "../components/Modals/AlertModal";
 import {getProjectsForCompanyByUser} from "../queries/companyQueries";
