@@ -8,6 +8,9 @@ import {GqlUtil} from "./util/GqlUtil";
 import {GqlService} from "./services/GqlService";
 import Company from "./model/Company";
 import {request} from "express";
+import {subscriptions} from "./resolvers/Subscriptions";
+
+
 
 
 async function insertBaseUsersToDb() {
@@ -23,11 +26,17 @@ async function insertBaseUsersToDb() {
 
 const pubSub = new PubSub();
 
+
+
 export const startServer = () => {
     const server = new GraphQLServer({
         typeDefs: './src/schema.graphql',
         resolvers,
-        context: ({request,response}) =>({request,response, pubSub})
+        context: ({request,response}) =>({
+            request,
+            response,
+            pubSub,
+        }),
     });
 
     let knex = require('knex')(knexConfig.production);

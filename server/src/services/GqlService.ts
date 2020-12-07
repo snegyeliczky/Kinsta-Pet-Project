@@ -68,7 +68,7 @@ export const GqlService = {
         return Task.query().findById(taskId);
     },
 
-    sendProjectParticipationInvite: async (senderId: number, receiverId: number, projectId: number) => {
+    sendProjectParticipationInvite: async (senderId: number, receiverId: number, projectId: number, context:any) => {
         let projectParticipants = await MySqlService.getProjectParticipants(projectId);
         let receiverInvites = await MySqlService.getUserInvites(receiverId);
         if (await GqlUtil.checkUserHaveInvitationToProject(receiverInvites, projectId)) {
@@ -77,9 +77,9 @@ export const GqlService = {
         if (projectParticipants.some((user: User) => {
             return user.id === receiverId
         })) {
-            return "user all ready participate in the project"
+            return "user already participate in the project"
         }
-        return MySqlService.sendInvite(senderId, projectId, receiverId);
+        return MySqlService.sendInvite(senderId, projectId, receiverId,context);
     },
 
     addUserToProjectAsParticipant: async (userId: number, projectId: number) => {
@@ -90,6 +90,7 @@ export const GqlService = {
         let invite = await MySqlService.findInvitation(invitationId);
         try {
             let project = await MySqlService.getProjectForInvite(invite.id);
+            //subscription return receiver
             let receiver = await MySqlService.findReceiverForInvite(invite);
             let participants = await MySqlService.getProjectParticipants(project.id);
             if (!participants.some((user: User) => {

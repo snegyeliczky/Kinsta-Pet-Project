@@ -43,10 +43,13 @@ export const MySqlService = {
         return projectInList[0]
     },
 
-    sendInvite: async (senderId: number, projectId: number, receiverId: number) => {
+    sendInvite: async (senderId: number, projectId: number, receiverId: number,context:any) => {
         let invitation = await User.relatedQuery('sandedInvites').for(senderId).insert({});
         await invitation.$relatedQuery('project').relate(projectId);
         await invitation.$relatedQuery('receiver').relate(receiverId);
+        await context.pubSub.publish("NEW_PARTICIPANT_INVITE",{
+            newParticipantInvite:invitation,
+        });
         return "invitation sent"
     },
 
