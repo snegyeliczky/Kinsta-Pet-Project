@@ -9,6 +9,7 @@ import Footer from "./parts/Footer";
 import requireAuthentication from "./components/authComp/AuthenticatedComponent";
 import {ApplicationContext} from "./context/ApplicationContext";
 import {ProjectProvider} from "./context/ProjectContext";
+import ProfilePage from "./pages/ProfilePage";
 
 
 const DashBoard = () => {
@@ -38,6 +39,8 @@ const DashBoard = () => {
                 </ProjectProvider>
                 <Route exact path={`/app/new-company`}
                        component={requireAuthentication(NewCompany, history, appContext)}/>
+                <Route exact path={`/app/profile`}
+                       component={requireAuthentication(ProfilePage, history, appContext)}/>
             </div>
             <Footer/>
         </>

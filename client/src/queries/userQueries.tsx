@@ -86,4 +86,38 @@ const getUsersByEmail = gql`
     }
 `;
 
-export {getUserById, getUsersCompanies, loginUser, registerUser, getUsersByEmail};
+const inviteUserToCollaborate = gql`
+    mutation (
+        $senderId:Int,
+        $receiverId:Int,
+        $projectId:Int){
+        sendParticipateInviteToUser(
+            senderId:$senderId,
+            receiverId:$receiverId,
+            projectId:$projectId
+        )
+    }
+`;
+
+const getUserInvites = gql`
+    query($id:ID!){user(id:$id){
+        invites{
+            id,
+            sander{
+                id,
+                firstName
+            }
+            project{
+                id,
+                name
+                company{
+                    id,
+                    name
+                }
+            }
+        }
+    }
+    }
+`;
+
+export {getUserById, getUsersCompanies, loginUser, registerUser, getUsersByEmail,inviteUserToCollaborate,getUserInvites};

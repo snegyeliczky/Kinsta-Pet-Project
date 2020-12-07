@@ -1,12 +1,12 @@
 import React, {useContext, useState} from 'react';
-import {Modal, Button, Form, AutoComplete} from 'antd';
+import {Modal, Button, Form, AutoComplete, message} from 'antd';
 import {UserOutlined} from '@ant-design/icons';
 import {CenterDiv, ModalContainer} from "../../assets/styledComponents/styledComponents";
 import {ApplicationContext} from "../../context/ApplicationContext";
-import {useLazyQuery, useQuery} from "@apollo/client";
+import {useLazyQuery, useMutation, useQuery} from "@apollo/client";
 import {getProjectParticipants} from "../../queries/projectQueries";
 import {UserModel} from "../../interfaces/UserModel";
-import {getUsersByEmail} from "../../queries/userQueries";
+import {getUsersByEmail, inviteUserToCollaborate} from "../../queries/userQueries";
 
 
 interface Props {
@@ -25,6 +25,7 @@ const InviteModal: React.FC<Props> = ({projectId}) => {
         });
         const [getUsers, {data}] = useLazyQuery(getUsersByEmail);
         const {Option} = AutoComplete;
+        const [inviteUser] = useMutation(inviteUserToCollaborate);
 
 
         const showModal = (event: React.MouseEvent<HTMLElement>) => {
@@ -32,10 +33,26 @@ const InviteModal: React.FC<Props> = ({projectId}) => {
             setVisible(!visible);
         };
 
-        const sendInvite = (e:{email:string}) => {
-            let email = e.email;
-            //invite business logic
-            console.log(email)
+        const sendInvite = async (e: { email: string }) => {
+            try {
+                let userData = data.getUserByEmail.reduce((re:number,u:UserModel) =>{
+                   if(u.email===e.email) re=parseInt(u.id);
+                   return re;
+                });
+                let receiverId = userData.id;
+                let senderId = appContext.getUserIdAsNumber();
+                console.log(projectId);
+                let fetchResult = await inviteUser({variables:{
+                        senderId:senderId,
+                        receiverId:receiverId,
+                        projectId:projectId
+                    }});
+                message.info(fetchResult.data.sendParticipateInviteToUser)
+            }catch (e) {
+                message.warning(e.message)
+            }
+
+
         };
 
 
@@ -80,6 +97,7 @@ const InviteModal: React.FC<Props> = ({projectId}) => {
                 });
         };
 
+
         const footer = (<div>
             <Button type={"primary"} onClick={e => {
                 setVisible(false)
@@ -114,8 +132,8 @@ const InviteModal: React.FC<Props> = ({projectId}) => {
                             <AutoComplete
                                 style={{width: 300}}
                                 placeholder="Typ user email"
-                                onChange={(inputValue) => {
-                                    fetchUsersByEmail(inputValue)
+                                onChange={(input) => {
+                                    fetchUsersByEmail(input)
                                 }}
                             >
                                 {loadOptions()}
