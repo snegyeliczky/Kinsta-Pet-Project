@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.3.3",
+    "@craco/craco": "^6.0.0",
     "@emotion/core": "^10.1.1",
     "@emotion/react": "^11.1.1",
     "@emotion/styled": "^11.0.0",
@@ -16,6 +17,7 @@
     "@types/react-dom": "^16.9.8",
     "@types/uuid": "^8.3.0",
     "antd": "^4.6.6",
+    "craco-less": "^1.17.1",
     "graphql": "^15.4.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -27,9 +29,9 @@
     "typescript": "^3.7.5"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

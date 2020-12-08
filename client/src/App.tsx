@@ -1,9 +1,9 @@
 import React from 'react';
-import './App.css';
 import {BrowserRouter as Router, Redirect, Route} from "react-router-dom";
 import AuthPage from "./pages/AuthPage";
 import {ApplicationProvider} from "./context/ApplicationContext";
 import DashBoard from "./DashBoard";
+import "./App.less"
 
 
 function App() {
