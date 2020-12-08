@@ -38,4 +38,25 @@ const newTaskSubscription = gql`
     }
 `;
 
-export {subscribeNewTask,newTaskSubscription}
+const newParticipationInviteSubscription = gql`
+    subscription ($receiverId:Int){
+        newParticipantInvite(receiverId:$receiverId){
+            id,
+            sander{
+                id,
+                firstName
+            }
+            project{
+                id,
+                name,
+                company{
+                    id,
+                    name
+                }
+            }
+
+        }
+    }
+`
+
+export {subscribeNewTask,newTaskSubscription,newParticipationInviteSubscription}
