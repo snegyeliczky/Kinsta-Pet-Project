@@ -17,12 +17,17 @@ const ProfilePage = () => {
 
     subscribeToMore(
         {
-            document:newParticipationInviteSubscription,
-            variables:{receiverId:appContext.getUserIdAsNumber()},
+            document: newParticipationInviteSubscription,
+            variables: {receiverId: appContext.getUserIdAsNumber()},
             updateQuery: (previousQueryResult, {subscriptionData}) => {
                 if (!subscriptionData.data) return previousQueryResult;
-                console.log(subscriptionData.data.newParticipantInvite)
-            }
+                console.log("Run");
+                // how to prevent multiple run ??
+                let prevList = Array.from(subscriptionData.data.newParticipantInvite);
+                let invList = new Set(prevList);
+                invList.add(subscriptionData.data.newParticipantInvite);
+                return {user:{invites:invList}}
+            },
         }
     );
 
@@ -34,7 +39,7 @@ const ProfilePage = () => {
             <div className={"invites"}>
                 {data.user.invites.map((inv: Invite) => {
                     return (
-                        <InviteComponent>
+                        <InviteComponent key={inv.id}>
                             <div>{inv.id}</div>
                             <div>{inv.project.name}</div>
                             <div>{inv.project.company.name}</div>
