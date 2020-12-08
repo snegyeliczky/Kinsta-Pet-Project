@@ -65,6 +65,7 @@ export const mutations = {
         if (args.ownerId) await Task.relatedQuery('owner').for(newTask.id).relate(args.ownerId);
         await GqlService.updateUserStoryStatusAfterTaskStatusRefresh(parseInt(newTask.id));
 
+        console.log(context.request)
         context.pubSub.publish("NEW_TASK", {
             newTask: newTask
         });
@@ -156,11 +157,11 @@ export const mutations = {
         return await GqlService.estimator(args.userId, args.userStoryId, args.estimation)
     },
 
-    sendParticipateInviteToUser: async (parent: any, args: { senderId: number, receiverId: number, projectId: number }) => {
-        return await GqlService.sendProjectParticipationInvite(args.senderId, args.receiverId, args.projectId);
+    sendParticipateInviteToUser: async (parent: any, args: { senderId: number, receiverId: number, projectId: number },context:any) => {
+        return await GqlService.sendProjectParticipationInvite(args.senderId, args.receiverId, args.projectId,context);
     },
 
-    acceptParticipationInvite: (parent: any, args: { invitationId: number }) => {
+    acceptParticipationInvite: (parent: any, args: { invitationId: number },context:any) => {
         return GqlService.acceptParticipationInvitation(args.invitationId);
     },
 }

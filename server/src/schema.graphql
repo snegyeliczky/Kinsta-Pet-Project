@@ -58,6 +58,7 @@ type Mutation{
 type Subscription {
     newTask: Task
     tasksForUserStory:[Task]
+    newParticipantInvite(id:Int):ParticipateInvite
 }
 
 type User {
