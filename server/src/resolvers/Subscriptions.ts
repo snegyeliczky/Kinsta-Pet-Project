@@ -19,8 +19,7 @@ export const subscriptions = {
                     return Context.pubSub.asyncIterator("NEW_PARTICIPANT_INVITE")
                 },
                 (payload: any, variables: any): boolean | Promise<boolean> => {
-                    console.log(payload.newParticipantInvite, variables);
-                    return payload.newParticipantInvite.receiverId === variables.id
+                    return payload.newParticipantInvite.receiverId === variables.receiverId
                 }),
         }
 

@@ -41,7 +41,7 @@ export const startServer = () => {
 
     let knex = require('knex')(knexConfig.production);
     Model.knex(knex);
-    server.start({port: 4001, endpoint: "/gql"}, () => {
+    server.start({port: 4001, endpoint: "/gql",}, () => {
         console.log('Server is running on http://localhost:4001/gql');
         insertBaseUsersToDb();
     });
