@@ -6,6 +6,7 @@ import Project from "../model/Project";
 import UserStory from "../model/UserStory";
 import Task from "../model/Task";
 import UserEstimation from "../model/UserEstimation";
+import ParticipateInvite from "../model/ParticipateInvite";
 
 export const mutations = {
     addNewUser: (
@@ -112,6 +113,11 @@ export const mutations = {
     deleteTask: async (parent: Task, args: { taskId: number }) => {
         let number = await Task.query().deleteById(args.taskId);
         return number;
+    },
+
+    deleteParticipateInvite: async (parent:ParticipateInvite,args:{inviteId:number})=>{
+         let number = await ParticipateInvite.query().deleteById(args.inviteId);
+         return number;
     },
 
     updateCompany: (parent: Company, args: { companyId: number, companyName: string }) => {

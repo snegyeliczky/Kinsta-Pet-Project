@@ -42,6 +42,7 @@ type Mutation{
     deleteProject(projectId:Int):Int
     deleteUserStory(userStoryId:Int):Int
     deleteTask(taskId:Int):Int
+    deleteParticipateInvite(inviteId:Int):Int
 
     updateCompany(companyId:Int, projectName:String):Company!
     updateProject(projectId:Int, projectName:String):Project!
