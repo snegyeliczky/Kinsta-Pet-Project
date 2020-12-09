@@ -128,7 +128,15 @@ const acceptParticipationInvite = gql`
     }
 `
 
+const deleteParticipationInvite = gql`
+    mutation ($inviteId:Int){
+        deleteParticipateInvite(
+            inviteId:$inviteId
+        )
+    }
+`
+
 export {
     getUserById, getUsersCompanies, loginUser, registerUser,
     getUsersByEmail,inviteUserToCollaborate,getUserInvites,
-    acceptParticipationInvite};
+    acceptParticipationInvite, deleteParticipationInvite};

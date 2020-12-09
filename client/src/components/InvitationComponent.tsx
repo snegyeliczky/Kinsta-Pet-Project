@@ -3,7 +3,7 @@ import AlertModal from "./Modals/AlertModal";
 import {InviteComponent} from "../assets/styledComponents/styledComponents";
 import {Invite} from "../Types/Invite";
 import {useMutation} from "@apollo/client";
-import {acceptParticipationInvite} from "../queries/userQueries";
+import {acceptParticipationInvite, deleteParticipationInvite} from "../queries/userQueries";
 import {message} from "antd";
 
 type props = {
@@ -14,6 +14,7 @@ type props = {
 const InvitationComponent:React.FC<props> = ({inv}) => {
 
     const [acceptParticipationMutation] = useMutation(acceptParticipationInvite);
+    const [deleteInvite] = useMutation(deleteParticipationInvite)
 
     const acceptParticipation = async () =>{
         let result = await acceptParticipationMutation({
@@ -22,6 +23,14 @@ const InvitationComponent:React.FC<props> = ({inv}) => {
             }
         });
         message.info(result.data.acceptParticipationInvite);
+    };
+
+    const deleteInv = async ()=>{
+        await deleteInvite({
+            variables:{
+                inviteId:inv.id
+            }
+        })
     };
 
     const ButtonContainerStyle = {
@@ -38,7 +47,7 @@ const InvitationComponent:React.FC<props> = ({inv}) => {
             <div style={ButtonContainerStyle}>
                 <AlertModal text={"Yehh c-mon let's start working!!"}
                             buttonText={"Confirm"} success={true} OkFunction={acceptParticipation}/>
-                <AlertModal text={"Are you sure to deny invitation?"} buttonText={"Deny"} />
+                <AlertModal text={"Are you sure to deny invitation?"} buttonText={"Deny"} OkFunction={deleteInv} />
             </div>
         </InviteComponent>
     );
