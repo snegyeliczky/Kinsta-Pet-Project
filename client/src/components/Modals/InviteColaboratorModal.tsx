@@ -7,6 +7,7 @@ import {useLazyQuery, useMutation, useQuery} from "@apollo/client";
 import {getProjectParticipants} from "../../queries/projectQueries";
 import {UserModel} from "../../Types/UserModel";
 import {getUsersByEmail, inviteUserToCollaborate} from "../../queries/userQueries";
+import {newParticipantJoined} from "../../queries/subscriptions";
 
 
 interface Props {
@@ -18,7 +19,7 @@ const InviteModal: React.FC<Props> = ({projectId}) => {
 
         const [visible, setVisible] = useState(false);
         const appContext = useContext(ApplicationContext);
-        const {error: participants_error, loading: participants_loading, data: participants_data} = useQuery(getProjectParticipants, {
+        const {error: participants_error, loading: participants_loading, data: participants_data, subscribeToMore} = useQuery(getProjectParticipants, {
             variables: {
                 id: projectId
             }
@@ -27,6 +28,24 @@ const InviteModal: React.FC<Props> = ({projectId}) => {
         const {Option} = AutoComplete;
         const [inviteUser] = useMutation(inviteUserToCollaborate);
 
+        subscribeToMore({
+            document:newParticipantJoined,
+            variables:{
+                projectId:projectId
+            },
+            updateQuery:(prev,{subscriptionData}) =>{
+                if (!subscriptionData.data) return prev;
+                console.log("new participant joined");
+                let prevList = Array.from(prev.project.participants);
+                let prevSet  = new Set(prevList);
+                prevSet.add(subscriptionData.data.joinParticipation);
+                return {
+                    project:{
+                        participants:prevSet
+                    }}
+            }
+            }
+        );
 
         const showModal = (event: React.MouseEvent<HTMLElement>) => {
             event.stopPropagation();
@@ -41,7 +60,6 @@ const InviteModal: React.FC<Props> = ({projectId}) => {
                 });
                 let receiverId = userData.id;
                 let senderId = appContext.getUserIdAsNumber();
-                console.log(projectId);
                 let fetchResult = await inviteUser({variables:{
                         senderId:senderId,
                         receiverId:receiverId,

@@ -57,6 +57,17 @@ const newParticipationInviteSubscription = gql`
 
         }
     }
-`
+`;
 
-export {subscribeNewTask,newTaskSubscription,newParticipationInviteSubscription}
+const newParticipantJoined = gql`
+    subscription($projectId:Int){
+        joinParticipation(projectId:$projectId){
+            id,
+            firstName,
+            lastName,
+            email
+        }
+    }
+`;
+
+export {subscribeNewTask,newTaskSubscription,newParticipationInviteSubscription,newParticipantJoined}

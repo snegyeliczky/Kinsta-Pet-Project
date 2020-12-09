@@ -11,7 +11,7 @@ import InvitationComponent from "../components/InvitationComponent";
 const ProfilePage = () => {
 
     const appContext = useContext(ApplicationContext);
-    const {error, loading, data, subscribeToMore} = useQuery(getUserInvites, {
+    const {error, loading, data, subscribeToMore, refetch} = useQuery(getUserInvites, {
         variables: {
             id: appContext.getUserIdAsNumber()
         }
@@ -41,7 +41,7 @@ const ProfilePage = () => {
             <div className={"invites"}>
                 {data.user.invites.map((inv: Invite) => {
                     return (
-                        <InvitationComponent inv={inv} key={inv.id}/>
+                        <InvitationComponent inv={inv} key={inv.id} refetchList={refetch}/>
                     )
                 })}
             </div>

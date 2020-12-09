@@ -8,10 +8,11 @@ import {message} from "antd";
 
 type props = {
     inv:Invite
+    refetchList:Function
 }
 
 
-const InvitationComponent:React.FC<props> = ({inv}) => {
+const InvitationComponent:React.FC<props> = ({inv,refetchList}) => {
 
     const [acceptParticipationMutation] = useMutation(acceptParticipationInvite);
     const [deleteInvite] = useMutation(deleteParticipationInvite)
@@ -23,6 +24,7 @@ const InvitationComponent:React.FC<props> = ({inv}) => {
             }
         });
         message.info(result.data.acceptParticipationInvite);
+        refetchList()
     };
 
     const deleteInv = async ()=>{
@@ -31,6 +33,7 @@ const InvitationComponent:React.FC<props> = ({inv}) => {
                 inviteId:inv.id
             }
         })
+        refetchList()
     };
 
     const ButtonContainerStyle = {
