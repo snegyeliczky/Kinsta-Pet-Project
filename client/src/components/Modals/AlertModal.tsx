@@ -6,9 +6,10 @@ type Props = {
     text:string,
     buttonText:any,
     OkFunction?:Function,
+    success?:boolean
 }
 
-const AlertModal:React.FC<Props> = ({text,buttonText,OkFunction}) => {
+const AlertModal:React.FC<Props> = ({text,buttonText,OkFunction,success}) => {
 
     const [visible,setVisible]= useState(false);
 
@@ -29,7 +30,7 @@ const AlertModal:React.FC<Props> = ({text,buttonText,OkFunction}) => {
 
     return (
         <div className={"alert_modal"} style={{margin:"10px"}}>
-            <Button onClick={showModal} shape={"round"} type={"primary"} danger>
+            <Button onClick={showModal} shape={"round"} type={"primary"} danger={success?false:true}>
                 {buttonText}
             </Button>
             <Modal

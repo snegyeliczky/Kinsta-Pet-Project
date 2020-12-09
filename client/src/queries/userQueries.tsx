@@ -120,4 +120,23 @@ const getUserInvites = gql`
     }
 `;
 
-export {getUserById, getUsersCompanies, loginUser, registerUser, getUsersByEmail,inviteUserToCollaborate,getUserInvites};
+const acceptParticipationInvite = gql`
+    mutation ($invitationId:Int){
+        acceptParticipationInvite(
+            invitationId:$invitationId
+        )
+    }
+`
+
+const deleteParticipationInvite = gql`
+    mutation ($inviteId:Int){
+        deleteParticipateInvite(
+            inviteId:$inviteId
+        )
+    }
+`
+
+export {
+    getUserById, getUsersCompanies, loginUser, registerUser,
+    getUsersByEmail,inviteUserToCollaborate,getUserInvites,
+    acceptParticipationInvite, deleteParticipationInvite};
