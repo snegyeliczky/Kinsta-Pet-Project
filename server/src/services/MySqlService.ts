@@ -105,5 +105,10 @@ export const MySqlService = {
         return User.query().where(
             "email", 'LIKE', `%${email}%`
         )
+    },
+    async getCompanyForProject (projectId: number) {
+         let companyInList = await Project.relatedQuery("company").for(projectId);
+         return companyInList[0]
     }
+
 };

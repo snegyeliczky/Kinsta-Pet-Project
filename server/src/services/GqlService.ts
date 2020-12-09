@@ -8,6 +8,7 @@ import {GqlUtil} from "../util/GqlUtil";
 import bcrypt from "bcrypt";
 import {response} from "express";
 import has = Reflect.has;
+import {company} from "../resolvers/ModelResolvers/CompanyResolver";
 
 export const GqlService = {
 
@@ -86,6 +87,16 @@ export const GqlService = {
         return Project.relatedQuery('participants').for(projectId).relate(userId);
     },
 
+    addUserToCompany: async (userId: number, companyId: number) => {
+        let users = await Company.relatedQuery('users').for(companyId);
+        let isInclude = users.some(user => user.id === userId);
+        if (isInclude) return "user is already collaborator";
+        await User.relatedQuery("companies")
+            .for(userId)
+            .relate(companyId);
+        return "user is added as collaborator";
+    },
+
     acceptParticipationInvitation: async (invitationId: number) => {
         let invite = await MySqlService.findInvitation(invitationId);
         try {
@@ -96,6 +107,8 @@ export const GqlService = {
             if (!participants.some((user: User) => {
                 return user.id === receiver.id
             })) {
+                let company = await MySqlService.getCompanyForProject(project.id);
+                await GqlService.addUserToCompany(receiver.id,company.id);
                 await MySqlService.acceptAndDeleteInvitation(project, receiver.id, invitationId);
                 return "invite accepted"
             }
@@ -105,16 +118,6 @@ export const GqlService = {
             return "Invitation is invalid! Refresh The Page!"
         }
 
-    },
-
-    addUserToCompany: async (userId: number, companyId: number) => {
-        let users = await Company.relatedQuery('users').for(companyId);
-        let isInclude = users.some(user => user.id === userId);
-        if (isInclude) return "user is already collaborator";
-        await User.relatedQuery("companies")
-            .for(userId)
-            .relate(companyId);
-        return "user is added as collaborator";
     },
 
     getProjectForUserByCompanyId: async (userId: number, companyId: number) => {
