@@ -1,12 +1,12 @@
 import React, {useContext} from 'react';
 import {CenterDiv, InviteComponent} from "../assets/styledComponents/styledComponents";
-import {useQuery} from "@apollo/client";
-import {getUserInvites} from "../queries/userQueries";
+import { useQuery} from "@apollo/client";
+import { getUserInvites} from "../queries/userQueries";
 import {ApplicationContext} from "../context/ApplicationContext";
 import {Invite} from "../Types/Invite";
 import {newParticipationInviteSubscription} from "../queries/subscriptions";
-import {Button} from "antd";
-import AlertModal from "../components/Modals/AlertModal";
+
+import InvitationComponent from "../components/InvitationComponent";
 
 const ProfilePage = () => {
 
@@ -16,6 +16,7 @@ const ProfilePage = () => {
             id: appContext.getUserIdAsNumber()
         }
     });
+
 
     subscribeToMore(
         {
@@ -33,12 +34,6 @@ const ProfilePage = () => {
         }
     );
 
-    const ButtonContainerStyle = {
-        gridTemplateColumns: "50% 50%",
-        gridGap: "10px",
-        display: "grid"
-}
-
     const loadInvites = () => {
         if (error) return (<div>Error... ${error}</div>);
         if (loading) return (<div>Loading...</div>);
@@ -46,15 +41,7 @@ const ProfilePage = () => {
             <div className={"invites"}>
                 {data.user.invites.map((inv: Invite) => {
                     return (
-                        <InviteComponent key={inv.id}>
-                            <div>{inv.id}</div>
-                            <div>{inv.project.name}</div>
-                            <div>{inv.project.company.name}</div>
-                            <div style={ButtonContainerStyle}>
-                                <AlertModal text={"Yehh c-mon let's start working!!"} buttonText={"Confirm"} success={true}/>
-                                <AlertModal text={"Are you sure to deny invitation?"} buttonText={"Deny"} />
-                            </div>
-                        </InviteComponent>
+                        <InvitationComponent inv={inv} key={inv.id}/>
                     )
                 })}
             </div>

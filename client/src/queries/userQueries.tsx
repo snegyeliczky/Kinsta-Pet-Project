@@ -120,4 +120,15 @@ const getUserInvites = gql`
     }
 `;
 
-export {getUserById, getUsersCompanies, loginUser, registerUser, getUsersByEmail,inviteUserToCollaborate,getUserInvites};
+const acceptParticipationInvite = gql`
+    mutation ($invitationId:Int){
+        acceptParticipationInvite(
+            invitationId:$invitationId
+        )
+    }
+`
+
+export {
+    getUserById, getUsersCompanies, loginUser, registerUser,
+    getUsersByEmail,inviteUserToCollaborate,getUserInvites,
+    acceptParticipationInvite};
