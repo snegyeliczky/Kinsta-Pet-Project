@@ -21,7 +21,16 @@ export const subscriptions = {
                 (payload: any, variables: any): boolean | Promise<boolean> => {
                     return payload.newParticipantInvite.receiverId === variables.receiverId
                 }),
-        }
+        },
+
+    joinParticipation:{
+            subscribe: withFilter((parent: any, args: any, Context: { pubSub: any }): AsyncIterator<any> => {
+                    return Context.pubSub.asyncIterator("JOIN_PARTICIPANT")
+                },
+                (payload: any, variables: any): boolean | Promise<boolean> => {
+                    return payload.projectId === variables.projectId
+                })
+    }
 
     }
 ;

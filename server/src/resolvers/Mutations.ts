@@ -168,6 +168,6 @@ export const mutations = {
     },
 
     acceptParticipationInvite: (parent: any, args: { invitationId: number },context:any) => {
-        return GqlService.acceptParticipationInvitation(args.invitationId);
+        return GqlService.acceptParticipationInvitation(args.invitationId,context);
     },
 }

@@ -60,6 +60,7 @@ type Subscription {
     newTask: Task
     tasksForUserStory:[Task]
     newParticipantInvite(receiverId:Int):ParticipateInvite
+    joinParticipation(projectId:Int):User
 }
 
 type User {

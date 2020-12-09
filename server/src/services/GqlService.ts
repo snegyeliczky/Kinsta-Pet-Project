@@ -97,11 +97,10 @@ export const GqlService = {
         return "user is added as collaborator";
     },
 
-    acceptParticipationInvitation: async (invitationId: number) => {
+    acceptParticipationInvitation: async (invitationId: number, context: any) => {
         let invite = await MySqlService.findInvitation(invitationId);
         try {
             let project = await MySqlService.getProjectForInvite(invite.id);
-            //subscription return receiver
             let receiver = await MySqlService.findReceiverForInvite(invite);
             let participants = await MySqlService.getProjectParticipants(project.id);
             if (!participants.some((user: User) => {
@@ -110,6 +109,11 @@ export const GqlService = {
                 let company = await MySqlService.getCompanyForProject(project.id);
                 await GqlService.addUserToCompany(receiver.id,company.id);
                 await MySqlService.acceptAndDeleteInvitation(project, receiver.id, invitationId);
+                //subscription return receiver
+                context.pubSub.publish("JOIN_PARTICIPANT",{
+                    joinParticipation:receiver,
+                    projectId:project.id
+                });
                 return "invite accepted"
             }
             await MySqlService.deleteInvite(invitationId);
