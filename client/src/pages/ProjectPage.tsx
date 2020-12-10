@@ -45,6 +45,9 @@ const ProjectPage = () => {
         setSortDir(!sortDir)
     };
 
+
+    console.log("load")
+
     const deleteAndHome = async () => {
         await deleteProject({
             variables: {
