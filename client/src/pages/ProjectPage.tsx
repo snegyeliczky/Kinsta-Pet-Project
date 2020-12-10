@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {useHistory, useParams} from "react-router";
 import "../assets/ProjectStyle.css"
 import NewUserStoryModal from "../components/Modals/NewUserStoryModal";
@@ -28,7 +28,8 @@ const ProjectPage = () => {
             {
                 variables: {
                     id
-                }
+                },
+                fetchPolicy:"network-only"
             });
     const {loading: load_project, error: error_project, data: project_data} =
         useQuery(getProject, {
@@ -39,10 +40,6 @@ const ProjectPage = () => {
     const [deleteUserStory] = useMutation(deleteUserStoryMutation);
     const [deleteProject] = useMutation(deleteProjectMutation);
     const history = useHistory();
-
-    useEffect(() => {
-        projectContext.loadParticipantUsersById(id);
-    }, [id]);
 
     const sortByBusinessValue = () => {
         setSortDir(!sortDir)
@@ -72,14 +69,7 @@ const ProjectPage = () => {
     };
 
     const getProjectData = () => {
-        if (load_project)
-            return (
-                <ProjectTitleContainer>
-                    <h2>Loading...</h2>
-                </ProjectTitleContainer>
-            );
         if (error_project) return <div>Error..</div>;
-
         return (
             <ProjectTitleContainer className={"project-title-container"}>
                 <h2>{project_data.project.name}</h2>
@@ -112,21 +102,14 @@ const ProjectPage = () => {
     };
 
     const loadUserStories = () => {
-        if (load_userStory) return <div>Loading...</div>;
-        if (error_userStory) return <div>Error </div>;
+        if (error_userStory) return <div>Error {error_userStory?.message}</div>;
         let storyList = userStory_data.project.userStories;
         let sortedStoryList = sortUserStories([...storyList]);
         return renderUserStories(sortedStoryList);
     };
 
     const loadDeleteProject = () => {
-        if (load_project)
-            return (
-                <ProjectTitleContainer>
-                    <h2>Loading...</h2>
-                </ProjectTitleContainer>
-            );
-        if (error_project) return <div>Error..</div>;
+        if (error_project) return <div>Error {error_project?.message}</div>;
         return (
             appContext.isUserIsOwner(project_data.project.owner.id) ?
                 <AlertModal text={"Sure to delete?"} buttonText={`Delete project` }
@@ -137,8 +120,11 @@ const ProjectPage = () => {
     };
 
 
+    if (load_project) return (<div>Load project...</div>);
+    if (load_userStory) return (<div>Load user Stories...</div>);
     return (
         <div>
+            {console.log("load project page")}
             <div className={"project-container"}>
                 <CenterDiv>
                     <InviteModal projectId={parseInt(id)}/>
