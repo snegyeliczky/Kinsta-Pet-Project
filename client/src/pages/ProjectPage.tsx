@@ -124,7 +124,6 @@ const ProjectPage = () => {
     if (load_userStory) return (<div>Load user Stories...</div>);
     return (
         <div>
-            {console.log("load project page")}
             <div className={"project-container"}>
                 <CenterDiv>
                     <InviteModal projectId={parseInt(id)}/>

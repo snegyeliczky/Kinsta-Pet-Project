@@ -26,9 +26,7 @@ const InviteModal: React.FC<Props> = ({projectId}) => {
             variables: {
                 id: projectId
             },
-            onCompleted: () => {
-                subscribeToNewUser()
-            }
+            onCompleted: ()=> {subscribeToNewUser()}
         });
 
         const subscribeToNewUser = () => subscribeToMore({
@@ -39,7 +37,7 @@ const InviteModal: React.FC<Props> = ({projectId}) => {
                 updateQuery: (prev, {subscriptionData}) => {
                     if (!subscriptionData.data) return prev;
                     console.log("new participant joined");
-                    let prevList = Array.from(prev.project.participants);
+                    let prevList = Array.from(participants_data.project.participants);
                     let prevSet = new Set(prevList);
                     prevSet.add(subscriptionData.data.joinParticipation);
                     return {
@@ -72,7 +70,6 @@ const InviteModal: React.FC<Props> = ({projectId}) => {
                         projectId: projectId
                     }
                 });
-                subscribeToNewUser();
                 message.info(fetchResult.data.sendParticipateInviteToUser)
             } catch (e) {
                 message.warning(e.message)
