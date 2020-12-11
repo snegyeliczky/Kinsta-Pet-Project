@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Button, Input, message} from 'antd';
+import React from 'react';
+import {Button, Form, Input, message} from 'antd';
 import { UserOutlined, EyeInvisibleOutlined, EyeTwoTone,CheckOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.css';
 
@@ -11,14 +11,10 @@ interface Props {
 
 const Login:React.FC<Props> = ({login, }) => {
 
-    const [email,setEmail] = useState<string>();
-    const [password,setPassword] = useState<string>();
 
-
-
-    const handleLogin= async (username: string, password: string )=> {
+    const formFinish = (values:{username:string, password: string}) =>{
         try {
-            login(username,password);
+            login(values.username,values.password);
         }catch (e) {
             console.log(e);
             message.error("problem with login")
@@ -28,16 +24,33 @@ const Login:React.FC<Props> = ({login, }) => {
     return (
         <div className={"auth-component"}>
             <h3>Login</h3>
-            <Input placeholder={"E-mail"} prefix={<UserOutlined />}  type={"string"}
-                   onChange={event => {setEmail(event.target.value)}}
-            />
-            <Input.Password placeholder={"PassWord"}
-                            iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
-                            onChange={event => {setPassword(event.target.value)}}
-            />
-            <Button className={"submit"} shape={"round"} icon={<CheckOutlined/>} type={"primary"} onClick={event => {
-                email&&password?handleLogin(email, password):message.error("missing parameter")}
-            }>Login</Button>
+            <Form
+                onFinish={formFinish}
+            >
+                <Form.Item
+                    name="username"
+                    rules={[{ required: true, message: 'Please input your username!' }]}
+                >
+                    <Input placeholder={"E-mail"} prefix={<UserOutlined />}  type={"string"}/>
+                </Form.Item>
+                <Form.Item
+                    name="password"
+                    rules={[{ required: true, message: 'Please input your password!' }]}
+                >
+                    <Input.Password placeholder={"PassWord"}
+                                    iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+                    />
+                </Form.Item>
+                <Form.Item>
+
+                </Form.Item>
+                <Form.Item>
+
+                </Form.Item>
+                <Form.Item>
+                    <Button htmlType={"submit"} className={"submit"} shape={"round"} icon={<CheckOutlined/>} type={"primary"} >Login</Button>
+                </Form.Item>
+            </Form>
         </div>
     );
 };

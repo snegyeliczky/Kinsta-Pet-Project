@@ -7,7 +7,6 @@ import CollapsePanel from "antd/es/collapse/CollapsePanel";
 import {CenterDiv, ProjectTitleContainer, UserStoryStyleComponent} from "../assets/styledComponents/styledComponents";
 import UserStory from "../components/UserStory";
 import TaskTable from "../components/TaskTable";
-import ProjectContext from "../context/ProjectContext";
 import {useMutation, useQuery} from "@apollo/client";
 import {deleteProjectMutation, getProject, getUserStories} from "../queries/projectQueries";
 import {UserStoryModel} from "../Types/UserStoryModel";
@@ -16,20 +15,24 @@ import AlertModal from "../components/Modals/AlertModal";
 import {getProjectsForCompanyByUser} from "../queries/companyQueries";
 import {ApplicationContext} from "../context/ApplicationContext";
 import InviteModal from "../components/Modals/InviteColaboratorModal";
+import {newUserStory} from "../queries/subscriptions";
+import {TaskModel} from "../Types/TaskModel";
 
 const ProjectPage = () => {
 
-    const projectContext = useContext(ProjectContext);
     const appContext = useContext(ApplicationContext);
     const {id} = useParams();
     const [sortDir, setSortDir] = useState(true);
-    const {loading: load_userStory, error: error_userStory, data: userStory_data, refetch: refetch_userStory} =
+    const {loading: load_userStory, error: error_userStory, data: userStory_data, refetch: refetch_userStory, subscribeToMore} =
         useQuery(getUserStories,
             {
                 variables: {
                     id
                 },
-                fetchPolicy:"network-only"
+                fetchPolicy: "network-only",
+                onCompleted: () => {
+                    subscribeToNewUserStory()
+                }
             });
     const {loading: load_project, error: error_project, data: project_data} =
         useQuery(getProject, {
@@ -41,12 +44,29 @@ const ProjectPage = () => {
     const [deleteProject] = useMutation(deleteProjectMutation);
     const history = useHistory();
 
+    const subscribeToNewUserStory = () => subscribeToMore({
+        document: newUserStory,
+        variables: {projectId: parseInt(id)},
+        updateQuery: (prev, {subscriptionData}) => {
+            if (!subscriptionData.data) return prev;
+
+            let newList = [...userStory_data.project.userStories];
+            let some = newList.some((us: UserStoryModel) => {
+                return us.id != subscriptionData.data.newUserStory.id
+            });
+            if(some) newList.push(subscriptionData.data.newUserStory);
+            return {
+                project: {
+                    userStories: newList
+                }
+            }
+        }
+    });
+
+
     const sortByBusinessValue = () => {
         setSortDir(!sortDir)
     };
-
-
-    console.log("load")
 
     const deleteAndHome = async () => {
         await deleteProject({
@@ -115,7 +135,7 @@ const ProjectPage = () => {
         if (error_project) return <div>Error {error_project?.message}</div>;
         return (
             appContext.isUserIsOwner(project_data.project.owner.id) ?
-                <AlertModal text={"Sure to delete?"} buttonText={`Delete project` }
+                <AlertModal text={"Sure to delete?"} buttonText={`Delete project`}
                             OkFunction={deleteAndHome}/> :
                 ""
         );
@@ -136,7 +156,7 @@ const ProjectPage = () => {
             </div>
 
             <div className={"userStory-container"}>
-                <NewUserStoryModal projectId={parseInt(id)} participants={projectContext.participants}/>
+                <NewUserStoryModal projectId={parseInt(id)}/>
                 <UserStoryStyleComponent id={"userStory-names"} className={"userStory-component"} hover={false}>
                     <div className={"userStory-id UserStory-part"}>Story ID</div>
                     <div className={"userStory-userStory UserStory-part userStory-title"}>User Story</div>
