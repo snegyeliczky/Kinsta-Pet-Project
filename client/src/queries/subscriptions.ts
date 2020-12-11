@@ -1,8 +1,8 @@
 import {gql} from "@apollo/client";
 
-const subscribeNewTask = gql`
-    subscription{
-        tasksForUserStory{
+const subscribeUserStoryTasks = gql`
+    subscription($userStoryId:Int){
+        tasksForUserStory(userStoryId:$userStoryId){
             id,
             title,
             description,
@@ -20,8 +20,8 @@ const subscribeNewTask = gql`
 `;
 
 const newTaskSubscription = gql`
-    subscription{
-        newTask{
+    subscription($userStoryId:Int){
+        newTask(userStoryId:$userStoryId){
             id,
             title,
             description,
@@ -70,4 +70,4 @@ const newParticipantJoined = gql`
     }
 `;
 
-export {subscribeNewTask,newTaskSubscription,newParticipationInviteSubscription,newParticipantJoined}
+export {subscribeUserStoryTasks,newTaskSubscription,newParticipationInviteSubscription,newParticipantJoined}

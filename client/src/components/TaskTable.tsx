@@ -6,7 +6,7 @@ import NewTaskModal from "./Modals/NewTaskModal";
 import {useQuery} from "@apollo/client";
 import {getTaskForUserStory} from "../queries/taskQueries";
 import {TaskModel} from "../Types/TaskModel";
-import {newTaskSubscription, subscribeNewTask} from "../queries/subscriptions";
+import {newTaskSubscription, subscribeUserStoryTasks} from "../queries/subscriptions";
 
 type props = {
     userStory: UserStoryModel,
@@ -18,38 +18,46 @@ const TaskTable: React.FC<props> = ({userStory}) => {
     const {loading, error, data, subscribeToMore} = useQuery(getTaskForUserStory, {
         variables: {
             id: userStory.id
+        },
+        onCompleted:()=>{
+            subscribeToNewTask();
+            subscribeToStatusChange()
         }
     });
 
-    subscribeToMore(
+    const subscribeToNewTask = () => subscribeToMore(
         {
-            document:newTaskSubscription,
-            updateQuery:(prev, { subscriptionData }) => {
+            document: newTaskSubscription,
+            variables:{userStoryId:userStory.id},
+            updateQuery: (prev, {subscriptionData}) => {
                 if (!subscriptionData.data) return prev;
-                let taskList = prev.userStory.tasks;
+                console.log("run new Task subscription");
+                let taskList = prev.userStory.tasks ? prev.userStory.tasks : [];
                 //because of the state refreshes it runs multiple time...
-                let some = taskList.some((task:TaskModel)=>{
+                let some = taskList.some((task: TaskModel) => {
                     return task.id === subscriptionData.data.newTask.id
                 });
-                if (!some){
-                    return Object.assign({}, prev,{
-                        userStory: {tasks:[...taskList,subscriptionData.data.newTask]}
+                if (!some) {
+                    return Object.assign({}, prev, {
+                        userStory: {tasks: [...taskList, subscriptionData.data.newTask]}
                     });
                 }
             }
         });
 
-    subscribeToMore(
+    const subscribeToStatusChange = () => subscribeToMore(
         {
-            document:subscribeNewTask,
-            updateQuery:(prev, { subscriptionData }) => {
+            document: subscribeUserStoryTasks,
+            variables:{userStoryId:userStory.id},
+            updateQuery: (prev, {subscriptionData}) => {
                 if (!subscriptionData.data) return prev;
+                console.log("Edit task subscription");
                 return {
-                    userStory: {tasks:subscriptionData.data.tasksForUserStory}
+                    userStory: {tasks: subscriptionData.data.tasksForUserStory}
                 };
             }
         }
-    )
+    );
 
 
     if (loading) return <div>Loading...</div>;

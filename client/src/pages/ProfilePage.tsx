@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {CenterDiv, InviteComponent} from "../assets/styledComponents/styledComponents";
-import { useQuery} from "@apollo/client";
-import { getUserInvites} from "../queries/userQueries";
+import {useQuery} from "@apollo/client";
+import {getUserInvites} from "../queries/userQueries";
 import {ApplicationContext} from "../context/ApplicationContext";
 import {Invite} from "../Types/Invite";
 import {newParticipationInviteSubscription} from "../queries/subscriptions";
@@ -14,29 +14,28 @@ const ProfilePage = () => {
     const {error, loading, data, subscribeToMore, refetch} = useQuery(getUserInvites, {
         variables: {
             id: appContext.getUserIdAsNumber()
-        }
+        },
+        onCompleted:()=>{subscribeToInvites()}
     });
 
-
-    subscribeToMore(
+    const subscribeToInvites =()=> subscribeToMore(
         {
             document: newParticipationInviteSubscription,
             variables: {receiverId: appContext.getUserIdAsNumber()},
             updateQuery: (previousQueryResult, {subscriptionData}) => {
                 if (!subscriptionData.data) return previousQueryResult;
-                console.log("Run");
+                console.log("Run", subscriptionData.data);
                 // how to prevent multiple run ??
                 let prevList = Array.from(subscriptionData.data.newParticipantInvite);
                 let invList = new Set(prevList);
                 invList.add(subscriptionData.data.newParticipantInvite);
+                subscriptionData.data = null;
                 return {user: {invites: invList}}
             },
         }
     );
 
     const loadInvites = () => {
-        if (error) return (<div>Error... ${error}</div>);
-        if (loading) return (<div>Loading...</div>);
         return (
             <div className={"invites"}>
                 {data.user.invites.map((inv: Invite) => {
@@ -48,6 +47,9 @@ const ProfilePage = () => {
         )
     };
 
+
+    if (error) return (<div>Error... {error?.message}</div>);
+    if (loading) return (<div>Load invites</div>);
     return (
         <div>
             <CenterDiv>
