@@ -28,8 +28,10 @@ const TaskTable: React.FC<props> = ({userStory}) => {
     const subscribeToNewTask = () => subscribeToMore(
         {
             document: newTaskSubscription,
+            variables:{userStoryId:userStory.id},
             updateQuery: (prev, {subscriptionData}) => {
                 if (!subscriptionData.data) return prev;
+                console.log("run new Task subscription");
                 let taskList = prev.userStory.tasks ? prev.userStory.tasks : [];
                 //because of the state refreshes it runs multiple time...
                 let some = taskList.some((task: TaskModel) => {
@@ -49,7 +51,7 @@ const TaskTable: React.FC<props> = ({userStory}) => {
             variables:{userStoryId:userStory.id},
             updateQuery: (prev, {subscriptionData}) => {
                 if (!subscriptionData.data) return prev;
-                console.log(subscriptionData);
+                console.log("Edit task subscription");
                 return {
                     userStory: {tasks: subscriptionData.data.tasksForUserStory}
                 };

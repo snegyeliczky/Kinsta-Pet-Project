@@ -20,8 +20,8 @@ const subscribeUserStoryTasks = gql`
 `;
 
 const newTaskSubscription = gql`
-    subscription{
-        newTask{
+    subscription($userStoryId:Int){
+        newTask(userStoryId:$userStoryId){
             id,
             title,
             description,
