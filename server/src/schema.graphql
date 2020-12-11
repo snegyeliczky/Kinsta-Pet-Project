@@ -57,8 +57,8 @@ type Mutation{
 }
 
 type Subscription {
-    newTask: Task
-    tasksForUserStory:[Task]
+    newTask(userStoryId:Int): Task
+    tasksForUserStory(userStoryId:Int):[Task]
     newParticipantInvite(receiverId:Int):ParticipateInvite
     joinParticipation(projectId:Int):User
 }

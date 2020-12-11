@@ -66,7 +66,6 @@ export const mutations = {
         if (args.ownerId) await Task.relatedQuery('owner').for(newTask.id).relate(args.ownerId);
         await GqlService.updateUserStoryStatusAfterTaskStatusRefresh(parseInt(newTask.id));
 
-        console.log(context.request)
         context.pubSub.publish("NEW_TASK", {
             newTask: newTask
         });
@@ -142,7 +141,7 @@ export const mutations = {
         await Task.query().findById(args.taskId).patch({ready: args.taskStatus});
         let userStory = await Task.relatedQuery('userStory').for(args.taskId);
         let extendedTasks = await MySqlService.getTasksByUserStoryId(userStory[0].id);
-        await context.pubSub.publish("NEW_TASK_FOR_USER_STORY", {
+        await context.pubSub.publish("TASK_UPDATE", {
             tasksForUserStory: extendedTasks
         });
         return GqlService.updateUserStoryStatusAfterTaskStatusRefresh(args.taskId);
