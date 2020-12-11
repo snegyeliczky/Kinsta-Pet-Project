@@ -1,16 +1,29 @@
 import {withFilter} from 'graphql-subscriptions';
 
 export const subscriptions = {
+
         tasksForUserStory: {
-            subscribe: (parent: any, args: any, Context: { pubSub: any }) => {
-                return Context.pubSub.asyncIterator("NEW_TASK_FOR_USER_STORY")
-            }
+            subscribe: withFilter(
+                (parent: any, args: any, Context: { pubSub: any }): AsyncIterator<any> => {
+                    return Context.pubSub.asyncIterator("TASK_UPDATE")
+                },
+                (payload: any, variables: any): boolean | Promise<boolean> => {
+                    return payload.tasksForUserStory.some((Task:{user_story_id:number}) => {
+                        return Task.user_story_id === variables.userStoryId
+                    })
+                }),
         },
 
         newTask: {
-            subscribe: (parent: any, args: any, Context: { pubSub: any }) => {
-                return Context.pubSub.asyncIterator("NEW_TASK")
-            }
+            subscribe: withFilter(
+                (parent: any, args: any, Context: { pubSub: any }): AsyncIterator<any> => {
+                    return Context.pubSub.asyncIterator("NEW_TASK")
+                },
+                (payload: any, variables: any): boolean | Promise<boolean> => {
+                    return payload.tasksForUserStory.some((Task:{user_story_id:number}) => {
+                        return Task.user_story_id === variables.userStoryId
+                    })
+                }),
         },
 
         newParticipantInvite: {
@@ -23,14 +36,14 @@ export const subscriptions = {
                 }),
         },
 
-    joinParticipation:{
+        joinParticipation: {
             subscribe: withFilter((parent: any, args: any, Context: { pubSub: any }): AsyncIterator<any> => {
                     return Context.pubSub.asyncIterator("JOIN_PARTICIPANT")
                 },
                 (payload: any, variables: any): boolean | Promise<boolean> => {
                     return payload.projectId === variables.projectId
                 })
-    }
+        }
 
     }
 ;
