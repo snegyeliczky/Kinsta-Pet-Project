@@ -11,7 +11,7 @@ export const subscriptions = {
                     return payload.tasksForUserStory.some((Task:{user_story_id:number}) => {
                         return Task.user_story_id === variables.userStoryId
                     })
-                }),
+                })
         },
 
         newTask: {
@@ -20,10 +20,9 @@ export const subscriptions = {
                     return Context.pubSub.asyncIterator("NEW_TASK")
                 },
                 (payload: any, variables: any): boolean | Promise<boolean> => {
-                    return payload.tasksForUserStory.some((Task:{user_story_id:number}) => {
-                        return Task.user_story_id === variables.userStoryId
-                    })
-                }),
+                    console.log("in filter", payload.newTask)
+                    return payload.newTask.user_story_id === variables.userStoryId
+                })
         },
 
         newParticipantInvite: {
@@ -33,7 +32,7 @@ export const subscriptions = {
                 },
                 (payload: any, variables: any): boolean | Promise<boolean> => {
                     return payload.newParticipantInvite.receiverId === variables.receiverId
-                }),
+                })
         },
 
         joinParticipation: {
