@@ -42,7 +42,16 @@ export const subscriptions = {
                 (payload: any, variables: any): boolean | Promise<boolean> => {
                     return payload.projectId === variables.projectId
                 })
-        }
+        },
+
+    newUserStory:{
+        subscribe: withFilter((parent: any, args: any, Context: { pubSub: any }): AsyncIterator<any> => {
+                return Context.pubSub.asyncIterator("NEW_USER_STORY")
+            },
+            (payload: any, variables: any): boolean | Promise<boolean> => {
+                return payload.projectId === variables.projectId
+            })
+    }
 
     }
 ;
