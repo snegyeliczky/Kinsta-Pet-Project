@@ -42,14 +42,17 @@ export const mutations = {
 
     addNewUserStory: async (
         parent: UserStory,
-        args: { userId: number; projectId: number; userStory: string, businessValue: number }
+        args: { userId: number; projectId: number; userStory: string, businessValue: number },
+        context:any
     ) => {
         let newUserStory = await Project.relatedQuery("userStories")
             .for(args.projectId)
             .insert({userStory: args.userStory, status: false, businessValue: args.businessValue});
-        console.log(newUserStory);
         await newUserStory.$relatedQuery("owner").relate(args.userId);
-        console.log(newUserStory);
+        context.pubSub.publish("NEW_USER_STORY", {
+            newUserStory: newUserStory,
+            projectId:args.projectId
+        });
         return newUserStory;
     },
 
