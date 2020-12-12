@@ -1,5 +1,5 @@
-import React, {useContext, useState} from 'react';
-import {UserStoryModel} from "../interfaces/UserStoryModel";
+import React, {useContext, useEffect, useState} from 'react';
+import {UserStoryModel} from "../Types/UserStoryModel";
 import {CenterDiv, UserStoryStyleComponent} from "../assets/styledComponents/styledComponents";
 import {SettingOutlined, CheckSquareFilled} from '@ant-design/icons';
 import EditUserStory from "./EditUserStory";
@@ -14,9 +14,16 @@ interface Props {
 
 const UserStory: React.FC<Props> = ({UserStory, removeUserStory}) => {
 
+    //Refactor UserStory
+    console.log("us comp:",UserStory.userStory);
+
     const [edit, setEdit] = useState(false);
     const [userStory, setUserStory] = useState(UserStory);
     const appContext = useContext(ApplicationContext);
+
+    useEffect(()=>{
+        setUserStory(UserStory)
+    },[UserStory]);
 
     function handleChangeToEdit(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
         e.stopPropagation();

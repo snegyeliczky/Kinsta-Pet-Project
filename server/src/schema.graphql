@@ -42,6 +42,7 @@ type Mutation{
     deleteProject(projectId:Int):Int
     deleteUserStory(userStoryId:Int):Int
     deleteTask(taskId:Int):Int
+    deleteParticipateInvite(inviteId:Int):Int
 
     updateCompany(companyId:Int, projectName:String):Company!
     updateProject(projectId:Int, projectName:String):Project!
@@ -56,8 +57,11 @@ type Mutation{
 }
 
 type Subscription {
-    newTask: Task
-    tasksForUserStory:[Task]
+    newTask(userStoryId:Int): Task
+    tasksForUserStory(userStoryId:Int):[Task]
+    newParticipantInvite(receiverId:Int):ParticipateInvite
+    joinParticipation(projectId:Int):User
+    newUserStory(projectId:Int):UserStory
 }
 
 type User {

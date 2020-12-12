@@ -1,5 +1,5 @@
 import React from 'react';
-import {Company} from "../interfaces/Company";
+import {Company} from "../Types/Company";
 import {StyledCompanyHeader} from "../assets/styledComponents/styledComponents";
 import {CaretRightOutlined} from '@ant-design/icons';
 

@@ -1,12 +1,13 @@
 import React, {useContext, useState} from 'react';
-import {Modal, Button, Form, AutoComplete} from 'antd';
+import {Modal, Button, Form, AutoComplete, message} from 'antd';
 import {UserOutlined} from '@ant-design/icons';
 import {CenterDiv, ModalContainer} from "../../assets/styledComponents/styledComponents";
 import {ApplicationContext} from "../../context/ApplicationContext";
-import {useLazyQuery, useQuery} from "@apollo/client";
+import {useLazyQuery, useMutation, useQuery} from "@apollo/client";
 import {getProjectParticipants} from "../../queries/projectQueries";
-import {UserModel} from "../../interfaces/UserModel";
-import {getUsersByEmail} from "../../queries/userQueries";
+import {UserModel} from "../../Types/UserModel";
+import {getUsersByEmail, inviteUserToCollaborate} from "../../queries/userQueries";
+import {newParticipantJoined} from "../../queries/subscriptions";
 
 
 interface Props {
@@ -15,16 +16,38 @@ interface Props {
 
 const InviteModal: React.FC<Props> = ({projectId}) => {
 
-
         const [visible, setVisible] = useState(false);
         const appContext = useContext(ApplicationContext);
-        const {error: participants_error, loading: participants_loading, data: participants_data} = useQuery(getProjectParticipants, {
-            variables: {
-                id: projectId
-            }
-        });
         const [getUsers, {data}] = useLazyQuery(getUsersByEmail);
         const {Option} = AutoComplete;
+        const [inviteUser] = useMutation(inviteUserToCollaborate);
+        const {error: participants_error, loading: participants_loading, data: participants_data, subscribeToMore}
+        = useQuery(getProjectParticipants, {
+            variables: {
+                id: projectId
+            },
+            onCompleted: ()=> {subscribeToNewUser()}
+        });
+
+        const subscribeToNewUser = () => subscribeToMore({
+                document: newParticipantJoined,
+                variables: {
+                    projectId: projectId
+                },
+                updateQuery: (prev, {subscriptionData}) => {
+                    if (!subscriptionData.data) return prev;
+                    console.log("new participant joined");
+                    let prevList = Array.from(participants_data.project.participants);
+                    let prevSet = new Set(prevList);
+                    prevSet.add(subscriptionData.data.joinParticipation);
+                    return {
+                        project: {
+                            participants: prevSet
+                        }
+                    }
+                }
+            }
+        );
 
 
         const showModal = (event: React.MouseEvent<HTMLElement>) => {
@@ -32,10 +55,27 @@ const InviteModal: React.FC<Props> = ({projectId}) => {
             setVisible(!visible);
         };
 
-        const sendInvite = (e:{email:string}) => {
-            let email = e.email;
-            //invite business logic
-            console.log(email)
+        const sendInvite = async (e: { email: string }) => {
+            try {
+                let userData = data.getUserByEmail.reduce((re: number, u: UserModel) => {
+                    if (u.email === e.email) re = parseInt(u.id);
+                    return re;
+                });
+                let receiverId = userData.id;
+                let senderId = appContext.getUserIdAsNumber();
+                let fetchResult = await inviteUser({
+                    variables: {
+                        senderId: senderId,
+                        receiverId: receiverId,
+                        projectId: projectId
+                    }
+                });
+                message.info(fetchResult.data.sendParticipateInviteToUser)
+            } catch (e) {
+                message.warning(e.message)
+            }
+
+
         };
 
 
@@ -44,12 +84,11 @@ const InviteModal: React.FC<Props> = ({projectId}) => {
         };
 
         const loadParticipants = () => {
-            if (participants_loading) return <h2>... Loading</h2>;
             if (participants_error) return <h2>...error {participants_error?.message}</h2>;
             return (
                 participants_data.project.participants.map((user: UserModel) => {
                     return (
-                        <CenterDiv>
+                        <CenterDiv key={user.id}>
                             <UserOutlined/>
                             {` ${user.firstName}`}
                         </CenterDiv>
@@ -80,6 +119,7 @@ const InviteModal: React.FC<Props> = ({projectId}) => {
                 });
         };
 
+
         const footer = (<div>
             <Button type={"primary"} onClick={e => {
                 setVisible(false)
@@ -87,6 +127,7 @@ const InviteModal: React.FC<Props> = ({projectId}) => {
         </div>);
 
 
+        if (participants_loading) return <h2>Loading participants</h2>;
         return (
             <ModalContainer onClick={event => {
                 event.stopPropagation()
@@ -114,8 +155,8 @@ const InviteModal: React.FC<Props> = ({projectId}) => {
                             <AutoComplete
                                 style={{width: 300}}
                                 placeholder="Typ user email"
-                                onChange={(inputValue) => {
-                                    fetchUsersByEmail(inputValue)
+                                onChange={(input) => {
+                                    fetchUsersByEmail(input)
                                 }}
                             >
                                 {loadOptions()}

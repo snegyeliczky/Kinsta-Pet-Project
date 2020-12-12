@@ -2,7 +2,7 @@ import React, {useContext, useState} from 'react';
 import {Button, Input, Modal} from "antd";
 import {EstimationUsersStyledComponent, ModalContainer} from "../../assets/styledComponents/styledComponents";
 import {ProjectOutlined} from '@ant-design/icons';
-import {UserEstimation} from "../../interfaces/UserEstimation";
+import {UserEstimation} from "../../Types/UserEstimation";
 import {ApplicationContext} from "../../context/ApplicationContext";
 
 
@@ -86,10 +86,10 @@ const EstimationModal: React.FC<Props> = ({editUserStoryEstimation, estimatedUse
                         <div className={"estimation-estimation"}>Estimation</div>
                         {
                             estimatedUsers ? estimatedUsers.map((k) => {
-                                    return <>
-                                        <div key={k.owner.id+k.estimation} className={"estimation-user"}>{k.owner.firstName}</div>
-                                        <div key={k.id} className={"estimation-estimation"}>{k.estimation}-SP</div>
-                                    </>
+                                    return <div key={k.id}>
+                                        <div  className={"estimation-user"}>{k.owner.firstName}</div>
+                                        <div  className={"estimation-estimation"}>{k.estimation}-SP</div>
+                                    </div>
                                 })
                                 : ""
                         }

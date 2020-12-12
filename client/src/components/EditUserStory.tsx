@@ -1,13 +1,12 @@
-import React, {Dispatch, SetStateAction, useContext, useState} from 'react';
+import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from 'react';
 import {UserStoryStyleComponent} from "../assets/styledComponents/styledComponents";
-import {UserStoryModel} from "../interfaces/UserStoryModel";
+import {UserStoryModel} from "../Types/UserStoryModel";
 import {SettingOutlined, DeleteOutlined} from '@ant-design/icons';
 import {Input} from "antd";
 import AlertModal from "./Modals/AlertModal";
 import EstimationModal from "./Modals/EstimationModal";
 import UserDropdown from "./userDropdown";
-import ProjectContext from "../context/ProjectContext";
-import {useMutation, useQuery} from "@apollo/client";
+import {useLazyQuery, useMutation, useQuery} from "@apollo/client";
 import {
     editUserStoryQuery,
     estimateUserStory,
@@ -15,7 +14,8 @@ import {
     updateUserStoryUser
 } from "../queries/userStoryQueries";
 import {ApplicationContext} from "../context/ApplicationContext";
-import {getUserStories} from "../queries/projectQueries";
+import {getProjectParticipants, getUserStories} from "../queries/projectQueries";
+import {useParams} from "react-router";
 
 type Props = {
     userStory: UserStoryModel,
@@ -28,7 +28,7 @@ type Props = {
 
 const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory, removeUserStory}) => {
 
-    const projectContext = useContext(ProjectContext);
+
     const appContext = useContext(ApplicationContext);
     const editedUserStory = {...userStory};
     const [estimations, setEstimations] = useState(userStory.estimatedUsers);
@@ -36,10 +36,22 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
     const [mutateUser] = useMutation(updateUserStoryUser);
     const [estimate] = useMutation(estimateUserStory);
     const {refetch} = useQuery(estimationsForUserStory, {variables: {id: userStory.id}});
-
     const EditUserStory = (story: string) => {
         editedUserStory.userStory = story;
     };
+
+    const [getParticipants, {data}] = useLazyQuery(getProjectParticipants);
+    const {id} = useParams();
+
+
+
+    useEffect(() => {
+        getParticipants({
+            variables: {
+                id: parseInt(id)
+            }
+        });
+    },[]);
 
     const EditUserStoryValue = (value: number) => {
         editedUserStory.businessValue = value;
@@ -62,7 +74,7 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
                 userStoryId: userStory.id,
                 estimation: point
             },
-            refetchQueries:[{query:getUserStories, variables:{id:userStory.project.id}}]
+            refetchQueries: [{query: getUserStories, variables: {id: userStory.project.id}}]
         });
         let estimationObject = await refetch();
         let estimations = estimationObject.data.userStory.estimatedUsers;
@@ -118,7 +130,7 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
                        }}/>
             </div>
             <div className={"userStory-ownerId UserStory-part"}>
-                <UserDropdown userData={projectContext.participants} onChange={EditUserStoryOwner}
+                <UserDropdown userData={data ? data.project.participants : []} onChange={EditUserStoryOwner}
                               base={userStory.owner ? userStory.owner.firstName : "- - -"}/>
             </div>
             <div className={"userStory-estimation UserStory-part"}>

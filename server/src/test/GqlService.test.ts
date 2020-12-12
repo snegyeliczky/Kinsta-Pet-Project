@@ -18,16 +18,16 @@ test("user have invitation for the project", async () => {
 });
 
 test("Unable to accept User already participate ", async () => {
-    let acceptMessage = await GqlService.acceptParticipationInvitation(1);
+    let acceptMessage = await GqlService.acceptParticipationInvitation(1, context);
     expect(acceptMessage).toEqual("User participating in project")
 });
 
 test("invite accepted", async () => {
-    let acceptMessage = await GqlService.acceptParticipationInvitation(2);
+    let acceptMessage = await GqlService.acceptParticipationInvitation(2, context);
     expect(acceptMessage).toEqual("invite accepted")
 });
 
 test("Invite is not exist", async () => {
-    let acceptMessage = await GqlService.acceptParticipationInvitation(3);
+    let acceptMessage = await GqlService.acceptParticipationInvitation(3, context);
     expect(acceptMessage).toEqual("Invitation is invalid! Refresh The Page!")
 });

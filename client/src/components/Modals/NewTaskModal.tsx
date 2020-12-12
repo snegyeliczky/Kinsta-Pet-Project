@@ -1,15 +1,14 @@
 import React, {useContext, useState} from 'react';
-import {Button, Input, Modal, message} from "antd";
+import {Button, Input, Modal, message, Form} from "antd";
 import {ModalContainer} from "../../assets/styledComponents/styledComponents";
 import {PlusOutlined, ProjectOutlined} from '@ant-design/icons';
 import UserDropdown from "../userDropdown";
-import ProjectContext from "../../context/ProjectContext";
 import {ApplicationContext} from "../../context/ApplicationContext";
 import {useMutation, useQuery} from "@apollo/client";
 import {addNewTask} from "../../queries/taskQueries";
 import {getUserById} from "../../queries/userQueries";
 import {useParams} from "react-router";
-import {getUserStories} from "../../queries/projectQueries";
+import {getProjectParticipants, getUserStories} from "../../queries/projectQueries";
 
 type Props = {
     UserStoryId: number
@@ -18,22 +17,23 @@ type Props = {
 const NewTaskModal: React.FC<Props> = ({UserStoryId}) => {
 
     const appContext = useContext(ApplicationContext);
-    const projectContext = useContext(ProjectContext);
     const [visible, setVisible] = useState(false);
-    const [taskTitle, setTaskTitle] = useState("");
-    const [taskDescription, setTaskDescription] = useState("");
-    const [ownerId, setOwnerId] = useState<number | null>(appContext.getUserIdAsNumber());
-    const [time, setTime] = useState<string>("00:00");
     const [addNewTaskMutation] = useMutation(addNewTask);
     const {id} = useParams();
 
+    const {loading: participants_loading, data: participants_data,}
+        = useQuery(getProjectParticipants, {
+        variables: {
+            id: parseInt(id)
+        }
+    });
     const {data, loading} = useQuery(getUserById, {variables: {id: appContext.getUserIdAsNumber()}});
 
     function showModal(event: React.MouseEvent<HTMLElement>) {
         setVisible(true)
     }
 
-    function saveNewTask() {
+    function saveNewTask(taskTitle: string, taskDescription: string, ownerId: number, time: string) {
         addNewTaskMutation({
             variables: {
                 userStoryId: UserStoryId,
@@ -43,8 +43,9 @@ const NewTaskModal: React.FC<Props> = ({UserStoryId}) => {
                 time: time
             },
             refetchQueries: [
-                {query:getUserStories, variables:{id}}
-                ]
+                //refactor to subscription ?!
+                {query: getUserStories, variables: {id}}
+            ]
         })
 
     }
@@ -54,16 +55,17 @@ const NewTaskModal: React.FC<Props> = ({UserStoryId}) => {
         setVisible(false);
     }
 
-    function handleSave(e: React.MouseEvent<HTMLElement>) {
-        if (taskTitle.length > 2) {
-            saveNewTask();
+
+    const formFinish = (values: { taskTitle: string, taskDescription: string, ownerId: number, time: string }) => {
+        if (values.taskTitle.length > 2) {
+            saveNewTask(values.taskTitle, values.taskDescription, values.ownerId, values.time);
             setVisible(false);
         } else message.error("Task title must be minimum 3 character long!", 5)
-    }
+    };
 
 
     if (loading) return (<div>Loading...</div>);
-
+    if (participants_loading) return (<div>loading participants..</div>);
     return (
         <div>
             <ModalContainer onClick={event => {
@@ -75,38 +77,85 @@ const NewTaskModal: React.FC<Props> = ({UserStoryId}) => {
                     Add new Task
                 </Button>
                 <Modal
-                    title="Create new project"
+                    title="Add new Task"
                     visible={visible}
                     onCancel={e => {
                         handleCancel(e)
                     }}
-                    onOk={e => {
-                        handleSave(e)
-                    }}
+                    footer={null}
                 >
-                    <div className={"newProjectForm"}>
-                        <Input placeholder={"Task title"} prefix={<ProjectOutlined/>} type={"string"}
-                               onChange={event => {
-                                   setTaskTitle(event.target.value)
-                               }}
-                        />
-                        <Input.TextArea placeholder={"Task Description"}
-                                        onChange={event => {
-                                            setTaskDescription(event.target.value)
-                                        }}
-                        />
-                        <UserDropdown userData={projectContext.participants} onChange={setOwnerId}
-                                      base={data.user.firstName}/>
-                        <Input type={"time"} onChange={event => {
-                            setTime(event.target.value)
-                        }}/>
-                    </div>
 
+                    <Form
+                        onFinish={formFinish}
+                    >
+                        <Form.Item
+                            name={"taskTitle"}
+                            rules={[
+                                {
+                                    required: true,
+                                    message:"Add task title!"
+                                },
+                                () => ({
+                                    validator(rule, value: string) {
+                                        if (value)
+                                        return value.length > 2 ?
+                                            Promise.resolve()
+                                            : Promise.reject(" Title must be minimum 3 character long!");
+                                        return Promise.reject()
+                                    }
+                                })
+                            ]}
+                        >
+                            <Input placeholder={"Task title"} prefix={<ProjectOutlined/>} type={"string"}/>
+                        </Form.Item>
+                        <Form.Item
+                            name={"taskDescription"}
+                        >
+                            <Input.TextArea placeholder={"Task Description"}/>
+                        </Form.Item>
+                        <Form.Item
+                            name={"ownerId"}
+                            initialValue={appContext.getUserIdAsNumber()}
+                        >
+                            <UserDropdown userData={participants_data.project.participants} onChange={() => {
+                            }}
+                                          base={data.user.firstName}/>
+                        </Form.Item>
+                        <Form.Item
+                            name={"time"}
+                            initialValue={"00:00"}
+                        >
+                            <Input type={"time"}/>
+                        </Form.Item>
+                        <Form.Item>
+                            <Button htmlType={"submit"} type={"primary"} style={{margin: "10px"}}>
+                                Save Task
+                            </Button>
+                            <Button danger onClick={handleCancel}>
+                                close
+                            </Button>
+                        </Form.Item>
+                    </Form>
                 </Modal>
             </ModalContainer>
-
         </div>
     );
 };
 
 export default NewTaskModal;
+
+/*
+ rules={[
+                                {
+                                    required: true,
+                                    message: 'Add task title!',
+                                },
+                                () => ({
+                                    validator(rule, value: string) {
+                                        return value.length > 2 ?
+                                            Promise.resolve()
+                                            : Promise.reject(" Title must be minimum 3 character long!")
+                                    }
+                                })
+                            ]}
+ */

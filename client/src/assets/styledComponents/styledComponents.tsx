@@ -5,7 +5,7 @@ export const CenterDiv = styled("div")(
         margin: "10px auto",
         width: "fit-content"
     }
-    );
+);
 
 export const NewCompanyContainer = styled("div")(
     {
@@ -252,5 +252,16 @@ export const EstimationUsersStyledComponent = styled("div")(
         gridGap: "10px",
         gridTemplateColumns: "repeat(2,1fr)",
         justifyItems: "center",
+    }
+);
+
+export const InviteComponent = styled("div")(
+    {
+        color: "white",
+        display: "grid",
+        gridTemplateColumns: "repeat(4,1fr)",
+        justifyItems: "center",
+        alignItems: "center",
+        gridAutoRows: " minmax(100px,auto)",
     }
 )

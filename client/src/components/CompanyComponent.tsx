@@ -1,11 +1,11 @@
 import React, {useContext} from 'react';
-import {Company} from "../interfaces/Company";
+import {Company} from "../Types/Company";
 import {useHistory} from "react-router-dom";
 import NewProjectModal from "./Modals/NewProjectModal";
 import {CenterDiv, CompanyPageProject} from "../assets/styledComponents/styledComponents";
 import {useMutation, useQuery} from "@apollo/client";
 import {deleteCompany, getProjectsForCompanyByUser} from "../queries/companyQueries";
-import {Project} from "../interfaces/Project";
+import {Project} from "../Types/Project";
 import {ApplicationContext} from "../context/ApplicationContext";
 import AlertModal from "./Modals/AlertModal";
 import {getUsersCompanies} from "../queries/userQueries";

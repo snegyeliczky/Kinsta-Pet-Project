@@ -1,8 +1,8 @@
 import {gql} from "@apollo/client";
 
-const subscribeNewTask = gql`
-    subscription{
-        tasksForUserStory{
+const subscribeUserStoryTasks = gql`
+    subscription($userStoryId:Int){
+        tasksForUserStory(userStoryId:$userStoryId){
             id,
             title,
             description,
@@ -20,8 +20,8 @@ const subscribeNewTask = gql`
 `;
 
 const newTaskSubscription = gql`
-    subscription{
-        newTask{
+    subscription($userStoryId:Int){
+        newTask(userStoryId:$userStoryId){
             id,
             title,
             description,
@@ -38,4 +38,59 @@ const newTaskSubscription = gql`
     }
 `;
 
-export {subscribeNewTask,newTaskSubscription}
+const newParticipationInviteSubscription = gql`
+    subscription ($receiverId:Int){
+        newParticipantInvite(receiverId:$receiverId){
+            id,
+            sander{
+                id,
+                firstName
+            }
+            project{
+                id,
+                name,
+                company{
+                    id,
+                    name
+                }
+            }
+
+        }
+    }
+`;
+
+const newParticipantJoined = gql`
+    subscription($projectId:Int){
+        joinParticipation(projectId:$projectId){
+            id,
+            firstName,
+            lastName,
+            email
+        }
+    }
+`;
+
+const newUserStory = gql`
+    subscription ($projectId:Int){
+        newUserStory(projectId:$projectId){
+            id,
+            userStory,
+            project{id},
+            status,
+            businessValue,
+            owner{
+                id,
+                firstName
+            },
+            estimatedUsers{
+                id,
+                owner{
+                    id,
+                    firstName
+                },
+                estimation}
+        }
+    }
+`
+
+export {subscribeUserStoryTasks,newTaskSubscription,newParticipationInviteSubscription,newParticipantJoined,newUserStory}

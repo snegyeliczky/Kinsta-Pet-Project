@@ -8,6 +8,7 @@ import {GqlUtil} from "../util/GqlUtil";
 import bcrypt from "bcrypt";
 import {response} from "express";
 import has = Reflect.has;
+import {company} from "../resolvers/ModelResolvers/CompanyResolver";
 
 export const GqlService = {
 
@@ -50,12 +51,20 @@ export const GqlService = {
     },
 
     updateUserStory: async (userStory: string,
-                            userStoryId: number, businessValue: number) => {
+                            userStoryId: number, businessValue: number, context: any) => {
         await UserStory.query().findById(userStoryId).patch({
             userStory: userStory,
             businessValue: businessValue
         });
-        return UserStory.query().findById(userStoryId);
+        let updatedUserStory = await UserStory.query().findById(userStoryId);
+        let project = await UserStory.relatedQuery("project").for(updatedUserStory.id);
+
+        context.pubSub.publish("NEW_USER_STORY", {
+            newUserStory: updatedUserStory,
+            projectId:project[0].id
+        });
+
+        return updatedUserStory;
     },
 
     updateTask: async (taskId: number, title: string,
@@ -68,7 +77,7 @@ export const GqlService = {
         return Task.query().findById(taskId);
     },
 
-    sendProjectParticipationInvite: async (senderId: number, receiverId: number, projectId: number) => {
+    sendProjectParticipationInvite: async (senderId: number, receiverId: number, projectId: number, context:any) => {
         let projectParticipants = await MySqlService.getProjectParticipants(projectId);
         let receiverInvites = await MySqlService.getUserInvites(receiverId);
         if (await GqlUtil.checkUserHaveInvitationToProject(receiverInvites, projectId)) {
@@ -77,33 +86,13 @@ export const GqlService = {
         if (projectParticipants.some((user: User) => {
             return user.id === receiverId
         })) {
-            return "user all ready participate in the project"
+            return "user already participate in the project"
         }
-        return MySqlService.sendInvite(senderId, projectId, receiverId);
+        return MySqlService.sendInvite(senderId, projectId, receiverId,context);
     },
 
     addUserToProjectAsParticipant: async (userId: number, projectId: number) => {
         return Project.relatedQuery('participants').for(projectId).relate(userId);
-    },
-
-    acceptParticipationInvitation: async (invitationId: number) => {
-        let invite = await MySqlService.findInvitation(invitationId);
-        try {
-            let project = await MySqlService.getProjectForInvite(invite.id);
-            let receiver = await MySqlService.findReceiverForInvite(invite);
-            let participants = await MySqlService.getProjectParticipants(project.id);
-            if (!participants.some((user: User) => {
-                return user.id === receiver.id
-            })) {
-                await MySqlService.acceptAndDeleteInvitation(project, receiver.id, invitationId);
-                return "invite accepted"
-            }
-            await MySqlService.deleteInvite(invitationId);
-            return "User participating in project";
-        } catch (e) {
-            return "Invitation is invalid! Refresh The Page!"
-        }
-
     },
 
     addUserToCompany: async (userId: number, companyId: number) => {
@@ -114,6 +103,33 @@ export const GqlService = {
             .for(userId)
             .relate(companyId);
         return "user is added as collaborator";
+    },
+
+    acceptParticipationInvitation: async (invitationId: number, context: any) => {
+        let invite = await MySqlService.findInvitation(invitationId);
+        try {
+            let project = await MySqlService.getProjectForInvite(invite.id);
+            let receiver = await MySqlService.findReceiverForInvite(invite);
+            let participants = await MySqlService.getProjectParticipants(project.id);
+            if (!participants.some((user: User) => {
+                return user.id === receiver.id
+            })) {
+                let company = await MySqlService.getCompanyForProject(project.id);
+                await GqlService.addUserToCompany(receiver.id,company.id);
+                await MySqlService.acceptAndDeleteInvitation(project, receiver.id, invitationId);
+                //subscription return receiver
+                context.pubSub.publish("JOIN_PARTICIPANT",{
+                    joinParticipation:receiver,
+                    projectId:project.id
+                });
+                return "invite accepted"
+            }
+            await MySqlService.deleteInvite(invitationId);
+            return "User participating in project";
+        } catch (e) {
+            return "Invitation is invalid! Refresh The Page!"
+        }
+
     },
 
     getProjectForUserByCompanyId: async (userId: number, companyId: number) => {

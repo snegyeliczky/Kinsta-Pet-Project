@@ -1,14 +1,16 @@
-import React, {Dispatch, SetStateAction, useContext, useState} from 'react';
+import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from 'react';
 import {TaskStyledComponent} from "../assets/styledComponents/styledComponents";
 import {Input} from "antd";
 import AlertModal from "./Modals/AlertModal";
-import {TaskModel} from "../interfaces/TaskModel";
+import {TaskModel} from "../Types/TaskModel";
 import {DeleteOutlined, SettingOutlined} from '@ant-design/icons';
 import {ApplicationContext} from "../context/ApplicationContext";
 import UserDropdown from './userDropdown';
 import ProjectContext from "../context/ProjectContext";
-import {useMutation} from "@apollo/client";
+import {useLazyQuery, useMutation} from "@apollo/client";
 import {getTaskForUserStory, mutateTaskOwner, mutateTaskQuery,deleteTaskMutation} from "../queries/taskQueries";
+import {getProjectParticipants} from "../queries/projectQueries";
+import {useParams} from "react-router";
 
 type props = {
     Task: TaskModel,
@@ -26,6 +28,19 @@ const EditTask: React.FC<props> = ({Task, edit, setEdit, ready}) => {
     const [mutateTask] = useMutation(mutateTaskQuery);
     const [changeOwner] = useMutation(mutateTaskOwner);
     const [deleteTask] = useMutation(deleteTaskMutation);
+
+    const [getParticipants, {data}] = useLazyQuery(getProjectParticipants);
+    const {id} = useParams();
+
+
+
+    useEffect(() => {
+        getParticipants({
+            variables: {
+                id: parseInt(id)
+            }
+        });
+    },[]);
 
 
     const removeTaskAndCloseEditing = () => {
@@ -126,7 +141,7 @@ const EditTask: React.FC<props> = ({Task, edit, setEdit, ready}) => {
             <div className={"task-description"}><Input.TextArea
                 defaultValue={Task.description} onChange={(e) => updateDescription(e.target.value)}/></div>
             <div>{editTime()}</div>
-            <div><UserDropdown userData={projectContext.participants}
+            <div><UserDropdown userData={data ? data.project.participants : []}
                                onChange={updateOwner} base={Task.owner?.firstName}/></div>
             {showDelete()}
             <div><SettingOutlined spin={edit} onClick={handleStopEdit} className={"userStory-edit"}/></div>

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { Menu, Dropdown,Button, message } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
-import {UserModel} from "../interfaces/UserModel";
+import {UserModel} from "../Types/UserModel";
 
 
 type props = {
