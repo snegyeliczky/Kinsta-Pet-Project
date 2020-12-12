@@ -51,12 +51,20 @@ export const GqlService = {
     },
 
     updateUserStory: async (userStory: string,
-                            userStoryId: number, businessValue: number) => {
+                            userStoryId: number, businessValue: number, context: any) => {
         await UserStory.query().findById(userStoryId).patch({
             userStory: userStory,
             businessValue: businessValue
         });
-        return UserStory.query().findById(userStoryId);
+        let updatedUserStory = await UserStory.query().findById(userStoryId);
+        let project = await UserStory.relatedQuery("project").for(updatedUserStory.id);
+
+        context.pubSub.publish("NEW_USER_STORY", {
+            newUserStory: updatedUserStory,
+            projectId:project[0].id
+        });
+
+        return updatedUserStory;
     },
 
     updateTask: async (taskId: number, title: string,
