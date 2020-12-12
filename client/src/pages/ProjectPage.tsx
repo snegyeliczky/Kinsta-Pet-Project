@@ -49,17 +49,32 @@ const ProjectPage = () => {
         variables: {projectId: parseInt(id)},
         updateQuery: (prev, {subscriptionData}) => {
             if (!subscriptionData.data) return prev;
-
             let newList = [...userStory_data.project.userStories];
+
             let some = newList.some((us: UserStoryModel) => {
-                return us.id != subscriptionData.data.newUserStory.id
+                return us.id === subscriptionData.data.newUserStory.id
             });
-            if(some) newList.push(subscriptionData.data.newUserStory);
-            return {
-                project: {
-                    userStories: newList
-                }
+
+            //if not exist than push the user story to list (some = false)
+            if (!some) newList.push(subscriptionData.data.newUserStory);
+
+
+            // if userStory exist than update it (some = true)
+            if (some) {
+                let updatedUserStory: UserStoryModel = subscriptionData.data.newUserStory;
+                newList = newList.map((us: UserStoryModel) => {
+                    if (us.id === updatedUserStory.id) {
+                        return Object.assign(updatedUserStory)
+                    }
+                    return Object.assign(us)
+                });
             }
+            console.log(newList);
+            return ({
+                project: {
+                    userStories: [...newList]
+                }
+            })
         }
     });
 
