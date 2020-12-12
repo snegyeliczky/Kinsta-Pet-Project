@@ -29,7 +29,7 @@ const NewUserStoryModal: React.FC<Props> = ({projectId}) => {
         setVisible(!visible);
     };
 
-    const saveUserStory = (UserStory:string,BusinessValue:string,OwnerId:number) => {
+    const saveUserStory = (UserStory: string, BusinessValue: string, OwnerId: number) => {
         addNewUserStory({
             variables: {
                 userId: OwnerId,
@@ -40,9 +40,9 @@ const NewUserStoryModal: React.FC<Props> = ({projectId}) => {
         })
     };
 
-    const saveForm = (values: {UserStory: string, BusinessValue: string, User: number}) => {
+    const saveForm = (values: { UserStory: string, BusinessValue: string, User: number }) => {
         if (values.UserStory.length > 2) {
-            saveUserStory( values.UserStory,values.BusinessValue,values.User);
+            saveUserStory(values.UserStory, values.BusinessValue, values.User);
             setVisible(!visible);
         } else message.error("User story must be minimum 3 character long!", 5)
     };
@@ -67,7 +67,7 @@ const NewUserStoryModal: React.FC<Props> = ({projectId}) => {
                 title="Create new UserStoryModel"
                 visible={visible}
                 footer={null}
-
+                onCancel={handleCancel}
             >
                 <div className={"newProjectForm"}>
                     <Form
@@ -83,11 +83,12 @@ const NewUserStoryModal: React.FC<Props> = ({projectId}) => {
                         <Form.Item
                             name={"User"}
                             rules={[{required: true, message: 'Please choose owner!'}]}>
-                            <UserDropdown base={"---"} onChange={()=>{}}
+                            <UserDropdown base={"---"} onChange={() => {
+                            }}
                                           userData={participants_data.project.participants}/>
                         </Form.Item>
                         <Form.Item>
-                            <Button htmlType={"submit"} type={"primary"} style={{margin:"10px"}}>
+                            <Button htmlType={"submit"} type={"primary"} style={{margin: "10px"}}>
                                 Save user story
                             </Button>
                             <Button danger onClick={handleCancel}>
