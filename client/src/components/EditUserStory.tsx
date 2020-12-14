@@ -21,12 +21,12 @@ type Props = {
     userStory: UserStoryModel,
     edit: boolean,
     setEdit: Dispatch<SetStateAction<boolean>>,
-    setUserStory: Dispatch<SetStateAction<UserStoryModel>>,
+
     removeUserStory: Function,
 }
 
 
-const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory, removeUserStory}) => {
+const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, removeUserStory}) => {
 
     const {id} = useParams();
 
@@ -138,7 +138,7 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
 
                 <SettingOutlined spin={edit} onClick={handleStopEditing} className={"userStory-edit"}/>
                 <AlertModal text={"Are you sure you want to remove this User Story ?"}
-                            buttonText={<DeleteOutlined/>} OkFunction={() => removeUserStory(userStory.id)}/>
+                            buttonText={<DeleteOutlined/>} OkFunction={ () =>  removeUserStory(userStory.id)}/>
             </div>
 
         </UserStoryStyleComponent>

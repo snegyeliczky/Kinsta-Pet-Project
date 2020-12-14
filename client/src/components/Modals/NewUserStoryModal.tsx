@@ -29,8 +29,8 @@ const NewUserStoryModal: React.FC<Props> = ({projectId}) => {
         setVisible(!visible);
     };
 
-    const saveUserStory = (UserStory: string, BusinessValue: string, OwnerId: number) => {
-        addNewUserStory({
+    const saveUserStory = async (UserStory: string, BusinessValue: string, OwnerId: number) => {
+        await addNewUserStory({
             variables: {
                 userId: OwnerId,
                 projectId: projectId,
@@ -40,9 +40,9 @@ const NewUserStoryModal: React.FC<Props> = ({projectId}) => {
         })
     };
 
-    const saveForm = (values: { UserStory: string, BusinessValue: string, User: number }) => {
+    const saveForm = async (values: { UserStory: string, BusinessValue: string, User: number }) => {
         if (values.UserStory.length > 2) {
-            saveUserStory(values.UserStory, values.BusinessValue, values.User);
+            await saveUserStory(values.UserStory, values.BusinessValue, values.User);
             setVisible(!visible);
         } else message.error("User story must be minimum 3 character long!", 5)
     };

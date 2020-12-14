@@ -29,10 +29,9 @@ const ProjectPage = () => {
                 variables: {
                     id
                 },
-                fetchPolicy:"network-only",
-                onCompleted: () => {
-                    subscribeToNewUserStory();
-                    subscribeToRemoveUserStory()
+                onCompleted:  () => {
+                     subscribeToNewUserStory();
+                     subscribeToRemoveUserStory()
                 }
             });
     const {loading: load_project, error: error_project, data: project_data} =
@@ -45,14 +44,14 @@ const ProjectPage = () => {
     const [deleteProject] = useMutation(deleteProjectMutation);
     const history = useHistory();
 
-    const subscribeToNewUserStory = () => subscribeToMore({
+    const subscribeToNewUserStory =  () =>  subscribeToMore({
         document: newUserStory,
         variables: {projectId: parseInt(id)},
         updateQuery: (prev, {subscriptionData}) => {
             if (!subscriptionData.data) return prev;
             console.log("re init: ", userStory_data.project.userStories)
             let newList = [...userStory_data.project.userStories];
-            console.log("new us: ", newList)
+            console.log("new us: ", newList);
             let some = newList.some((us: UserStoryModel) => {
                 return us.id === subscriptionData.data.newUserStory.id
             });
@@ -79,13 +78,12 @@ const ProjectPage = () => {
     });
 
 
-    const subscribeToRemoveUserStory = () => subscribeToMore({
+    const subscribeToRemoveUserStory =  () => subscribeToMore({
         document: removeUserStory,
         variables: {projectId: parseInt(id)},
         updateQuery: (prev, {subscriptionData}) => {
             if (!subscriptionData.data) return prev;
-            console.log(subscriptionData.data.removeUserStory);
-            console.log(prev);
+            console.log("prev: ",prev);
             let rmUsId = subscriptionData.data.removeUserStory;
             let newList = [...userStory_data.project.userStories];
             newList = newList.filter((us: UserStoryModel) => {
