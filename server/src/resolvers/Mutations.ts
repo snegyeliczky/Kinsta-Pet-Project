@@ -135,8 +135,9 @@ export const mutations = {
         args: {
             userStory: string;
             userStoryId: number; businessValue: number
-        }) => {
-        return GqlService.updateUserStory(args.userStory, args.userStoryId, args.businessValue);
+        },
+        context:any) => {
+        return GqlService.updateUserStory(args.userStory, args.userStoryId, args.businessValue, context);
     },
 
     // update the task status and return the userStory status
