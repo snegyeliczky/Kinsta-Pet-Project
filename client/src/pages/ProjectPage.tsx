@@ -29,11 +29,13 @@ const ProjectPage = () => {
                 variables: {
                     id
                 },
+                fetchPolicy:"cache-first",
                 onCompleted:  () => {
                      subscribeToNewUserStory();
                      subscribeToRemoveUserStory()
                 }
             });
+
     const {loading: load_project, error: error_project, data: project_data} =
         useQuery(getProject, {
             variables: {
@@ -50,14 +52,17 @@ const ProjectPage = () => {
         updateQuery: (prev, {subscriptionData}) => {
             if (!subscriptionData.data) return prev;
             console.log("re init: ", userStory_data.project.userStories)
-            let newList = [...userStory_data.project.userStories];
-            console.log("new us: ", newList);
+            console.log("prev", prev)
+            let newList =prev.project.userStories?
+                [...prev.project.userStories]:
+                [...userStory_data.project.userStories];
+
             let some = newList.some((us: UserStoryModel) => {
                 return us.id === subscriptionData.data.newUserStory.id
             });
 
             //if not exist than push the user story to list (some = false)
-            if (!some) newList = [...newList,subscriptionData.data.newUserStory];
+            if (!some) newList.push(subscriptionData.data.newUserStory);
 
             // if userStory exist than update it (some = true)
             if (some) {
@@ -85,7 +90,9 @@ const ProjectPage = () => {
             if (!subscriptionData.data) return prev;
             console.log("prev: ",prev);
             let rmUsId = subscriptionData.data.removeUserStory;
-            let newList = [...userStory_data.project.userStories];
+            let newList = prev.project.userStories?
+                [...prev.project.userStories]:
+                [...userStory_data.project.userStories];
             newList = newList.filter((us: UserStoryModel) => {
                 if (us.id !== rmUsId) return us;
 
