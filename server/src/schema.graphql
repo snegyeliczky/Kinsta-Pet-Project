@@ -62,6 +62,7 @@ type Subscription {
     newParticipantInvite(receiverId:Int):ParticipateInvite
     joinParticipation(projectId:Int):User
     newUserStory(projectId:Int):UserStory
+    removeUserStory(projectId:Int):Int
 }
 
 type User {

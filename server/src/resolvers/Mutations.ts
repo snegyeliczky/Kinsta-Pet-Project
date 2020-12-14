@@ -43,7 +43,7 @@ export const mutations = {
     addNewUserStory: async (
         parent: UserStory,
         args: { userId: number; projectId: number; userStory: string, businessValue: number },
-        context:any
+        context: any
     ) => {
         let newUserStory = await Project.relatedQuery("userStories")
             .for(args.projectId)
@@ -51,7 +51,7 @@ export const mutations = {
         await newUserStory.$relatedQuery("owner").relate(args.userId);
         context.pubSub.publish("NEW_USER_STORY", {
             newUserStory: newUserStory,
-            projectId:args.projectId
+            projectId: args.projectId
         });
         return newUserStory;
     },
@@ -108,7 +108,13 @@ export const mutations = {
         return Project.query().deleteById(args.projectId);
     },
 
-    deleteUserStory: (parent: UserStory, args: { userStoryId: number }) => {
+    deleteUserStory: async (parent: UserStory, args: { userStoryId: number }, context: any) => {
+        let project = await UserStory.relatedQuery("project").for(args.userStoryId);
+        context.pubSub.publish("REMOVE_USER_STORY",
+            {
+                removeUserStory: args.userStoryId,
+                projectId: project[0].id
+            });
         return UserStory.query().deleteById(args.userStoryId);
     },
 
@@ -117,9 +123,9 @@ export const mutations = {
         return number;
     },
 
-    deleteParticipateInvite: async (parent:ParticipateInvite,args:{inviteId:number})=>{
-         let number = await ParticipateInvite.query().deleteById(args.inviteId);
-         return number;
+    deleteParticipateInvite: async (parent: ParticipateInvite, args: { inviteId: number }) => {
+        let number = await ParticipateInvite.query().deleteById(args.inviteId);
+        return number;
     },
 
     updateCompany: (parent: Company, args: { companyId: number, companyName: string }) => {
@@ -136,12 +142,12 @@ export const mutations = {
             userStory: string;
             userStoryId: number; businessValue: number
         },
-        context:any) => {
+        context: any) => {
         return GqlService.updateUserStory(args.userStory, args.userStoryId, args.businessValue, context);
     },
 
     // update the task status and return the userStory status
-    updateTaskStatus: async (parent: Task, args: { taskId: number, taskStatus: boolean }, context:any) => {
+    updateTaskStatus: async (parent: Task, args: { taskId: number, taskStatus: boolean }, context: any) => {
         await Task.query().findById(args.taskId).patch({ready: args.taskStatus});
         let userStory = await Task.relatedQuery('userStory').for(args.taskId);
         let extendedTasks = await MySqlService.getTasksByUserStoryId(userStory[0].id);
@@ -166,11 +172,11 @@ export const mutations = {
         return await GqlService.estimator(args.userId, args.userStoryId, args.estimation)
     },
 
-    sendParticipateInviteToUser: async (parent: any, args: { senderId: number, receiverId: number, projectId: number },context:any) => {
-        return await GqlService.sendProjectParticipationInvite(args.senderId, args.receiverId, args.projectId,context);
+    sendParticipateInviteToUser: async (parent: any, args: { senderId: number, receiverId: number, projectId: number }, context: any) => {
+        return await GqlService.sendProjectParticipationInvite(args.senderId, args.receiverId, args.projectId, context);
     },
 
-    acceptParticipationInvite: (parent: any, args: { invitationId: number },context:any) => {
-        return GqlService.acceptParticipationInvitation(args.invitationId,context);
+    acceptParticipationInvite: (parent: any, args: { invitationId: number }, context: any) => {
+        return GqlService.acceptParticipationInvitation(args.invitationId, context);
     },
 }
