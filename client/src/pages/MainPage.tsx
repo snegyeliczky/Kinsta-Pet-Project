@@ -14,7 +14,7 @@ const MainPage = () => {
     const appContext = useContext(ApplicationContext);
     let userId = appContext.getUserIdAsNumber();
     const [open,setOpen] = useState<string[]|string>([]);
-    const {error,loading,data} = useQuery(getUsersCompanies,{variables:{id:userId}});
+    const {error,loading,data} = useQuery(getUsersCompanies,{variables:{id:userId}, fetchPolicy:"network-only"});
 
     function callback(key: string | string[]) {
         setOpen(key);

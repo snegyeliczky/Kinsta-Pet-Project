@@ -68,7 +68,6 @@ const ProjectPage = () => {
                     return us
                 });
             }
-            console.log(newList);
             return {
                 project: {
                     userStories: newList
