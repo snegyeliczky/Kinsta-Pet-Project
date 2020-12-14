@@ -15,7 +15,7 @@ import AlertModal from "../components/Modals/AlertModal";
 import {getProjectsForCompanyByUser} from "../queries/companyQueries";
 import {ApplicationContext} from "../context/ApplicationContext";
 import InviteModal from "../components/Modals/InviteColaboratorModal";
-import {newUserStory} from "../queries/subscriptions";
+import {newUserStory, removeUserStory} from "../queries/subscriptions";
 
 
 const ProjectPage = () => {
@@ -23,15 +23,16 @@ const ProjectPage = () => {
     const appContext = useContext(ApplicationContext);
     const {id} = useParams();
     const [sortDir, setSortDir] = useState(true);
-    const {loading: load_userStory, error: error_userStory, data: userStory_data, refetch: refetch_userStory, subscribeToMore} =
+    const {loading: load_userStory, error: error_userStory, data: userStory_data, subscribeToMore} =
         useQuery(getUserStories,
             {
                 variables: {
                     id
                 },
-                fetchPolicy: "network-only",
+                fetchPolicy:"network-only",
                 onCompleted: () => {
-                    subscribeToNewUserStory()
+                    subscribeToNewUserStory();
+                    subscribeToRemoveUserStory()
                 }
             });
     const {loading: load_project, error: error_project, data: project_data} =
@@ -49,19 +50,20 @@ const ProjectPage = () => {
         variables: {projectId: parseInt(id)},
         updateQuery: (prev, {subscriptionData}) => {
             if (!subscriptionData.data) return prev;
+            console.log("re init: ", userStory_data.project.userStories)
             let newList = [...userStory_data.project.userStories];
-
+            console.log("new us: ", newList)
             let some = newList.some((us: UserStoryModel) => {
                 return us.id === subscriptionData.data.newUserStory.id
             });
 
             //if not exist than push the user story to list (some = false)
-            if (!some) newList.push(subscriptionData.data.newUserStory);
+            if (!some) newList = [...newList,subscriptionData.data.newUserStory];
 
             // if userStory exist than update it (some = true)
             if (some) {
                 let updatedUserStory: UserStoryModel = subscriptionData.data.newUserStory;
-               newList = newList.map((us: UserStoryModel) => {
+                newList = newList.map((us: UserStoryModel) => {
                     if (us.id === updatedUserStory.id) {
                         return updatedUserStory
                     }
@@ -75,6 +77,31 @@ const ProjectPage = () => {
             }
         }
     });
+
+
+    const subscribeToRemoveUserStory = () => subscribeToMore({
+        document: removeUserStory,
+        variables: {projectId: parseInt(id)},
+        updateQuery: (prev, {subscriptionData}) => {
+            if (!subscriptionData.data) return prev;
+            console.log(subscriptionData.data.removeUserStory);
+            console.log(prev);
+            let rmUsId = subscriptionData.data.removeUserStory;
+            let newList = [...userStory_data.project.userStories];
+            newList = newList.filter((us: UserStoryModel) => {
+                if (us.id !== rmUsId) return us;
+
+            });
+            console.log("after remove:  ",newList);
+            return {
+                project: {
+                    userStories: newList
+                }
+            }
+        }
+    });
+
+
 
 
     const sortByBusinessValue = () => {
@@ -122,14 +149,14 @@ const ProjectPage = () => {
                 userStoryId: storyId
             }
         });
-        await refetch_userStory();
     };
 
     const renderUserStories = (storyList: UserStoryModel[]) => {
         return (<Collapse>{storyList.map((userStory: UserStoryModel) => {
             return (
                 <CollapsePanel key={userStory.id}
-                               header={<UserStory key={userStory.id} UserStory={{...userStory}} removeUserStory={removeUSerStoryById}/>}>
+                               header={<UserStory key={userStory.id} UserStory={{...userStory}}
+                                                  removeUserStory={removeUSerStoryById}/>}>
                     <TaskTable userStory={userStory}/>
                 </CollapsePanel>
             )
@@ -158,6 +185,7 @@ const ProjectPage = () => {
 
     if (load_project) return (<div>Load project...</div>);
     if (load_userStory) return (<div>Load user Stories...</div>);
+    console.log("on page: ",userStory_data.project.userStories);
     return (
         <div>
             <div className={"project-container"}>

@@ -93,4 +93,11 @@ const newUserStory = gql`
     }
 `
 
-export {subscribeUserStoryTasks,newTaskSubscription,newParticipationInviteSubscription,newParticipantJoined,newUserStory}
+const removeUserStory = gql`
+    subscription ($projectId:Int){
+        removeUserStory(projectId:$projectId)
+    }
+`
+
+export {subscribeUserStoryTasks,newTaskSubscription,newParticipationInviteSubscription,
+    newParticipantJoined,newUserStory, removeUserStory}

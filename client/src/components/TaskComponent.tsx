@@ -9,7 +9,6 @@ import {UserModel} from "../Types/UserModel";
 import {useMutation} from "@apollo/client";
 import { updateTaskStatus} from "../queries/taskQueries";
 import {useParams} from "react-router";
-import {getUserStories} from "../queries/projectQueries";
 
 type Props ={
     Task:TaskModel
@@ -31,7 +30,7 @@ const TaskComponent:React.FC<Props> = ({Task}) => {
                 taskStatus:!Task.ready
             },
             refetchQueries:[
-                {query:getUserStories, variables:{id}}
+               // {query:getUserStories, variables:{id}}
                 ]
         });
     };

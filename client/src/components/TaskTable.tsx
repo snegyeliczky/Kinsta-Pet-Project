@@ -51,7 +51,6 @@ const TaskTable: React.FC<props> = ({userStory}) => {
             variables:{userStoryId:userStory.id},
             updateQuery: (prev, {subscriptionData}) => {
                 if (!subscriptionData.data) return prev;
-                console.log("Edit task subscription");
                 return {
                     userStory: {tasks: subscriptionData.data.tasksForUserStory}
                 };
