@@ -31,16 +31,23 @@ const NavBar = () => {
         width: "100%",
         height: "10vh",
         backgroundImage: "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 47%, rgba(0,212,255,1) 100%)",
-        color: "#fff"
+        color: "#fff",
+        fontSize:"large"
     };
+
+    const getUserName = () =>{
+        let usName = localStorage.getItem("username");
+        return` Welcome ${usName}`
+    }
 
 
     return (
         <Menu mode={"horizontal"} style={menuStyle}>
-            <Menu.Item onClick={handleHome}>Home</Menu.Item>
+            <Menu.Item style={{ paddingTop: "2vh"}} onClick={handleHome}>Home</Menu.Item>
             <Menu.Item onClick={handleNewCompany}>Creat new company</Menu.Item>
             <Menu.Item onClick={handleProfile}>Profile</Menu.Item>
             <Menu.Item onClick={handleLogOut}>Log out</Menu.Item>
+            <span style={{float:"left", marginLeft:"10px", color:"rgb(0, 212, 255)", fontSize:"medium"}}>{getUserName()}</span>
         </Menu>
     );
 };

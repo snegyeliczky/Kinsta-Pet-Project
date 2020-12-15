@@ -6,9 +6,8 @@ import {TaskModel} from "../Types/TaskModel";
 import {DeleteOutlined, SettingOutlined} from '@ant-design/icons';
 import {ApplicationContext} from "../context/ApplicationContext";
 import UserDropdown from './userDropdown';
-import ProjectContext from "../context/ProjectContext";
 import {useLazyQuery, useMutation} from "@apollo/client";
-import {getTaskForUserStory, mutateTaskOwner, mutateTaskQuery,deleteTaskMutation} from "../queries/taskQueries";
+import { mutateTaskOwner, mutateTaskQuery,deleteTaskMutation} from "../queries/taskQueries";
 import {getProjectParticipants} from "../queries/projectQueries";
 import {useParams} from "react-router";
 
@@ -23,7 +22,6 @@ type props = {
 const EditTask: React.FC<props> = ({Task, edit, setEdit, ready}) => {
 
     const appContext = useContext(ApplicationContext);
-    const projectContext = useContext(ProjectContext);
     const [updatedTask, updateTask] = useState({...Task});
     const [mutateTask] = useMutation(mutateTaskQuery);
     const [changeOwner] = useMutation(mutateTaskOwner);
@@ -48,7 +46,6 @@ const EditTask: React.FC<props> = ({Task, edit, setEdit, ready}) => {
             variables:{
                 taskId:Task.id
             },
-            refetchQueries:[{query:getTaskForUserStory, variables:{id:Task.userStory.id}}]
         });
         setEdit(false);
     };
@@ -69,7 +66,6 @@ const EditTask: React.FC<props> = ({Task, edit, setEdit, ready}) => {
                 userId:userId,
                 taskId:Task.id
             },
-            refetchQueries:[{query:getTaskForUserStory, variables:{id:Task.userStory.id}}]
         })
 
     }

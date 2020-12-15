@@ -6,7 +6,7 @@ import NewTaskModal from "./Modals/NewTaskModal";
 import {useQuery} from "@apollo/client";
 import {getTaskForUserStory} from "../queries/taskQueries";
 import {TaskModel} from "../Types/TaskModel";
-import {newTaskSubscription, subscribeUserStoryTasks} from "../queries/subscriptions";
+import {newTaskSubscription, removeTask, subscribeUserStoryTasks} from "../queries/subscriptions";
 
 type props = {
     userStory: UserStoryModel,
@@ -19,21 +19,20 @@ const TaskTable: React.FC<props> = ({userStory}) => {
         variables: {
             id: userStory.id
         },
-        onCompleted:()=>{
+        onCompleted: () => {
             subscribeToNewTask();
-            subscribeToStatusChange()
+            subscribeToStatusChange();
+            subscriberToRemove()
         }
     });
 
     const subscribeToNewTask = () => subscribeToMore(
         {
             document: newTaskSubscription,
-            variables:{userStoryId:userStory.id},
+            variables: {userStoryId: userStory.id},
             updateQuery: (prev, {subscriptionData}) => {
                 if (!subscriptionData.data) return prev;
-                console.log("run new Task subscription");
                 let taskList = prev.userStory.tasks ? prev.userStory.tasks : [];
-                //because of the state refreshes it runs multiple time...
                 let some = taskList.some((task: TaskModel) => {
                     return task.id === subscriptionData.data.newTask.id
                 });
@@ -48,13 +47,32 @@ const TaskTable: React.FC<props> = ({userStory}) => {
     const subscribeToStatusChange = () => subscribeToMore(
         {
             document: subscribeUserStoryTasks,
-            variables:{userStoryId:userStory.id},
+            variables: {userStoryId: userStory.id},
             updateQuery: (prev, {subscriptionData}) => {
                 if (!subscriptionData.data) return prev;
-                console.log("Edit task subscription");
                 return {
                     userStory: {tasks: subscriptionData.data.tasksForUserStory}
                 };
+            }
+        }
+    );
+
+    const subscriberToRemove = () => subscribeToMore(
+        {
+            document: removeTask,
+            variables: {userStoryId: userStory.id},
+            updateQuery: (prev, {subscriptionData}) => {
+                if (!subscriptionData.data) return prev;
+                let newList = [...prev.userStory.tasks] ;
+                let rmTsId = subscriptionData.data.removeTask;
+                newList = newList.filter((us: UserStoryModel) => {
+                    if (us.id !== rmTsId) return us;
+                });
+                return {
+                    userStory:{
+                        tasks:newList
+                    }
+                }
             }
         }
     );

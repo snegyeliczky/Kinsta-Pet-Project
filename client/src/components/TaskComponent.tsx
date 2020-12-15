@@ -8,8 +8,6 @@ import {ApplicationContext} from "../context/ApplicationContext";
 import {UserModel} from "../Types/UserModel";
 import {useMutation} from "@apollo/client";
 import { updateTaskStatus} from "../queries/taskQueries";
-import {useParams} from "react-router";
-import {getUserStories} from "../queries/projectQueries";
 
 type Props ={
     Task:TaskModel
@@ -19,7 +17,6 @@ const TaskComponent:React.FC<Props> = ({Task}) => {
 
     const appContext = useContext(ApplicationContext);
     const[edit, setEdit] = useState(false);
-    const {id} = useParams();
 
     const [mutateTaskStatus] = useMutation(updateTaskStatus);
 
@@ -30,9 +27,6 @@ const TaskComponent:React.FC<Props> = ({Task}) => {
                 taskId:Task.id,
                 taskStatus:!Task.ready
             },
-            refetchQueries:[
-                {query:getUserStories, variables:{id}}
-                ]
         });
     };
 

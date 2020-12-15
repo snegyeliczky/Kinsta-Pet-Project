@@ -21,13 +21,14 @@ type Props = {
     userStory: UserStoryModel,
     edit: boolean,
     setEdit: Dispatch<SetStateAction<boolean>>,
-    setUserStory: Dispatch<SetStateAction<UserStoryModel>>,
+
     removeUserStory: Function,
 }
 
 
-const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory, removeUserStory}) => {
+const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, removeUserStory}) => {
 
+    const {id} = useParams();
 
     const appContext = useContext(ApplicationContext);
     const editedUserStory = {...userStory};
@@ -36,14 +37,12 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
     const [mutateUser] = useMutation(updateUserStoryUser);
     const [estimate] = useMutation(estimateUserStory);
     const {refetch} = useQuery(estimationsForUserStory, {variables: {id: userStory.id}});
+    const [getParticipants, {data}] = useLazyQuery(getProjectParticipants);
+
+
     const EditUserStory = (story: string) => {
         editedUserStory.userStory = story;
     };
-
-    const [getParticipants, {data}] = useLazyQuery(getProjectParticipants);
-    const {id} = useParams();
-
-
 
     useEffect(() => {
         getParticipants({
@@ -95,8 +94,7 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
     async function handleKeyBoard(event: React.KeyboardEvent<HTMLDivElement>) {
         if (event.key === 'Enter') {
             event.preventDefault();
-            let updatedUS = await saveUserStoryToDb();
-            setUserStory(updatedUS);
+            await saveUserStoryToDb()
             setEdit(false);
         }
         if (event.key === 'Escape') {
@@ -106,8 +104,7 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
     }
 
     async function handleStopEditing() {
-        let updatedUS = await saveUserStoryToDb();
-        setUserStory(updatedUS);
+        await saveUserStoryToDb();
         setEdit(false)
     }
 
@@ -141,7 +138,7 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, setUserStory,
 
                 <SettingOutlined spin={edit} onClick={handleStopEditing} className={"userStory-edit"}/>
                 <AlertModal text={"Are you sure you want to remove this User Story ?"}
-                            buttonText={<DeleteOutlined/>} OkFunction={() => removeUserStory(userStory.id)}/>
+                            buttonText={<DeleteOutlined/>} OkFunction={ () =>  removeUserStory(userStory.id)}/>
             </div>
 
         </UserStoryStyleComponent>
