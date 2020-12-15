@@ -20,8 +20,6 @@ export const ProjectProvider = (props: any) => {
     const [participants, setParticipants] = useState<UserModel[]>([]);
 
 
-
-
     const getUser = (userId: string): UserModel | undefined => {
         let user = participants.find(user => {
             return user.id === userId

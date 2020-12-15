@@ -24,7 +24,7 @@ const NewCompany = () => {
                     userId: userId,
                     CompanyName: newCompName
                 },
-                refetchQueries:[{query:getUsersCompanies,variables:{id:userId}}]
+                refetchQueries: [{query: getUsersCompanies, variables: {id: userId}}]
             });
             history.push("/app")
         } else {

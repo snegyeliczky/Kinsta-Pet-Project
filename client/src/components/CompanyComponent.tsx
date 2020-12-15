@@ -26,7 +26,7 @@ const CompanyComponent: React.FC<Props> = ({company}) => {
             userId: appContext.getUserIdAsNumber(),
             companyId: company.id
         },
-        fetchPolicy:"network-only"
+        fetchPolicy: "network-only"
     });
     const [removeCompany] = useMutation(deleteCompany);
 
@@ -59,13 +59,13 @@ const CompanyComponent: React.FC<Props> = ({company}) => {
             variables: {
                 companyId: company.id
             },
-            refetchQueries: [{query:getUsersCompanies,variables:{id:appContext.getUserIdAsNumber()}}]
+            refetchQueries: [{query: getUsersCompanies, variables: {id: appContext.getUserIdAsNumber()}}]
         });
     };
 
-    const renderDeleteButton = () =>{
-        if (appContext.isUserIsOwner(parseInt(company.ownerUser.id))){
-            return(
+    const renderDeleteButton = () => {
+        if (appContext.isUserIsOwner(parseInt(company.ownerUser.id))) {
+            return (
                 <CenterDiv>
                     <AlertModal text={"Delete ?"} buttonText={"Delete Company"} OkFunction={deleteCompanyAndRefetch}/>
                 </CenterDiv>

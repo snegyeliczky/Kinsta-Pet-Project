@@ -7,7 +7,7 @@ import {DeleteOutlined, SettingOutlined} from '@ant-design/icons';
 import {ApplicationContext} from "../context/ApplicationContext";
 import UserDropdown from './userDropdown';
 import {useLazyQuery, useMutation} from "@apollo/client";
-import { mutateTaskOwner, mutateTaskQuery,deleteTaskMutation} from "../queries/taskQueries";
+import {mutateTaskOwner, mutateTaskQuery, deleteTaskMutation} from "../queries/taskQueries";
 import {getProjectParticipants} from "../queries/projectQueries";
 import {useParams} from "react-router";
 
@@ -31,20 +31,19 @@ const EditTask: React.FC<props> = ({Task, edit, setEdit, ready}) => {
     const {id} = useParams();
 
 
-
     useEffect(() => {
         getParticipants({
             variables: {
                 id: parseInt(id)
             }
         });
-    },[]);
+    }, []);
 
 
     const removeTaskAndCloseEditing = () => {
         deleteTask({
-            variables:{
-                taskId:Task.id
+            variables: {
+                taskId: Task.id
             },
         });
         setEdit(false);
@@ -62,9 +61,9 @@ const EditTask: React.FC<props> = ({Task, edit, setEdit, ready}) => {
 
     function updateOwner(userId: string) {
         changeOwner({
-            variables:{
-                userId:userId,
-                taskId:Task.id
+            variables: {
+                userId: userId,
+                taskId: Task.id
             },
         })
 
@@ -78,26 +77,27 @@ const EditTask: React.FC<props> = ({Task, edit, setEdit, ready}) => {
     function handleKeyBoard(event: React.KeyboardEvent<HTMLDivElement>) {
         if (event.key === 'Enter') {
             mutateTask({
-                variables:{
-                    taskId:updatedTask.id,
-                    title:updatedTask.title,
-                    description:updatedTask.description,
-                    time:updatedTask.time
+                variables: {
+                    taskId: updatedTask.id,
+                    title: updatedTask.title,
+                    description: updatedTask.description,
+                    time: updatedTask.time
                 }
             });
             setEdit(false);
-        }if (event.key === 'Escape'){
+        }
+        if (event.key === 'Escape') {
             setEdit(false);
         }
     }
 
     const handleStopEdit = () => {
         mutateTask({
-            variables:{
-                taskId:updatedTask.id,
-                title:updatedTask.title,
-                description:updatedTask.description,
-                time:updatedTask.time
+            variables: {
+                taskId: updatedTask.id,
+                title: updatedTask.title,
+                description: updatedTask.description,
+                time: updatedTask.time
             }
         });
         setEdit(false);
@@ -116,7 +116,7 @@ const EditTask: React.FC<props> = ({Task, edit, setEdit, ready}) => {
         )
     };
 
-    const showDelete = () =>{
+    const showDelete = () => {
         if (appContext.getUserId() === updatedTask.owner?.id.toString()) {
             return (
                 <AlertModal text={"Are you sure to delete this task ?"} buttonText={<DeleteOutlined/>}

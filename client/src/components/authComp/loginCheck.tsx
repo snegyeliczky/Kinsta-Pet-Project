@@ -1,8 +1,8 @@
 import React, {ComponentType} from 'react';
-import {useHistory} from "react-router-dom";
 
 
-export function AuthCheck<T>(OriginalComponent: ComponentType<T>, isPrivate: boolean, history:any) {
+
+export function AuthCheck<T>(OriginalComponent: ComponentType<T>, isPrivate: boolean, history: any) {
 
     return (props: T) => {
 

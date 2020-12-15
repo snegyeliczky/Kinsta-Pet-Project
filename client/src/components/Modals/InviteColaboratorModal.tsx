@@ -22,11 +22,13 @@ const InviteModal: React.FC<Props> = ({projectId}) => {
         const {Option} = AutoComplete;
         const [inviteUser] = useMutation(inviteUserToCollaborate);
         const {error: participants_error, loading: participants_loading, data: participants_data, subscribeToMore}
-        = useQuery(getProjectParticipants, {
+            = useQuery(getProjectParticipants, {
             variables: {
                 id: projectId
             },
-            onCompleted: ()=> {subscribeToNewUser()}
+            onCompleted: () => {
+                subscribeToNewUser()
+            }
         });
 
         const subscribeToNewUser = () => subscribeToMore({

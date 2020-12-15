@@ -13,8 +13,8 @@ const MainPage = () => {
 
     const appContext = useContext(ApplicationContext);
     let userId = appContext.getUserIdAsNumber();
-    const [open,setOpen] = useState<string[]|string>([]);
-    const {error,loading,data} = useQuery(getUsersCompanies,{variables:{id:userId}, fetchPolicy:"network-only"});
+    const [open, setOpen] = useState<string[] | string>([]);
+    const {error, loading, data} = useQuery(getUsersCompanies, {variables: {id: userId}, fetchPolicy: "network-only"});
 
     function callback(key: string | string[]) {
         setOpen(key);
@@ -27,17 +27,19 @@ const MainPage = () => {
 
     return (
         <div className={"company-container"}>
-        <Collapse defaultActiveKey={open} onChange={callback} >
-            {
-                data.user.companies.map((company:Company) => {
-                    return (
-                        <Panel key={company.id} header={<CompanyHeader key={company.id} company={company} activeKey={open}/>} showArrow={false}>
-                            <CompanyComponent company={company}/>
-                        </Panel>
-                    )
-                })
-            }
-        </Collapse>
+            <Collapse defaultActiveKey={open} onChange={callback}>
+                {
+                    data.user.companies.map((company: Company) => {
+                        return (
+                            <Panel key={company.id}
+                                   header={<CompanyHeader key={company.id} company={company} activeKey={open}/>}
+                                   showArrow={false}>
+                                <CompanyComponent company={company}/>
+                            </Panel>
+                        )
+                    })
+                }
+            </Collapse>
         </div>
     );
 

@@ -57,11 +57,11 @@ const UserStory: React.FC<Props> = ({UserStory, removeUserStory}) => {
                         <div className={"userStory-estimation UserStory-part"}>
                             {checkEstimation() ? getEstimatedAverage() + "-SP" : "Please Estimate"}</div>
                         <div className={"UserStory-part"} onClick={e => handleChangeToEdit(e)}>
-                            <SettingOutlined spin={edit} style={{fontSize:"20px"}}/>
+                            <SettingOutlined spin={edit} style={{fontSize: "20px"}}/>
                             {UserStory.status
                                 ?
                                 <CenterDiv>
-                                    <CheckSquareFilled style={{background: "green", fontSize:"20px"}}/>
+                                    <CheckSquareFilled style={{background: "green", fontSize: "20px"}}/>
                                 </CenterDiv>
                                 :
                                 ""

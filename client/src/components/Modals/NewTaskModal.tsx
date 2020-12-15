@@ -93,14 +93,14 @@ const NewTaskModal: React.FC<Props> = ({UserStoryId}) => {
                             rules={[
                                 {
                                     required: true,
-                                    message:"Add task title!"
+                                    message: "Add task title!"
                                 },
                                 () => ({
                                     validator(rule, value: string) {
                                         if (value)
-                                        return value.length > 2 ?
-                                            Promise.resolve()
-                                            : Promise.reject(" Title must be minimum 3 character long!");
+                                            return value.length > 2 ?
+                                                Promise.resolve()
+                                                : Promise.reject(" Title must be minimum 3 character long!");
                                         return Promise.reject()
                                     }
                                 })
