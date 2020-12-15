@@ -9,7 +9,7 @@ export const MySqlService = {
         return Project.relatedQuery('userStories').for(projectId);
     },
 
-    getTasksByUserStoryId: async (storyId:number)=>{
+    getTasksByUserStoryId: async (storyId: number) => {
         return UserStory.relatedQuery('tasks').for(storyId)
     },
 
@@ -43,12 +43,12 @@ export const MySqlService = {
         return projectInList[0]
     },
 
-    sendInvite: async (senderId: number, projectId: number, receiverId: number,context:any) => {
+    sendInvite: async (senderId: number, projectId: number, receiverId: number, context: any) => {
         let invitation = await User.relatedQuery('sandedInvites').for(senderId).insert({});
         await invitation.$relatedQuery('project').relate(projectId);
         await invitation.$relatedQuery('receiver').relate(receiverId);
-        await context.pubSub.publish("NEW_PARTICIPANT_INVITE",{
-            newParticipantInvite:invitation,
+        await context.pubSub.publish("NEW_PARTICIPANT_INVITE", {
+            newParticipantInvite: invitation,
         });
         return "invitation sent"
     },
@@ -106,9 +106,9 @@ export const MySqlService = {
             "email", 'LIKE', `%${email}%`
         )
     },
-    async getCompanyForProject (projectId: number) {
-         let companyInList = await Project.relatedQuery("company").for(projectId);
-         return companyInList[0]
+    async getCompanyForProject(projectId: number) {
+        let companyInList = await Project.relatedQuery("company").for(projectId);
+        return companyInList[0]
     }
 
 };

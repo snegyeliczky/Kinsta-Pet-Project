@@ -118,7 +118,7 @@ export const mutations = {
         return UserStory.query().deleteById(args.userStoryId);
     },
 
-    deleteTask: async (parent: Task, args: { taskId: number }, context:any) => {
+    deleteTask: async (parent: Task, args: { taskId: number }, context: any) => {
         let userStory = await Task.relatedQuery("userStory").for(args.taskId);
         let number = await Task.query().deleteById(args.taskId);
         context.pubSub.publish("REMOVE_TASK",
@@ -166,8 +166,8 @@ export const mutations = {
     updateTask: async (parent: Task, args: {
         taskId: number, title: string,
         description: string, time: string
-    },context:any) => {
-        return GqlService.updateTask(args.taskId, args.title, args.description, args.time,context)
+    }, context: any) => {
+        return GqlService.updateTask(args.taskId, args.title, args.description, args.time, context)
     },
 
     // if user doesn't estimate the story creat new estimation else update the existing one
