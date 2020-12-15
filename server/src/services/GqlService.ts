@@ -61,23 +61,27 @@ export const GqlService = {
 
         context.pubSub.publish("NEW_USER_STORY", {
             newUserStory: updatedUserStory,
-            projectId:project[0].id
+            projectId: project[0].id
         });
 
         return updatedUserStory;
     },
 
     updateTask: async (taskId: number, title: string,
-                       description: string, time: string) => {
+                       description: string, time: string, context: any) => {
         await Task.query().findById(taskId).patch({
             title: title,
             description: description,
             time: time
         });
-        return Task.query().findById(taskId);
+        let updatedTask = await Task.query().findById(taskId);
+        context.pubSub.publish("NEW_TASK", {
+            newTask: updatedTask
+        });
+        return updatedTask;
     },
 
-    sendProjectParticipationInvite: async (senderId: number, receiverId: number, projectId: number, context:any) => {
+    sendProjectParticipationInvite: async (senderId: number, receiverId: number, projectId: number, context: any) => {
         let projectParticipants = await MySqlService.getProjectParticipants(projectId);
         let receiverInvites = await MySqlService.getUserInvites(receiverId);
         if (await GqlUtil.checkUserHaveInvitationToProject(receiverInvites, projectId)) {
@@ -88,7 +92,7 @@ export const GqlService = {
         })) {
             return "user already participate in the project"
         }
-        return MySqlService.sendInvite(senderId, projectId, receiverId,context);
+        return MySqlService.sendInvite(senderId, projectId, receiverId, context);
     },
 
     addUserToProjectAsParticipant: async (userId: number, projectId: number) => {
@@ -115,12 +119,12 @@ export const GqlService = {
                 return user.id === receiver.id
             })) {
                 let company = await MySqlService.getCompanyForProject(project.id);
-                await GqlService.addUserToCompany(receiver.id,company.id);
+                await GqlService.addUserToCompany(receiver.id, company.id);
                 await MySqlService.acceptAndDeleteInvitation(project, receiver.id, invitationId);
                 //subscription return receiver
-                context.pubSub.publish("JOIN_PARTICIPANT",{
-                    joinParticipation:receiver,
-                    projectId:project.id
+                context.pubSub.publish("JOIN_PARTICIPANT", {
+                    joinParticipation: receiver,
+                    projectId: project.id
                 });
                 return "invite accepted"
             }
@@ -148,7 +152,7 @@ export const GqlService = {
 
     loginUser: async (Email: string, Password: string) => {
         let userByEmail = await MySqlService.getUserByEmail(Email);
-        if(userByEmail.length>0){
+        if (userByEmail.length > 0) {
             let hash = userByEmail[0].password;
             let isLogin = await bcrypt.compare(Password, hash);
             if (isLogin) return userByEmail[0];
