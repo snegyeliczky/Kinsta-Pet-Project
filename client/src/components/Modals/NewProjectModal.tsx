@@ -1,4 +1,4 @@
-import React, { useContext, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Modal, Button, Input, message} from 'antd';
 import {PlusOutlined, ProjectOutlined} from '@ant-design/icons';
 import {useHistory} from "react-router-dom";
@@ -6,7 +6,7 @@ import {ModalContainer} from "../../assets/styledComponents/styledComponents";
 import {ApplicationContext} from "../../context/ApplicationContext";
 import {useMutation} from "@apollo/client";
 import {addNewProject} from "../../queries/projectQueries";
-import { getProjectsForCompanyByUser} from "../../queries/companyQueries";
+import {getProjectsForCompanyByUser} from "../../queries/companyQueries";
 
 interface Props {
     companyId: number

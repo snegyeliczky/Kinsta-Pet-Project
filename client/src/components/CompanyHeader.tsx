@@ -5,16 +5,16 @@ import {CaretRightOutlined} from '@ant-design/icons';
 
 type Props = {
     company: Company
-    activeKey:string[]|string
+    activeKey: string[] | string
 }
 
 
-const CompanyHeader: React.FC<Props> = ({company,activeKey}) => {
+const CompanyHeader: React.FC<Props> = ({company, activeKey}) => {
 
     return (
         <StyledCompanyHeader
-         rotate={activeKey.includes(company.id.toString())}>
-            <CaretRightOutlined  className={"arrow"} />
+            rotate={activeKey.includes(company.id.toString())}>
+            <CaretRightOutlined className={"arrow"}/>
             <div id={"title"}>{company.name}</div>
         </StyledCompanyHeader>
     );

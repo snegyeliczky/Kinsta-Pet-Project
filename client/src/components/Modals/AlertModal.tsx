@@ -1,24 +1,24 @@
-import React, { useState} from 'react';
+import React, {useState} from 'react';
 import {Modal, Button} from 'antd';
 
 
 type Props = {
-    text:string,
-    buttonText:any,
-    OkFunction?:Function,
-    success?:boolean
+    text: string,
+    buttonText: any,
+    OkFunction?: Function,
+    success?: boolean
 }
 
-const AlertModal:React.FC<Props> = ({text,buttonText,OkFunction,success}) => {
+const AlertModal: React.FC<Props> = ({text, buttonText, OkFunction, success}) => {
 
-    const [visible,setVisible]= useState(false);
+    const [visible, setVisible] = useState(false);
 
     const showModal = () => {
         setVisible(true);
     };
 
     const handleOk = () => {
-        if (OkFunction){
+        if (OkFunction) {
             OkFunction()
         }
         setVisible(false)
@@ -29,8 +29,8 @@ const AlertModal:React.FC<Props> = ({text,buttonText,OkFunction,success}) => {
     };
 
     return (
-        <div className={"alert_modal"} style={{margin:"10px"}}>
-            <Button onClick={showModal} shape={"round"} type={"primary"} danger={success?false:true}>
+        <div className={"alert_modal"} style={{margin: "10px"}}>
+            <Button onClick={showModal} shape={"round"} type={"primary"} danger={success ? false : true}>
                 {buttonText}
             </Button>
             <Modal

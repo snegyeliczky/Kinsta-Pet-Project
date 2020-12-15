@@ -105,5 +105,7 @@ const removeTask = gql`
     }
 `
 
-export {subscribeUserStoryTasks,newTaskSubscription,newParticipationInviteSubscription,
-    newParticipantJoined,newUserStory, removeUserStory, removeTask}
+export {
+    subscribeUserStoryTasks, newTaskSubscription, newParticipationInviteSubscription,
+    newParticipantJoined, newUserStory, removeUserStory, removeTask
+}

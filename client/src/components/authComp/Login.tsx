@@ -1,21 +1,20 @@
 import React from 'react';
 import {Button, Form, Input, message} from 'antd';
-import { UserOutlined, EyeInvisibleOutlined, EyeTwoTone,CheckOutlined } from '@ant-design/icons';
+import {UserOutlined, EyeInvisibleOutlined, EyeTwoTone, CheckOutlined} from '@ant-design/icons';
 import 'antd/dist/antd.css';
 
 
-
 interface Props {
-    login:(username:string,password:string)=>void;
+    login: (username: string, password: string) => void;
 }
 
-const Login:React.FC<Props> = ({login, }) => {
+const Login: React.FC<Props> = ({login,}) => {
 
 
-    const formFinish = (values:{username:string, password: string}) =>{
+    const formFinish = (values: { username: string, password: string }) => {
         try {
-            login(values.username,values.password);
-        }catch (e) {
+            login(values.username, values.password);
+        } catch (e) {
             console.log(e);
             message.error("problem with login")
         }
@@ -29,16 +28,16 @@ const Login:React.FC<Props> = ({login, }) => {
             >
                 <Form.Item
                     name="username"
-                    rules={[{ required: true, message: 'Please input your username!' }]}
+                    rules={[{required: true, message: 'Please input your username!'}]}
                 >
-                    <Input placeholder={"E-mail"} prefix={<UserOutlined />}  type={"string"}/>
+                    <Input placeholder={"E-mail"} prefix={<UserOutlined/>} type={"string"}/>
                 </Form.Item>
                 <Form.Item
                     name="password"
-                    rules={[{ required: true, message: 'Please input your password!' }]}
+                    rules={[{required: true, message: 'Please input your password!'}]}
                 >
                     <Input.Password placeholder={"PassWord"}
-                                    iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+                                    iconRender={visible => (visible ? <EyeTwoTone/> : <EyeInvisibleOutlined/>)}
                     />
                 </Form.Item>
                 <Form.Item>
@@ -48,7 +47,8 @@ const Login:React.FC<Props> = ({login, }) => {
 
                 </Form.Item>
                 <Form.Item>
-                    <Button htmlType={"submit"} className={"submit"} shape={"round"} icon={<CheckOutlined/>} type={"primary"} >Login</Button>
+                    <Button htmlType={"submit"} className={"submit"} shape={"round"} icon={<CheckOutlined/>}
+                            type={"primary"}>Login</Button>
                 </Form.Item>
             </Form>
         </div>

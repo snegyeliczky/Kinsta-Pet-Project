@@ -30,7 +30,7 @@ const ProjectPage = () => {
                     id
                 },
                 fetchPolicy: "cache-first",
-                onCompleted:  () => {
+                onCompleted: () => {
                     subscribeToNewUserStory();
                     subscribeToRemoveUserStory()
                 }
@@ -46,7 +46,7 @@ const ProjectPage = () => {
     const [deleteProject] = useMutation(deleteProjectMutation);
     const history = useHistory();
 
-    const subscribeToNewUserStory =  () =>  subscribeToMore({
+    const subscribeToNewUserStory = () => subscribeToMore({
         document: newUserStory,
         variables: {projectId: parseInt(id)},
         updateQuery: (prev, {subscriptionData}) => {
@@ -81,10 +81,10 @@ const ProjectPage = () => {
     });
 
 
-    const subscribeToRemoveUserStory =  () =>  subscribeToMore({
+    const subscribeToRemoveUserStory = () => subscribeToMore({
         document: removeUserStory,
         variables: {projectId: parseInt(id)},
-        updateQuery:  (prev, {subscriptionData}) => {
+        updateQuery: (prev, {subscriptionData}) => {
             if (!subscriptionData.data) return prev;
             let rmUsId = subscriptionData.data.removeUserStory;
             let newList = prev.project.userStories ?

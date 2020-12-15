@@ -7,30 +7,30 @@ import {acceptParticipationInvite, deleteParticipationInvite} from "../queries/u
 import {message} from "antd";
 
 type props = {
-    inv:Invite
-    refetchList:Function
+    inv: Invite
+    refetchList: Function
 }
 
 
-const InvitationComponent:React.FC<props> = ({inv,refetchList}) => {
+const InvitationComponent: React.FC<props> = ({inv, refetchList}) => {
 
     const [acceptParticipationMutation] = useMutation(acceptParticipationInvite);
     const [deleteInvite] = useMutation(deleteParticipationInvite)
 
-    const acceptParticipation = async () =>{
+    const acceptParticipation = async () => {
         let result = await acceptParticipationMutation({
-            variables:{
-                invitationId:inv.id
+            variables: {
+                invitationId: inv.id
             }
         });
         message.info(result.data.acceptParticipationInvite);
         refetchList()
     };
 
-    const deleteInv = async ()=>{
+    const deleteInv = async () => {
         await deleteInvite({
-            variables:{
-                inviteId:inv.id
+            variables: {
+                inviteId: inv.id
             }
         })
         refetchList()
@@ -50,7 +50,7 @@ const InvitationComponent:React.FC<props> = ({inv,refetchList}) => {
             <div style={ButtonContainerStyle}>
                 <AlertModal text={"Yehh c-mon let's start working!!"}
                             buttonText={"Confirm"} success={true} OkFunction={acceptParticipation}/>
-                <AlertModal text={"Are you sure to deny invitation?"} buttonText={"Deny"} OkFunction={deleteInv} />
+                <AlertModal text={"Are you sure to deny invitation?"} buttonText={"Deny"} OkFunction={deleteInv}/>
             </div>
         </InviteComponent>
     );

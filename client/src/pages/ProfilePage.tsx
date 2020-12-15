@@ -15,11 +15,13 @@ const ProfilePage = () => {
         variables: {
             id: appContext.getUserIdAsNumber()
         },
-        onCompleted:()=>{subscribeToInvites()},
-        fetchPolicy:"network-only"
+        onCompleted: () => {
+            subscribeToInvites()
+        },
+        fetchPolicy: "network-only"
     });
 
-    const subscribeToInvites =()=> subscribeToMore(
+    const subscribeToInvites = () => subscribeToMore(
         {
             document: newParticipationInviteSubscription,
             variables: {receiverId: appContext.getUserIdAsNumber()},

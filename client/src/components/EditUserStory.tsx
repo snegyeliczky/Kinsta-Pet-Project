@@ -50,7 +50,7 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, removeUserSto
                 id: parseInt(id)
             }
         });
-    },[]);
+    }, []);
 
     const EditUserStoryValue = (value: number) => {
         editedUserStory.businessValue = value;
@@ -138,7 +138,7 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, removeUserSto
 
                 <SettingOutlined spin={edit} onClick={handleStopEditing} className={"userStory-edit"}/>
                 <AlertModal text={"Are you sure you want to remove this User Story ?"}
-                            buttonText={<DeleteOutlined/>} OkFunction={ () =>  removeUserStory(userStory.id)}/>
+                            buttonText={<DeleteOutlined/>} OkFunction={() => removeUserStory(userStory.id)}/>
             </div>
 
         </UserStoryStyleComponent>

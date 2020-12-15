@@ -63,14 +63,14 @@ const TaskTable: React.FC<props> = ({userStory}) => {
             variables: {userStoryId: userStory.id},
             updateQuery: (prev, {subscriptionData}) => {
                 if (!subscriptionData.data) return prev;
-                let newList = [...prev.userStory.tasks] ;
+                let newList = [...prev.userStory.tasks];
                 let rmTsId = subscriptionData.data.removeTask;
                 newList = newList.filter((us: UserStoryModel) => {
                     if (us.id !== rmTsId) return us;
                 });
                 return {
-                    userStory:{
-                        tasks:newList
+                    userStory: {
+                        tasks: newList
                     }
                 }
             }
