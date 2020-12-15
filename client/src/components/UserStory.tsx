@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {UserStoryModel} from "../Types/UserStoryModel";
 import {CenterDiv, UserStoryStyleComponent} from "../assets/styledComponents/styledComponents";
 import {SettingOutlined, CheckSquareFilled} from '@ant-design/icons';

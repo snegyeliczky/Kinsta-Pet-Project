@@ -99,5 +99,11 @@ const removeUserStory = gql`
     }
 `
 
+const removeTask = gql`
+    subscription ($userStoryId:Int){
+        removeTask(userStoryId:$userStoryId)
+    }
+`
+
 export {subscribeUserStoryTasks,newTaskSubscription,newParticipationInviteSubscription,
-    newParticipantJoined,newUserStory, removeUserStory}
+    newParticipantJoined,newUserStory, removeUserStory, removeTask}

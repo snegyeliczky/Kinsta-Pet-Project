@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {useHistory, useParams} from "react-router";
 import "../assets/ProjectStyle.css"
 import NewUserStoryModal from "../components/Modals/NewUserStoryModal";
@@ -51,8 +51,6 @@ const ProjectPage = () => {
         variables: {projectId: parseInt(id)},
         updateQuery: (prev, {subscriptionData}) => {
             if (!subscriptionData.data) return prev;
-            console.log("prev", prev.project.userStories)
-            console.log("re init: ", userStory_data.project.userStories)
             let newList = prev.project.userStories ?
                 [...prev.project.userStories] :
                 [...userStory_data.project.userStories];
@@ -88,7 +86,6 @@ const ProjectPage = () => {
         variables: {projectId: parseInt(id)},
         updateQuery:  (prev, {subscriptionData}) => {
             if (!subscriptionData.data) return prev;
-            console.log("remove prev: ", prev.project);
             let rmUsId = subscriptionData.data.removeUserStory;
             let newList = prev.project.userStories ?
                 [...prev.project.userStories] :
@@ -97,7 +94,6 @@ const ProjectPage = () => {
                 if (us.id !== rmUsId) return us;
 
             });
-            console.log("after remove:  ", newList);
             return {
                 project: {
                     userStories: newList
@@ -188,7 +184,6 @@ const ProjectPage = () => {
 
     if (load_project) return (<div>Load project...</div>);
     if (load_userStory) return (<div>Load user Stories...</div>);
-    console.log("on page: ",userStory_data.project.userStories);
     return (
         <div>
             <div className={"project-container"}>
