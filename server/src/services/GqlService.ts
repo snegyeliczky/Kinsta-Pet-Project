@@ -68,13 +68,17 @@ export const GqlService = {
     },
 
     updateTask: async (taskId: number, title: string,
-                       description: string, time: string) => {
+                       description: string, time: string, context:any) => {
         await Task.query().findById(taskId).patch({
             title: title,
             description: description,
             time: time
         });
-        return Task.query().findById(taskId);
+        let updatedTask =await Task.query().findById(taskId);
+        context.pubSub.publish("NEW_TASK", {
+            newTask: updatedTask
+        });
+        return updatedTask ;
     },
 
     sendProjectParticipationInvite: async (senderId: number, receiverId: number, projectId: number, context:any) => {

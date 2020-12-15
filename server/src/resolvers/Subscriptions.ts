@@ -62,4 +62,14 @@ export const subscriptions = {
             })
     },
 
+    removeTask:{
+        subscribe:withFilter(
+            (parent: any, args: any, Context: { pubSub: any }): AsyncIterator<any> => {
+                return Context.pubSub.asyncIterator("REMOVE_TASK")
+            },
+            (payload: any, variables: any): boolean | Promise<boolean> => {
+                return payload.userStoryId === variables.userStoryId
+            })
+    }
+
 };

@@ -63,6 +63,7 @@ type Subscription {
     joinParticipation(projectId:Int):User
     newUserStory(projectId:Int):UserStory
     removeUserStory(projectId:Int):Int
+    removeTask(userStoryId:Int):Int
 }
 
 type User {
