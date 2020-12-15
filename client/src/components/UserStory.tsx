@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {UserStoryModel} from "../Types/UserStoryModel";
 import {CenterDiv, UserStoryStyleComponent} from "../assets/styledComponents/styledComponents";
 import {SettingOutlined, CheckSquareFilled} from '@ant-design/icons';
@@ -14,16 +14,10 @@ interface Props {
 
 const UserStory: React.FC<Props> = ({UserStory, removeUserStory}) => {
 
-    //Refactor UserStory
-    console.log("us comp:",UserStory.userStory);
 
     const [edit, setEdit] = useState(false);
-    const [userStory, setUserStory] = useState(UserStory);
     const appContext = useContext(ApplicationContext);
 
-    useEffect(()=>{
-        setUserStory(UserStory)
-    },[UserStory]);
 
     function handleChangeToEdit(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
         e.stopPropagation();
@@ -39,7 +33,7 @@ const UserStory: React.FC<Props> = ({UserStory, removeUserStory}) => {
     }
 
     function getEstimatedAverage() {
-        let estimatedUsers = userStory.estimatedUsers;
+        let estimatedUsers = UserStory.estimatedUsers;
         if (!estimatedUsers) return 0;
         let reduce = estimatedUsers?.reduce((re, e) => {
             re.sum += e.estimation;
@@ -52,14 +46,14 @@ const UserStory: React.FC<Props> = ({UserStory, removeUserStory}) => {
     return (
         <>
             {
-                edit ? <EditUserStory userStory={userStory} edit={edit} setEdit={setEdit}
-                                      setUserStory={setUserStory} removeUserStory={removeUserStory}/>
-                    : <UserStoryStyleComponent key={userStory.id} className={"userStory-component"} hover={true}>
-                        <div className={"userStory-id UserStory-part"}>{userStory.id}</div>
-                        <div className={"userStory-userStory UserStory-part"}>{userStory.userStory}</div>
-                        <div className={"userStory-businessValue UserStory-part"}>{userStory.businessValue}</div>
+                edit ? <EditUserStory userStory={UserStory} edit={edit} setEdit={setEdit}
+                                      removeUserStory={removeUserStory}/>
+                    : <UserStoryStyleComponent key={UserStory.id} className={"userStory-component"} hover={true}>
+                        <div className={"userStory-id UserStory-part"}>{UserStory.id}</div>
+                        <div className={"userStory-userStory UserStory-part"}>{UserStory.userStory}</div>
+                        <div className={"userStory-businessValue UserStory-part"}>{UserStory.businessValue}</div>
                         <div
-                            className={"userStory-ownerId UserStory-part"}>{userStory.owner ? userStory.owner.firstName : "_ _ _"}</div>
+                            className={"userStory-ownerId UserStory-part"}>{UserStory.owner ? UserStory.owner.firstName : "_ _ _"}</div>
                         <div className={"userStory-estimation UserStory-part"}>
                             {checkEstimation() ? getEstimatedAverage() + "-SP" : "Please Estimate"}</div>
                         <div className={"UserStory-part"} onClick={e => handleChangeToEdit(e)}>

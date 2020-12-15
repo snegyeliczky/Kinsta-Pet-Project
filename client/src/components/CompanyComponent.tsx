@@ -25,7 +25,8 @@ const CompanyComponent: React.FC<Props> = ({company}) => {
         variables: {
             userId: appContext.getUserIdAsNumber(),
             companyId: company.id
-        }
+        },
+        fetchPolicy:"network-only"
     });
     const [removeCompany] = useMutation(deleteCompany);
 
