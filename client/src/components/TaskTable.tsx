@@ -25,15 +25,15 @@ const TaskTable: React.FC<props> = ({userStory}) => {
         }
     });
 
+    console.log("run")
     const subscribeToNewTask = () => subscribeToMore(
         {
             document: newTaskSubscription,
             variables:{userStoryId:userStory.id},
             updateQuery: (prev, {subscriptionData}) => {
                 if (!subscriptionData.data) return prev;
-                console.log("run new Task subscription");
+                console.log("task prev : ",prev.userStory);
                 let taskList = prev.userStory.tasks ? prev.userStory.tasks : [];
-                //because of the state refreshes it runs multiple time...
                 let some = taskList.some((task: TaskModel) => {
                     return task.id === subscriptionData.data.newTask.id
                 });

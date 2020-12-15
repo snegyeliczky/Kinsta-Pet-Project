@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {useHistory, useParams} from "react-router";
 import "../assets/ProjectStyle.css"
 import NewUserStoryModal from "../components/Modals/NewUserStoryModal";
@@ -29,10 +29,10 @@ const ProjectPage = () => {
                 variables: {
                     id
                 },
-                fetchPolicy:"cache-first",
+                fetchPolicy: "cache-first",
                 onCompleted:  () => {
-                     subscribeToNewUserStory();
-                     subscribeToRemoveUserStory()
+                    subscribeToNewUserStory();
+                    subscribeToRemoveUserStory()
                 }
             });
 
@@ -51,10 +51,10 @@ const ProjectPage = () => {
         variables: {projectId: parseInt(id)},
         updateQuery: (prev, {subscriptionData}) => {
             if (!subscriptionData.data) return prev;
+            console.log("prev", prev.project.userStories)
             console.log("re init: ", userStory_data.project.userStories)
-            console.log("prev", prev)
-            let newList =prev.project.userStories?
-                [...prev.project.userStories]:
+            let newList = prev.project.userStories ?
+                [...prev.project.userStories] :
                 [...userStory_data.project.userStories];
 
             let some = newList.some((us: UserStoryModel) => {
@@ -83,21 +83,21 @@ const ProjectPage = () => {
     });
 
 
-    const subscribeToRemoveUserStory =  () => subscribeToMore({
+    const subscribeToRemoveUserStory =  () =>  subscribeToMore({
         document: removeUserStory,
         variables: {projectId: parseInt(id)},
-        updateQuery: (prev, {subscriptionData}) => {
+        updateQuery:  (prev, {subscriptionData}) => {
             if (!subscriptionData.data) return prev;
-            console.log("prev: ",prev);
+            console.log("remove prev: ", prev.project);
             let rmUsId = subscriptionData.data.removeUserStory;
-            let newList = prev.project.userStories?
-                [...prev.project.userStories]:
+            let newList = prev.project.userStories ?
+                [...prev.project.userStories] :
                 [...userStory_data.project.userStories];
             newList = newList.filter((us: UserStoryModel) => {
                 if (us.id !== rmUsId) return us;
 
             });
-            console.log("after remove:  ",newList);
+            console.log("after remove:  ", newList);
             return {
                 project: {
                     userStories: newList
@@ -105,8 +105,6 @@ const ProjectPage = () => {
             }
         }
     });
-
-
 
 
     const sortByBusinessValue = () => {
