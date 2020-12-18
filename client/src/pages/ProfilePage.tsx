@@ -27,8 +27,6 @@ const ProfilePage = () => {
             variables: {receiverId: appContext.getUserIdAsNumber()},
             updateQuery: (previousQueryResult, {subscriptionData}) => {
                 if (!subscriptionData.data) return previousQueryResult;
-                console.log("Run", subscriptionData.data);
-                // how to prevent multiple run ??
                 let prevList = Array.from(subscriptionData.data.newParticipantInvite);
                 let invList = new Set(prevList);
                 invList.add(subscriptionData.data.newParticipantInvite);

@@ -19,12 +19,16 @@ const TaskTable: React.FC<props> = ({userStory}) => {
         variables: {
             id: userStory.id
         },
+        fetchPolicy: "network-only",
         onCompleted: () => {
             subscribeToNewTask();
             subscribeToStatusChange();
             subscriberToRemove()
         }
     });
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error! ${error.message}</div>;
 
     const subscribeToNewTask = () => subscribeToMore(
         {
@@ -76,10 +80,6 @@ const TaskTable: React.FC<props> = ({userStory}) => {
             }
         }
     );
-
-
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error! ${error.message}</div>;
 
     const loadTask = () => {
         if (data.userStory.tasks.length === 0) {

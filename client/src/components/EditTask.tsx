@@ -37,7 +37,7 @@ const EditTask: React.FC<props> = ({Task, edit, setEdit, ready}) => {
                 id: parseInt(id)
             }
         });
-    }, []);
+    }, [id]);
 
 
     const removeTaskAndCloseEditing = () => {
