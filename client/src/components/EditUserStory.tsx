@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from 'react';
+import React, {Dispatch, SetStateAction, useCallback, useContext, useEffect, useState} from 'react';
 import {UserStoryStyleComponent} from "../assets/styledComponents/styledComponents";
 import {UserStoryModel} from "../Types/UserStoryModel";
 import {SettingOutlined, DeleteOutlined} from '@ant-design/icons';
@@ -44,13 +44,20 @@ const EditUserStory: React.FC<Props> = ({userStory, edit, setEdit, removeUserSto
         editedUserStory.userStory = story;
     };
 
-    useEffect(() => {
+   const fetchUsers =  useCallback(()=>{
+        console.log("usecallbeck ")
         getParticipants({
             variables: {
                 id: parseInt(id)
             }
         });
-    }, []);
+    },[id, getParticipants])
+
+
+    useEffect(() => {
+       fetchUsers()
+    }, [fetchUsers]);
+
 
     const EditUserStoryValue = (value: number) => {
         editedUserStory.businessValue = value;

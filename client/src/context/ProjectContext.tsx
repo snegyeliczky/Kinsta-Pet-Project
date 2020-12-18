@@ -1,45 +1,25 @@
-import React, {createContext, useState} from 'react';
-import {UserModel} from "../Types/UserModel";
+import React, {createContext} from 'react';
 
 type projectContextProps = {
-    participants: UserModel[]
-
-    getUserName: (userId: string | undefined | null) => string
 }
 
 export const ProjectContext = createContext<projectContextProps>(
     {
-        participants: [],
-        getUserName: (userId): string => "username"
+        /*
+        here comes the props
+         exp.:participants: [],
+
+         */
     });
 
 
 export const ProjectProvider = (props: any) => {
 
 
-    const [participants, setParticipants] = useState<UserModel[]>([]);
-
-
-    const getUser = (userId: string): UserModel | undefined => {
-        let user = participants.find(user => {
-            return user.id === userId
-        });
-        if (user) return user;
-
-    };
-
-    const getUserName = (userId: string | undefined | null): string => {
-        if (!userId) return "---";
-        let user = getUser(userId);
-        return user ? user.firstName : "user not found"
-    };
-
-
     return (
         <ProjectContext.Provider
             value={{
-                participants,
-                getUserName
+                // propsname:real fnc
             }}>
             {props.children}
         </ProjectContext.Provider>

@@ -15,7 +15,7 @@ type props = {
 const InvitationComponent: React.FC<props> = ({inv, refetchList}) => {
 
     const [acceptParticipationMutation] = useMutation(acceptParticipationInvite);
-    const [deleteInvite] = useMutation(deleteParticipationInvite)
+    const [deleteInvite] = useMutation(deleteParticipationInvite);
 
     const acceptParticipation = async () => {
         let result = await acceptParticipationMutation({
@@ -32,8 +32,8 @@ const InvitationComponent: React.FC<props> = ({inv, refetchList}) => {
             variables: {
                 inviteId: inv.id
             }
-        })
-        refetchList()
+        });
+        await refetchList()
     };
 
     const ButtonContainerStyle = {

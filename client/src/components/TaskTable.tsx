@@ -19,12 +19,16 @@ const TaskTable: React.FC<props> = ({userStory}) => {
         variables: {
             id: userStory.id
         },
+        fetchPolicy: "network-only",
         onCompleted: () => {
             subscribeToNewTask();
             subscribeToStatusChange();
             subscriberToRemove()
         }
     });
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error! ${error.message}</div>;
 
     const subscribeToNewTask = () => subscribeToMore(
         {
@@ -65,9 +69,8 @@ const TaskTable: React.FC<props> = ({userStory}) => {
                 if (!subscriptionData.data) return prev;
                 let newList = [...prev.userStory.tasks];
                 let rmTsId = subscriptionData.data.removeTask;
-                newList = newList.filter((us: UserStoryModel) => {
-                    if (us.id !== rmTsId) return us;
-                });
+                let indexOfRm = newList.map((ts: TaskModel) => ts.id).indexOf(rmTsId);
+                newList.splice(indexOfRm, 1);
                 return {
                     userStory: {
                         tasks: newList
@@ -76,10 +79,6 @@ const TaskTable: React.FC<props> = ({userStory}) => {
             }
         }
     );
-
-
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error! ${error.message}</div>;
 
     const loadTask = () => {
         if (data.userStory.tasks.length === 0) {
