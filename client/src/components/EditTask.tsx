@@ -32,12 +32,13 @@ const EditTask: React.FC<props> = ({Task, edit, setEdit, ready}) => {
 
 
     useEffect(() => {
+        console.log("UEF")
         getParticipants({
             variables: {
                 id: parseInt(id)
             }
         });
-    }, [id]);
+    }, [id, getParticipants]);
 
 
     const removeTaskAndCloseEditing = () => {
