@@ -69,9 +69,8 @@ const TaskTable: React.FC<props> = ({userStory}) => {
                 if (!subscriptionData.data) return prev;
                 let newList = [...prev.userStory.tasks];
                 let rmTsId = subscriptionData.data.removeTask;
-                newList = newList.filter((us: UserStoryModel) => {
-                    if (us.id !== rmTsId) return us;
-                });
+                let indexOfRm = newList.map((ts: TaskModel) => ts.id).indexOf(rmTsId);
+                newList.splice(indexOfRm, 1);
                 return {
                     userStory: {
                         tasks: newList

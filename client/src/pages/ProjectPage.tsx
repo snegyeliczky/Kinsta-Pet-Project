@@ -90,10 +90,9 @@ const ProjectPage = () => {
             let newList = prev.project.userStories ?
                 [...prev.project.userStories] :
                 [...userStory_data.project.userStories];
-            newList = newList.filter((us: UserStoryModel) => {
-                if (us.id !== rmUsId) return us;
 
-            });
+            let indexOfRm = newList.map((us: UserStoryModel) => us.id).indexOf(rmUsId);
+            newList.splice(indexOfRm, 1);
             return {
                 project: {
                     userStories: newList
